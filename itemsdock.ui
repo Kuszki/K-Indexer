@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ItemsDock</class>
+ <widget class="QDockWidget" name="ItemsDock">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="format-justify-fill">
+    <normaloff>.</normaloff>.</iconset>
+  </property>
+  <property name="windowTitle">
+   <string>Documents</string>
+  </property>
+  <widget class="QWidget" name="dockWidgetContents">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0" colspan="2">
+     <widget class="QComboBox" name="typesCombo">
+      <item>
+       <property name="text">
+        <string>All</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Locked</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Done</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="2">
+     <widget class="QListView" name="listView">
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLineEdit" name="searchEdit">
+      <property name="placeholderText">
+       <string>Search</string>
+      </property>
+      <property name="clearButtonEnabled">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QToolButton" name="refreshButton">
+      <property name="text">
+       <string>Reload</string>
+      </property>
+      <property name="icon">
+       <iconset theme="view-refresh">
+        <normaloff>.</normaloff>.</iconset>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
