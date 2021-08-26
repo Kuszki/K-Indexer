@@ -35,8 +35,10 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->actionFind->setEnabled(false);
 
 	items = new ItemsDock(database, this);
+	meta = new MetaDock(database, this);
 
 	addDockWidget(Qt::LeftDockWidgetArea, items);
+	addDockWidget(Qt::RightDockWidgetArea, meta);
 
 	Settings.beginGroup("Window");
 	setTabPosition(Qt::AllDockWidgetAreas, QTabWidget::TabPosition::North);
@@ -95,8 +97,35 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->actionLockdocks, &QAction::toggled,
 		   this, &MainWindow::dockOptionsChanged);
 
+	connect(ui->actionSave, &QAction::triggered,
+		   meta, &MetaDock::saveRecord);
+
+	connect(ui->actionUndochange, &QAction::triggered,
+		   meta, &MetaDock::rollbackRecord);
+
 	connect(this, &MainWindow::onDatabaseLogin,
 		   items, &ItemsDock::setupDatabase);
+
+	connect(this, &MainWindow::onDatabaseLogout,
+		   items, &ItemsDock::clearDatabase);
+
+	connect(this, &MainWindow::onDatabaseLogin,
+		   meta, &MetaDock::setupDatabase);
+
+	connect(this, &MainWindow::onDatabaseLogout,
+		   meta, &MetaDock::clearDatabase);
+
+	connect(items, &ItemsDock::onImageSelected,
+		   ui->image, &ImageWidget::setImage);
+
+	connect(items, &ItemsDock::onItemSelected,
+		   meta, &MetaDock::setupRecord);
+
+	connect(meta, &MetaDock::onRecordSave,
+		   this, &MainWindow::metaDataSaved);
+
+	connect(items, &ItemsDock::onItemSelected,
+		   this, &MainWindow::recordIndexSelected);
 
 	dockOptionsChanged();
 }
@@ -165,6 +194,8 @@ void MainWindow::openDatabase(const QString& driver, const QString& server, cons
 	ui->actionFind->setEnabled(userID);
 	ui->actionImport->setEnabled(userID);
 
+	ui->image->setPrefix(path);
+
 	emit onDatabaseLogin(userID);
 }
 
@@ -187,16 +218,18 @@ void MainWindow::disconnectActionClicked(void)
 	ui->actionDisconnect->setEnabled(false);
 	ui->actionFind->setEnabled(false);
 
-	emit onDatabaseLogin(false);
+	ui->image->clear();
+
+	emit onDatabaseLogout();
+}
+
+void MainWindow::lockActionClicked(void)
+{
+
 }
 
 void MainWindow::dockOptionsChanged(void)
 {
-	const QList<QDockWidget*> list =
-	{
-		// TODO
-	};
-
 	QDockWidget::DockWidgetFeatures flags = QDockWidget::NoDockWidgetFeatures;
 
 	if (ui->actionAllowfloat->isChecked())
@@ -211,6 +244,30 @@ void MainWindow::dockOptionsChanged(void)
 	if (ui->actionLockdocks->isChecked())
 		flags = QDockWidget::NoDockWidgetFeatures;
 
-	for (const auto& w : list) w->setFeatures(flags);
+	for (const auto& w : this->children())
+	{
+		if (auto d = dynamic_cast<QDockWidget*>(w))
+		{
+			d->setFeatures(flags);
+		}
+		else if (auto b = dynamic_cast<QToolBar*>(w))
+		{
+			b->setFloatable(ui->actionAllowfloat->isChecked() &&
+						 !ui->actionLockdocks->isChecked());
+			b->setMovable(ui->actionAllowmove->isChecked() &&
+					    !ui->actionLockdocks->isChecked());
+		}
+	}
+}
+
+void MainWindow::recordIndexSelected(int index)
+{
+	sheetID = index;
+}
+
+void MainWindow::metaDataSaved(int sheet, bool ok, const QString& msg)
+{
+	if (ok) ui->statusbar->showMessage(tr("Record saved"));
+	else ui->statusbar->showMessage(tr("Error: %1").arg(msg));
 }
 

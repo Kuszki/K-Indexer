@@ -40,6 +40,8 @@ class ImageWidget : public QWidget
 		QStandardItemModel* model;
 		QList<QPixmap> list;
 
+		QString prefix;
+
 		QPixmap currentImage;
 		int currentIndex = 0;
 
@@ -51,9 +53,14 @@ class ImageWidget : public QWidget
 		explicit ImageWidget(QWidget *parent = nullptr);
 		virtual ~ImageWidget(void) override;
 
+	protected:
+
+		virtual void wheelEvent(QWheelEvent* event) override;
+
 	public slots:
 
-		void setImage(const QString path);
+		void setImage(const QString& path);
+		void setPrefix(const QString& path);
 
 		void setIndex(int index);
 
@@ -67,6 +74,8 @@ class ImageWidget : public QWidget
 
 		void rotateLeft(void);
 		void rotateRight(void);
+
+		void clear(void);
 
 	private slots:
 

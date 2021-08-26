@@ -28,6 +28,7 @@
 #include "connectdialog.hpp"
 #include "imagewidget.hpp"
 #include "itemsdock.hpp"
+#include "metadock.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -43,10 +44,12 @@ class MainWindow : public QMainWindow
 		Ui::MainWindow *ui;
 
 		ItemsDock* items;
+		MetaDock* meta;
 
 		QSqlDatabase database;
 		QString imgPath;
 
+		int sheetID = 0;
 		int userID = 0;
 
 	public:
@@ -66,11 +69,19 @@ class MainWindow : public QMainWindow
 		void connectActionClicked(void);
 		void disconnectActionClicked(void);
 
+		void lockActionClicked(void);
+
 		void dockOptionsChanged(void);
+
+		void recordIndexSelected(int index);
+
+		void metaDataSaved(int sheet, bool ok,
+					    const QString& msg);
 
 	signals:
 
 		void onDatabaseLogin(int);
+		void onDatabaseLogout(void);
 		void onDatabaseError(const QString&);
 
 };

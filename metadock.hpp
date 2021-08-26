@@ -18,55 +18,64 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef ITEMSDOCK_HPP
-#define ITEMSDOCK_HPP
+#ifndef METADOCK_HPP
+#define METADOCK_HPP
 
 #include <QtWidgets>
 #include <QtCore>
 #include <QtSql>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class ItemsDock; }
+namespace Ui { class MetaDock; }
 QT_END_NAMESPACE
 
-class ItemsDock : public QDockWidget
+class MetaDock : public QDockWidget
 {
 
 		Q_OBJECT
 
 	private:
 
-		Ui::ItemsDock *ui;
+		static const QString wrongstyle;
 
-		QSqlTableModel* model;
+		Ui::MetaDock *ui;
+
+		QSqlRelationalTableModel* model = nullptr;
+		QDataWidgetMapper* mapper = nullptr;
 		QSqlDatabase& database;
 
+		QList<QLabel*> labels;
+		QList<QWidget*> widgets;
+		QList<int> indexes;
+
+		int sheetID = 0;
 		int userID = 0;
 
 	public:
 
-		explicit ItemsDock(QSqlDatabase& db, QWidget *parent = nullptr);
-		virtual ~ItemsDock(void) override;
+		explicit MetaDock(QSqlDatabase& db, QWidget *parent = nullptr);
+		virtual ~MetaDock(void) override;
 
 	private slots:
 
-		void selectionChanged(const QModelIndex& item);
-
-		void rangeChanged(const QItemSelection& s,
-					   const QItemSelection& d);
+		void dataChanged(void);
+		void lockWidgets(bool lock);
 
 	public slots:
 
 		void setupDatabase(int user);
 		void clearDatabase(void);
 
-		void refreshList(void);
+		void setupRecord(int id);
+
+		void saveRecord(void);
+		void rollbackRecord(void);
 
 	signals:
 
-		void onItemSelected(int);
-		void onImageSelected(const QString&);
+		void onRecordSave(int, bool,
+					   const QString&);
 
 };
 
-#endif // ITEMSDOCK_HPP
+#endif // METADOCK_HPP

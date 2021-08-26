@@ -27,6 +27,10 @@ ImageWidget::ImageWidget(QWidget *parent) :
 {
 	ui->setupUi(this);
 
+	ui->prev->setVisible(false);
+	ui->next->setVisible(false);
+	ui->listView->setVisible(false);
+
 	model = new QStandardItemModel(0, 1, this);
 
 	auto oldModel = ui->listView->model();
@@ -55,11 +59,22 @@ ImageWidget::~ImageWidget(void)
 	delete ui;
 }
 
-void ImageWidget::setImage(const QString path)
+void ImageWidget::wheelEvent(QWheelEvent* event)
+{
+	QWidget::wheelEvent(event);
+
+	if (!currentImage.isNull() && QApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
+	{
+		if (event->angleDelta().y() > 0) zoomIn();
+		else if (event->angleDelta().y() < 0) zoomOut();
+	}
+}
+
+void ImageWidget::setImage(const QString& path)
 {
 	while (model->rowCount()) model->removeRow(0);
 
-	QImageReader reader(path);
+	QImageReader reader(prefix + path);
 	int imageId = 0;
 
 	list.clear();
@@ -84,7 +99,15 @@ void ImageWidget::setImage(const QString path)
 	ui->next->setVisible(list.size() > 1);
 	ui->prev->setVisible(list.size() > 1);
 
+	ui->scrollArea->repaint();
+
 	setIndex(0);
+}
+
+void ImageWidget::setPrefix(const QString& path)
+{
+	if (path.isEmpty()) prefix.clear();
+	else prefix = path + '/';
 }
 
 void ImageWidget::setIndex(int index)
@@ -164,6 +187,20 @@ void ImageWidget::rotateRight(void)
 
 	ui->label->setPixmap(currentImage.transformed(QTransform().rotate(rotation))
 					 .scaledToHeight(int(scale * currentImage.height())));
+}
+
+void ImageWidget::clear(void)
+{
+	while (model->rowCount()) model->removeRow(0);
+
+	ui->prev->setVisible(false);
+	ui->next->setVisible(false);
+	ui->listView->setVisible(false);
+
+	ui->label->setText(tr("Select document"));
+
+	currentImage = QPixmap();
+	currentIndex = 0;
 }
 
 void ImageWidget::imageIndexChanged(const QModelIndex& index)

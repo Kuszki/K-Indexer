@@ -28,6 +28,11 @@ ItemsDock::ItemsDock(QSqlDatabase& db, QWidget *parent) :
 {
 	ui->setupUi(this);
 
+	ui->listView->setEnabled(false);
+	ui->typesCombo->setEnabled(false);
+	ui->searchEdit->setEnabled(false);
+	ui->refreshButton->setEnabled(false);
+
 	connect(ui->typesCombo, qOverload<int>(&QComboBox::currentIndexChanged),
 		   this, &ItemsDock::refreshList);
 
@@ -36,7 +41,6 @@ ItemsDock::ItemsDock(QSqlDatabase& db, QWidget *parent) :
 
 	connect(ui->refreshButton, &QToolButton::clicked,
 		   this, &ItemsDock::refreshList);
-
 }
 
 ItemsDock::~ItemsDock(void)
@@ -44,10 +48,23 @@ ItemsDock::~ItemsDock(void)
 	delete ui;
 }
 
+void ItemsDock::selectionChanged(const QModelIndex& item)
+{
+	const auto indexI = model->index(item.row(), 0, item.parent());
+	const auto indexP = model->index(item.row(), 1, item.parent());
+
+	emit onItemSelected(model->data(indexI).toInt());
+	emit onImageSelected(model->data(indexP).toString());
+}
+
+void ItemsDock::rangeChanged(const QItemSelection& s, const QItemSelection& d)
+{
+	if (s.isEmpty() && !d.isEmpty())
+		ui->listView->selectionModel()->select(d, QItemSelectionModel::ClearAndSelect);
+}
+
 void ItemsDock::setupDatabase(int user)
 {
-	if (!user) { model->clear(); return; }
-
 	ui->typesCombo->setCurrentIndex(0);
 	ui->searchEdit->clear();
 
@@ -64,11 +81,27 @@ void ItemsDock::setupDatabase(int user)
 	oldModel->deleteLater();
 	oldSel->deleteLater();
 
+	ui->listView->setEnabled(true);
+	ui->typesCombo->setEnabled(true);
+	ui->searchEdit->setEnabled(true);
+	ui->refreshButton->setEnabled(true);
+
 	userID = user;
+
+	connect(ui->listView->selectionModel(), &QItemSelectionModel::currentChanged,
+		   this, &ItemsDock::selectionChanged);
+
+	connect(ui->listView->selectionModel(), &QItemSelectionModel::selectionChanged,
+		   this, &ItemsDock::rangeChanged);
 }
 
 void ItemsDock::clearDatabase(void)
 {
+	ui->listView->setEnabled(false);
+	ui->typesCombo->setEnabled(false);
+	ui->searchEdit->setEnabled(false);
+	ui->refreshButton->setEnabled(false);
+
 	model->clear();
 }
 
@@ -83,9 +116,9 @@ void ItemsDock::refreshList(void)
 		filter.append(QString("path LIKE '%%1%'").arg(test));
 
 	if (index == 1)
-		filter.append(QString("id IN (SELECT sheet FROM locks WHERE user = %1)").arg(userID));
+		filter.append(QString("id IN (SELECT sheet FROM locks WHERE user = %1 OR %1 = 0)").arg(userID));
 	else if (index == 2)
-		filter.append(QString("user = %1").arg(userID));
+		filter.append(QString("id NOT IN (SELECT sheet FROM locks WHERE user = %1 OR %1 = 0) AND (user = %1 OR %1 = 0)").arg(userID));
 
 	model->setFilter(filter.join(" AND "));
 	model->select();
