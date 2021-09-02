@@ -270,6 +270,11 @@ void FilterWidget::setParameters(const QVariantMap& Field)
 
 	if (!fdict.isEmpty())
 	{
+		Operators.removeOne("BETWEEN");
+	}
+
+	if (!fdict.isEmpty())
+	{
 		auto Model = new QStandardItemModel(fdict.size(), 1);
 		auto Item = new QStandardItem(tr("Select values")); int j = 0;
 

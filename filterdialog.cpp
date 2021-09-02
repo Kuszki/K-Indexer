@@ -196,7 +196,7 @@ void FilterDialog::setupDialog(int user)
 
 	const int start = user ? 3 : 2;
 
-	QHash<int, QVariantMap> fields;
+	QMap<int, QVariantMap> fields;
 	QHash<QString, QString> names;
 	QVariantList list, queries;
 

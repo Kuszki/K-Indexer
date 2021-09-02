@@ -2,6 +2,63 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="pl_PL">
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="aboutdialog.ui" line="20"/>
+        <source>About</source>
+        <translation>O programie</translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="30"/>
+        <source>Close</source>
+        <translation>Zamknij</translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="83"/>
+        <source>Program name:</source>
+        <translation>Nazwa programu:</translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="100"/>
+        <source>Author:</source>
+        <translation>Autor:</translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="117"/>
+        <source>Mail:</source>
+        <translation>E-mail:</translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="137"/>
+        <source>Project slite:</source>
+        <translation>Strona projektu:</translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="157"/>
+        <source>License:</source>
+        <translation>Licencja:</translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="177"/>
+        <source>Powered by:</source>
+        <translation>Wsparcie:</translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="199"/>
+        <source>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</source>
+        <translation>Ten program jest wolnym oprogramowaniem: możesz go rozpowszechniać i/lub modyfikować na warunkach Powszechnej Publicznej Licencji GNU GPL opublikowanej przez Fundacje Wolnego Oprogramowania w wersji 3 lub (według uznania) dowolnej późniejszej.
+
+Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny – jednak BEZ ŻADNEJ GWARANCJI, nawet domyślnej gwarancji PRZYDATNOŚCI HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. Bliższe informacje na ten temat można uzyskać z Powszechnej Licencji Publicznej GNU.</translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="214"/>
+        <source>&lt;a href=&quot;http://www.fsf.org/&quot;&gt;See more&lt;/a&gt;</source>
+        <translation>&lt;a href=&quot;http://www.fsf.org/&quot;&gt;Dowiedz się więcej&lt;/a&gt;</translation>
+    </message>
+</context>
+<context>
     <name>ConnectDialog</name>
     <message>
         <location filename="connectdialog.ui" line="14"/>
@@ -212,17 +269,17 @@
 <context>
     <name>FilterWidget</name>
     <message>
-        <location filename="filterwidget.cpp" line="274"/>
+        <location filename="filterwidget.cpp" line="279"/>
         <source>Select values</source>
         <translation>Wybierz wartości</translation>
     </message>
     <message>
-        <location filename="filterwidget.cpp" line="334"/>
+        <location filename="filterwidget.cpp" line="339"/>
         <source>Yes</source>
         <translation>Tak</translation>
     </message>
     <message>
-        <location filename="filterwidget.cpp" line="335"/>
+        <location filename="filterwidget.cpp" line="340"/>
         <source>No</source>
         <translation>Nie</translation>
     </message>
@@ -678,105 +735,105 @@
         <translation>Zezwalaj na przemieszczanie</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="270"/>
+        <location filename="mainwindow.cpp" line="273"/>
         <source>User authentication error</source>
         <translation>Błąd autoryzacji użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="326"/>
+        <location filename="mainwindow.cpp" line="329"/>
         <source>Unable to lock document</source>
         <translation>Nie udało się zablokować dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="346"/>
+        <location filename="mainwindow.cpp" line="349"/>
         <source>Document is already locked</source>
         <translation>Dokument jest już zablokowany</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="349"/>
-        <location filename="mainwindow.cpp" line="417"/>
+        <location filename="mainwindow.cpp" line="352"/>
+        <location filename="mainwindow.cpp" line="420"/>
         <source>Document is locked by another user</source>
         <translation>Dokument jest zablokowany przez innego użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="352"/>
-        <location filename="mainwindow.cpp" line="377"/>
-        <location filename="mainwindow.cpp" line="391"/>
-        <location filename="mainwindow.cpp" line="423"/>
-        <location filename="mainwindow.cpp" line="436"/>
+        <location filename="mainwindow.cpp" line="355"/>
+        <location filename="mainwindow.cpp" line="380"/>
+        <location filename="mainwindow.cpp" line="394"/>
+        <location filename="mainwindow.cpp" line="426"/>
+        <location filename="mainwindow.cpp" line="439"/>
         <source>Unable to execute query</source>
         <translation>Brak możliwości wykonania zapytania do bazy danych</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="374"/>
+        <location filename="mainwindow.cpp" line="377"/>
         <source>Document is assigned to another user</source>
         <translation>Dokument jest przypisany do innego użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="387"/>
-        <location filename="mainwindow.cpp" line="470"/>
+        <location filename="mainwindow.cpp" line="390"/>
+        <location filename="mainwindow.cpp" line="473"/>
         <source>Document locked</source>
         <translation>Zablokowano dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="396"/>
+        <location filename="mainwindow.cpp" line="399"/>
         <source>Unable to unlock document</source>
         <translation>Nie udało się odblokować dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="420"/>
+        <location filename="mainwindow.cpp" line="423"/>
         <source>Document is not locked</source>
         <translation>Dokument nie jest zablokowany</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="432"/>
+        <location filename="mainwindow.cpp" line="435"/>
         <source>Document unlocked</source>
         <translation>Odblokowano dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="476"/>
+        <location filename="mainwindow.cpp" line="479"/>
         <source>Unable to lock next document</source>
         <translation>Nie udało się zablokować kolejnego dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="476"/>
+        <location filename="mainwindow.cpp" line="479"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="576"/>
+        <location filename="mainwindow.cpp" line="586"/>
         <source>No changes to save</source>
         <translation>Brak zmian do zapisu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="577"/>
+        <location filename="mainwindow.cpp" line="587"/>
         <source>Data saved</source>
         <translation>Zapisano dane</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="578"/>
+        <location filename="mainwindow.cpp" line="588"/>
         <source>Unable to save data</source>
         <translation>Nie udało się zapisać danych</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="656"/>
+        <location filename="mainwindow.cpp" line="666"/>
         <source>Export error</source>
         <translation>Błąd eksportu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="659"/>
-        <location filename="mainwindow.cpp" line="662"/>
+        <location filename="mainwindow.cpp" line="669"/>
+        <location filename="mainwindow.cpp" line="672"/>
         <source>Export finished</source>
         <translation>Eksport zakończony</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="673"/>
+        <location filename="mainwindow.cpp" line="683"/>
         <source>Import error</source>
         <translation>Błąd importu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="676"/>
-        <location filename="mainwindow.cpp" line="679"/>
+        <location filename="mainwindow.cpp" line="686"/>
+        <location filename="mainwindow.cpp" line="689"/>
         <source>Import finished</source>
         <translation>Import zakończony</translation>
     </message>

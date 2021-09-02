@@ -64,7 +64,7 @@ CREATE TABLE users
 );
 
 CREATE VIEW invalid AS
-  SELECT id, user FROM main WHERE 1=1;
+  SELECT id, user FROM main WHERE 1=0;
 
 ALTER TABLE locks
   ADD CONSTRAINT locks_sheet FOREIGN KEY (sheet) REFERENCES main (id) ON DELETE CASCADE ON UPDATE CASCADE,

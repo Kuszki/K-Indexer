@@ -2,6 +2,7 @@ QT      += core gui sql widgets
 CONFIG  += c++19
 
 SOURCES += \
+    aboutdialog.cpp \
     connectdialog.cpp \
     exportdialog.cpp \
     filterdialog.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
     threadworker.cpp
 
 HEADERS += \
+    aboutdialog.hpp \
     connectdialog.hpp \
     exportdialog.hpp \
     filterdialog.hpp \
@@ -31,6 +33,7 @@ HEADERS += \
     threadworker.hpp
 
 FORMS += \
+    aboutdialog.ui \
     connectdialog.ui \
     exportdialog.ui \
     filterdialog.ui \

@@ -30,6 +30,7 @@
 #include "exportdialog.hpp"
 #include "importdialog.hpp"
 #include "filterdialog.hpp"
+#include "aboutdialog.hpp"
 
 #include "imagedock.hpp"
 #include "itemsdock.hpp"
@@ -90,6 +91,8 @@ class MainWindow : public QMainWindow
 		void importActionClicked(void);
 
 		void queryActionClicked(void);
+
+		void aboutActionClicked(void);
 
 		void dockOptionsChanged(void);
 

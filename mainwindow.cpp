@@ -105,6 +105,9 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->actionImport, &QAction::triggered,
 		   this, &MainWindow::importActionClicked);
 
+	connect(ui->actionAbout, &QAction::triggered,
+		   this, &MainWindow::aboutActionClicked);
+
 	connect(ui->actionAllowclose, &QAction::toggled,
 		   this, &MainWindow::dockOptionsChanged);
 
@@ -526,6 +529,13 @@ void MainWindow::queryActionClicked(void)
 	SqleditorDialog* dialog = new SqleditorDialog(database, this); dialog->show();
 
 	connect(dialog, &SqleditorDialog::finished, dialog, &SqleditorDialog::deleteLater);
+}
+
+void MainWindow::aboutActionClicked(void)
+{
+	AboutDialog* dialog = new AboutDialog(this); dialog->open();
+
+	connect(dialog, &AboutDialog::finished, dialog, &AboutDialog::deleteLater);
 }
 
 void MainWindow::dockOptionsChanged(void)
