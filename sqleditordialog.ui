@@ -18,7 +18,7 @@
     <normaloff>.</normaloff>.</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" rowspan="7">
+   <item row="0" column="0" colspan="7">
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -96,7 +96,7 @@
      </widget>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="1" column="0">
     <widget class="QToolButton" name="runButton">
      <property name="text">
       <string>Run query</string>
@@ -121,7 +121,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="1" column="2">
     <widget class="QToolButton" name="delButton">
      <property name="enabled">
       <bool>false</bool>
@@ -135,7 +135,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="1" column="3">
     <widget class="QToolButton" name="saveButton">
      <property name="text">
       <string>Commit</string>
@@ -146,7 +146,7 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="1" column="4">
     <widget class="QToolButton" name="undoButton">
      <property name="text">
       <string>Rollback</string>
@@ -157,20 +157,10 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>337</height>
-      </size>
-     </property>
-    </spacer>
+   <item row="1" column="5">
+    <widget class="QLabel" name="helperLabel"/>
    </item>
-   <item row="6" column="1">
+   <item row="1" column="6">
     <widget class="QToolButton" name="exitButton">
      <property name="text">
       <string>Exit</string>
@@ -188,6 +178,8 @@
   <tabstop>queryEdit</tabstop>
   <tabstop>fieldsView</tabstop>
   <tabstop>tableView</tabstop>
+  <tabstop>helperCombo</tabstop>
+  <tabstop>helperView</tabstop>
   <tabstop>runButton</tabstop>
   <tabstop>addButton</tabstop>
   <tabstop>delButton</tabstop>

@@ -73,6 +73,7 @@ class SqleditorDialog : public QDialog
 		void tableItemClicked(const QModelIndex& index);
 		void fieldItemClicked(const QModelIndex& index);
 
+		void helperTooltipRequest(const QModelIndex& Index);
 		void helperPasteRequest(const QModelIndex& Index);
 
 };

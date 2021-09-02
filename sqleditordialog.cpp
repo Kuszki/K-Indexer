@@ -105,6 +105,10 @@ SqleditorDialog::SqleditorDialog(QSqlDatabase& database, QWidget *parent)
 	connect(ui->helperView, &QListView::doubleClicked,
 		   this, &SqleditorDialog::helperPasteRequest);
 
+	connect(ui->helperView->selectionModel(),
+		   &QItemSelectionModel::currentChanged,
+		   this, &SqleditorDialog::helperTooltipRequest);
+
 	connect(ui->helperCombo, qOverload<int>(&QComboBox::currentIndexChanged),
 		   this, &SqleditorDialog::helperIndexChanged);
 }
@@ -261,6 +265,11 @@ void SqleditorDialog::fieldItemClicked(const QModelIndex& index)
 	if (!index.isValid()) return;
 
 	ui->queryEdit->appendPlainText(index.data().toString());
+}
+
+void SqleditorDialog::helperTooltipRequest(const QModelIndex& Index)
+{
+	ui->helperLabel->setText(ui->helperView->model()->data(Index, Qt::ToolTipRole).toString());
 }
 
 void SqleditorDialog::helperPasteRequest(const QModelIndex& Index)

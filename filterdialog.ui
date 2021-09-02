@@ -71,7 +71,7 @@
           <enum>Qt::Horizontal</enum>
          </property>
          <widget class="QPlainTextEdit" name="advancedEdit"/>
-         <widget class="QWidget" name="">
+         <widget class="QWidget" name="layoutWidget">
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
             <widget class="QComboBox" name="helperCombo"/>
@@ -186,6 +186,7 @@
   <tabstop>advancedEdit</tabstop>
   <tabstop>helperCombo</tabstop>
   <tabstop>variablesList</tabstop>
+  <tabstop>queryScrool</tabstop>
   <tabstop>operatorBox</tabstop>
  </tabstops>
  <resources/>
@@ -197,8 +198,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1189</x>
-     <y>488</y>
+     <x>790</x>
+     <y>489</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -213,8 +214,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1189</x>
-     <y>488</y>
+     <x>790</x>
+     <y>489</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -229,8 +230,8 @@
    <slot>variablePasteRequest(QModelIndex)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>996</x>
-     <y>326</y>
+     <x>344</x>
+     <y>45</y>
     </hint>
     <hint type="destinationlabel">
      <x>949</x>
@@ -245,8 +246,8 @@
    <slot>helperIndexChanged(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>997</x>
-     <y>26</y>
+     <x>144</x>
+     <y>34</y>
     </hint>
     <hint type="destinationlabel">
      <x>971</x>
