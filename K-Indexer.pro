@@ -3,25 +3,36 @@ CONFIG  += c++19
 
 SOURCES += \
     connectdialog.cpp \
-    imagewidget.cpp \
+    exportdialog.cpp \
+    imagedock.cpp \
+    importdialog.cpp \
     itemsdock.cpp \
     main.cpp \
     mainwindow.cpp \
-    metadock.cpp
+    metadock.cpp \
+    sqleditordialog.cpp \
+    threadworker.cpp
 
 HEADERS += \
     connectdialog.hpp \
-    imagewidget.hpp \
+    exportdialog.hpp \
+    imagedock.hpp \
+    importdialog.hpp \
     itemsdock.hpp \
     mainwindow.hpp \
-    metadock.hpp
+    metadock.hpp \
+    sqleditordialog.hpp \
+    threadworker.hpp
 
 FORMS += \
     connectdialog.ui \
-    imagewidget.ui \
+    exportdialog.ui \
+    imagedock.ui \
+    importdialog.ui \
     itemsdock.ui \
     mainwindow.ui \
-    metadock.ui
+    metadock.ui \
+    sqleditordialog.ui
 
 TRANSLATIONS += \
     K-Indexer_pl.ts

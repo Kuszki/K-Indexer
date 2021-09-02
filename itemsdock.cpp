@@ -33,6 +33,9 @@ ItemsDock::ItemsDock(QSqlDatabase& db, QWidget *parent) :
 	ui->searchEdit->setEnabled(false);
 	ui->refreshButton->setEnabled(false);
 
+	ui->listView->model()->deleteLater();
+	ui->listView->selectionModel()->deleteLater();
+
 	connect(ui->typesCombo, qOverload<int>(&QComboBox::currentIndexChanged),
 		   this, &ItemsDock::refreshList);
 
@@ -48,28 +51,44 @@ ItemsDock::~ItemsDock(void)
 	delete ui;
 }
 
+void ItemsDock::setFilter(const QString& filter)
+{
+	const QString old = limiter;
+
+	if (filter.isEmpty()) limiter.clear();
+	else limiter = '(' + filter.simplified() + ')';
+
+	if (old != limiter) refreshList();
+}
+
+QString ItemsDock::getFilter(void) const
+{
+	return limiter;
+}
+
 void ItemsDock::selectionChanged(const QModelIndex& item)
 {
+	if (!model || !item.isValid()) return;
+
 	const auto indexI = model->index(item.row(), 0, item.parent());
 	const auto indexP = model->index(item.row(), 1, item.parent());
+
+	ui->listView->selectionModel()->select(indexI,
+					QItemSelectionModel::ClearAndSelect |
+					QItemSelectionModel::Rows);
+
+	sheetID = model->data(indexI).toInt();
 
 	emit onItemSelected(model->data(indexI).toInt());
 	emit onImageSelected(model->data(indexP).toString());
 }
 
-void ItemsDock::rangeChanged(const QItemSelection& s, const QItemSelection& d)
-{
-	if (s.isEmpty() && !d.isEmpty())
-		ui->listView->selectionModel()->select(d, QItemSelectionModel::ClearAndSelect);
-}
-
 void ItemsDock::setupDatabase(int user)
 {
+	clearDatabase(); userID = user;
+
 	ui->typesCombo->setCurrentIndex(0);
 	ui->searchEdit->clear();
-
-	auto oldModel = ui->listView->model();
-	auto oldSel = ui->listView->selectionModel();
 
 	model = new QSqlTableModel(this, database);
 	model->setTable("main");
@@ -78,21 +97,14 @@ void ItemsDock::setupDatabase(int user)
 	ui->listView->setModel(model);
 	ui->listView->setModelColumn(1);
 
-	oldModel->deleteLater();
-	oldSel->deleteLater();
-
 	ui->listView->setEnabled(true);
 	ui->typesCombo->setEnabled(true);
 	ui->searchEdit->setEnabled(true);
 	ui->refreshButton->setEnabled(true);
 
-	userID = user;
-
-	connect(ui->listView->selectionModel(), &QItemSelectionModel::currentChanged,
+	connect(ui->listView->selectionModel(),
+		   &QItemSelectionModel::currentRowChanged,
 		   this, &ItemsDock::selectionChanged);
-
-	connect(ui->listView->selectionModel(), &QItemSelectionModel::selectionChanged,
-		   this, &ItemsDock::rangeChanged);
 }
 
 void ItemsDock::clearDatabase(void)
@@ -102,7 +114,13 @@ void ItemsDock::clearDatabase(void)
 	ui->searchEdit->setEnabled(false);
 	ui->refreshButton->setEnabled(false);
 
-	model->clear();
+	if (model)
+	{
+		ui->listView->model()->deleteLater();
+		ui->listView->selectionModel()->deleteLater();
+
+		model = nullptr;
+	}
 }
 
 void ItemsDock::refreshList(void)
@@ -118,8 +136,84 @@ void ItemsDock::refreshList(void)
 	if (index == 1)
 		filter.append(QString("id IN (SELECT sheet FROM locks WHERE user = %1 OR %1 = 0)").arg(userID));
 	else if (index == 2)
-		filter.append(QString("id NOT IN (SELECT sheet FROM locks WHERE user = %1 OR %1 = 0) AND (user = %1 OR %1 = 0)").arg(userID));
+		filter.append(QString("id NOT IN (SELECT sheet FROM locks) AND (user = %1 OR %1 = 0)").arg(userID));
+	else if (index == 3)
+		filter.append(QString("id IN (SELECT id FROM invalid) AND (user = %1 OR %1 = 0)").arg(userID));
 
 	model->setFilter(filter.join(" AND "));
 	model->select();
+
+	while (model->canFetchMore())
+		model->fetchMore();
+
+	selectItem(sheetID);
+}
+
+void ItemsDock::selectItem(int id)
+{
+	if (model) ui->listView->selectionModel()->clearSelection();
+	else return;
+
+	for (int i = 0; i < model->rowCount(); ++i)
+	{
+		const auto in = model->index(i, 0);
+
+		if (model->data(in).toInt() == id)
+		{
+			ui->listView->selectionModel()->select(in,
+				QItemSelectionModel::ClearAndSelect |
+				QItemSelectionModel::Rows);
+
+			break;
+		}
+	}
+
+	sheetID = id;
+}
+
+void ItemsDock::selectNext(void)
+{
+	if (!model || !model->rowCount()) return;
+
+	const auto index = ui->listView->selectionModel()->selectedRows().value(0);
+	int row = 0;
+
+	if (index.isValid()) row = (index.row() + 1) < model->rowCount() ?
+							  index.row() + 1 : 0;
+
+	const auto indexI = model->index(row, 0);
+	const auto indexP = model->index(row, 1);
+
+	ui->listView->selectionModel()->select(indexI,
+					QItemSelectionModel::ClearAndSelect |
+					QItemSelectionModel::Rows);
+
+	sheetID = model->data(indexI).toInt();
+
+	emit onItemSelected(model->data(indexI).toInt());
+	emit onImageSelected(model->data(indexP).toString());
+}
+
+void ItemsDock::selectPrevious(void)
+{
+	if (!model || !model->rowCount()) return;
+
+	const auto index = ui->listView->selectionModel()->selectedRows().value(0);
+	int row = model->rowCount() - 1;
+
+	if (index.isValid()) row = (index.row() - 1) < 0 ?
+							  model->rowCount() - 1 :
+							  index.row() - 1;
+
+	const auto indexI = model->index(row, 0);
+	const auto indexP = model->index(row, 1);
+
+	ui->listView->selectionModel()->select(indexI,
+					QItemSelectionModel::ClearAndSelect |
+					QItemSelectionModel::Rows);
+
+	sheetID = model->data(indexI).toInt();
+
+	emit onItemSelected(model->data(indexI).toInt());
+	emit onImageSelected(model->data(indexP).toString());
 }

@@ -18,8 +18,8 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef IMAGEWIDGET_HPP
-#define IMAGEWIDGET_HPP
+#ifndef IMAGEDOCK_H
+#define IMAGEDOCK_H
 
 #include <QtWidgets>
 #include <QtCore>
@@ -28,7 +28,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui {	class ImageWidget; }
 QT_END_NAMESPACE
 
-class ImageWidget : public QWidget
+class ImageDock : public QDockWidget
 {
 
 		Q_OBJECT
@@ -50,8 +50,8 @@ class ImageWidget : public QWidget
 
 	public:
 
-		explicit ImageWidget(QWidget *parent = nullptr);
-		virtual ~ImageWidget(void) override;
+		explicit ImageDock(QWidget *parent = nullptr);
+		virtual ~ImageDock(void) override;
 
 	protected:
 
@@ -86,4 +86,4 @@ class ImageWidget : public QWidget
 
 };
 
-#endif // IMAGEWIDGET_HPP
+#endif // IMAGEDOCK_H

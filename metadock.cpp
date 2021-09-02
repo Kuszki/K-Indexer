@@ -36,20 +36,38 @@ MetaDock::~MetaDock(void)
 	delete ui;
 }
 
+bool MetaDock::isChanged(void) const
+{
+	if (!model && model->rowCount() != 1) return false;
+	else for (int i = 0; i < model->columnCount(); ++i)
+	{
+		auto index = model->index(0, i);
+		auto data = model->data(index);
+
+		if (values[i] != data) return true;
+	}
+
+	return false;
+}
+
 void MetaDock::dataChanged(void)
 {
+	if (!model || model->rowCount() != 1)
+	{
+		for (auto l : labels) l->setStyleSheet(QString()); return;
+	}
+
 	const auto row = model->record(0);
 
 	for (int i = 0; i < indexes.size(); ++i)
 	{
 		const int id = indexes[i];
 
-		const bool v = row.field(id).isValid();
 		const bool r = !row.field(id).value().toString().isEmpty() ||
 					!(model->headerData(id, Qt::Horizontal, Qt::UserRole)
 					  .toInt() & 0b001);
 
-		if (v && r) labels[i]->setStyleSheet(QString());
+		if (r) labels[i]->setStyleSheet(QString());
 		else labels[i]->setStyleSheet(wrongstyle);
 	}
 }
@@ -88,7 +106,7 @@ void MetaDock::setupDatabase(int user)
 								  query.value(3).toString()));
 	}
 
-	query.prepare("SELECT colindex, text, fill, hide, read FROM meta");
+	query.prepare("SELECT colindex, name, fill, hide, block FROM meta");
 
 	if (query.exec()) while (query.next())
 	{
@@ -107,10 +125,11 @@ void MetaDock::setupDatabase(int user)
 	mapper = new QDataWidgetMapper(this);
 	mapper->setModel(model);
 	mapper->setItemDelegate(new QSqlRelationalDelegate(mapper));
+	mapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
 
 	const auto record = model->record();
 
-	for (int i = 3; i < record.count(); ++i)
+	for (int i = 4; i < record.count(); ++i)
 	{
 		if (model->headerData(i, Qt::Horizontal, Qt::UserRole).toInt() & 0b010) continue;
 
@@ -131,20 +150,65 @@ void MetaDock::setupDatabase(int user)
 		}
 		else switch (record.field(i).type())
 		{
-			case QVariant::Bool:
-				widget = new QCheckBox(this);
-			break;
 			case QVariant::Double:
-				widget = new QDoubleSpinBox(this);
+			{
+				auto spin = new QDoubleSpinBox(this);
+
+				spin->setMinimum(-Q_INFINITY);
+				spin->setMaximum(Q_INFINITY);
+
+				widget = spin;
+			}
 			break;
 			case QVariant::Int:
-				widget = new QSpinBox(this);
+			{
+				auto spin = new QSpinBox(this);
+
+				spin->setMinimum(INT32_MIN);
+				spin->setMaximum(INT32_MAX);
+
+				widget = spin;
+			}
+			break;
+			case QVariant::DateTime:
+			{
+				auto edit = new QDateTimeEdit(this);
+
+				edit->setCalendarPopup(true);
+
+				widget = edit;
+			}
+			break;
+			case QVariant::String:
+			{
+				const int len = record.field(i).length() / 4;
+
+				if (len > 64)
+				{
+					auto edit = new QPlainTextEdit(this);
+
+					edit->setMaximumBlockCount(len > 0 ? len : -1);
+
+					widget = edit;
+				}
+				else
+				{
+					auto edit = new QLineEdit(this);
+
+					edit->setMaxLength(len > 0 ? len : -1);
+
+					widget = edit;
+				}
+			}
+			break;
+			case QVariant::Bool:
+				widget = new QCheckBox(this);
 			break;
 			case QVariant::Date:
 				widget = new QDateEdit(this);
 			break;
-			case QVariant::DateTime:
-				widget = new QDateTimeEdit(this);
+			case QVariant::Time:
+				widget = new QTimeEdit(this);
 			break;
 			default:
 				widget = new QLineEdit(this);
@@ -184,8 +248,8 @@ void MetaDock::clearDatabase(void)
 
 void MetaDock::setupRecord(int id)
 {
-	if (!model) return;
-	else if (model->isDirty())
+	if (!model || !mapper || id == sheetID) return;
+	else if (mapper->submit() && isChanged())
 	{
 		saveRecord();
 	}
@@ -196,32 +260,86 @@ void MetaDock::setupRecord(int id)
 	query.addBindValue(userID);
 	query.addBindValue(id);
 
-	const bool locked = userID == 0 || (query.exec() && query.next());
-
 	model->setFilter(QString("main.id = %1").arg(id));
 	model->select();
 
 	const bool ok = model->rowCount() == 1;
 
-	if (ok) mapper->toFirst();
-
+	locked = query.exec() && query.next();
 	sheetID = ok ? id : 0;
+	values.clear();
+
+	if (ok)
+	{
+		for (int i = 0; i < model->columnCount(); ++i)
+		{
+			auto index = model->index(0, i);
+
+			values.append(model->data(index));
+		}
+
+		mapper->toFirst();
+		dataChanged();
+	}
 
 	lockWidgets(!(ok && locked));
-	dataChanged();
 }
 
-void MetaDock::saveRecord(void)
+bool MetaDock::saveRecord(void)
 {
-	if (!model || !sheetID) return;
+	if (!model || !sheetID || !locked) return false;
+	else mapper->submit();
 
-	if (model->isDirty()) model->setData(model->index(0, 2), userID);
+	if (!isChanged())
+	{
+		emit onRecordSave(0); return true;
+	}
 
-	if (model->submitAll()) emit onRecordSave(sheetID, true, QString());
-	else emit onRecordSave(sheetID, false, model->lastError().text());
+	if (userID > 0 || model->data(model->index(0, 2)).isNull())
+	{
+		model->setData(model->index(0, 2), userID);
+		model->setData(model->index(0, 3), QDateTime::currentDateTimeUtc());
+	}
+
+	bool ok = model->submitAll();
+
+	if (ok)
+	{
+		ok = model->select() && model->rowCount() == 1;
+
+		if (!ok) lockWidgets(true);
+		else
+		{
+			mapper->toFirst();
+			values.clear();
+
+			for (int i = 0; i < model->columnCount(); ++i)
+			{
+				auto index = model->index(0, i);
+
+				values.append(model->data(index));
+			}
+
+			dataChanged();
+		}
+	}
+
+	emit onRecordSave(ok ? 1 : -1, model->lastError().text());
+
+	return ok;
 }
 
 void MetaDock::rollbackRecord(void)
 {
 	if (model) model->revertRow(0);
+}
+
+void MetaDock::lockRecord(int id)
+{
+	if (id == sheetID) lockWidgets(!(locked = true));
+}
+
+void MetaDock::unlockRecord(int id)
+{
+	if (id == sheetID) lockWidgets(!(locked = false));
 }

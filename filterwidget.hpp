@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
- *  {description}                                                          *
- *  Copyright (C) 2020  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
+ *  Firebird database editor                                               *
+ *  Copyright (C) 2016  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -18,63 +18,76 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef ITEMSDOCK_HPP
-#define ITEMSDOCK_HPP
+#ifndef FILTERWIDGET_HPP
+#define FILTERWIDGET_HPP
 
-#include <QtWidgets>
-#include <QtCore>
-#include <QtSql>
+#include <QStandardItemModel>
+#include <QDoubleSpinBox>
+#include <QDateTimeEdit>
+#include <QListWidget>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QWidget>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class ItemsDock; }
-QT_END_NAMESPACE
+#include "databasedriver.hpp"
 
-class ItemsDock : public QDockWidget
+namespace Ui
+{
+	class FilterWidget;
+}
+
+class FilterWidget : public QWidget
 {
 
 		Q_OBJECT
 
 	private:
 
-		Ui::ItemsDock *ui;
+		QVariant::Type Datatype;
 
-		QSqlTableModel* model = nullptr;
-		QSqlDatabase& database;
+		QWidget* Simple = nullptr;
+		QWidget* Widget = nullptr;
+		Ui::FilterWidget* ui;
 
-		QString limiter;
-
-		int userID = 0;
-		int sheetID = 0;
+		int Index = 0;
 
 	public:
 
-		explicit ItemsDock(QSqlDatabase& db, QWidget *parent = nullptr);
-		virtual ~ItemsDock(void) override;
+		explicit FilterWidget(int ID, const DatabaseDriver::FIELD& Field, QWidget* Parent = nullptr);
+		virtual ~FilterWidget(void) override;
 
-		void setFilter(const QString& filter);
-		QString getFilter(void) const;
+		QPair<QString, QVariant> getBinding(void) const;
+
+		QString getCondition(void) const;
+		QVariant getValue(void) const;
+		QString getLabel(void) const;
+
+		int getIndex(void) const;
 
 	private slots:
 
-		void selectionChanged(const QModelIndex& item);
+		void operatorChanged(const QString& Name);
+
+		void editFinished(void);
+		void resetIndex(void);
 
 	public slots:
 
-		void setupDatabase(int user);
-		void clearDatabase(void);
+		void setParameters(int ID, const DatabaseDriver::FIELD& Field);
+		void setValue(const QVariant& Value);
+		void setChecked(bool Checked);
 
-		void refreshList(void);
+		bool isChecked(void) const;
 
-		void selectItem(int id);
-
-		void selectNext(void);
-		void selectPrevious(void);
+		void reset(void);
 
 	signals:
 
-		void onItemSelected(int);
-		void onImageSelected(const QString&);
+		void onValueUpdate(const QString&, const QVariant&);
+
+		void onStatusChanged(bool);
 
 };
 
-#endif // ITEMSDOCK_HPP
+#endif // FILTERWIDGET_HPP

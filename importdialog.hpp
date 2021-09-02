@@ -18,63 +18,53 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef ITEMSDOCK_HPP
-#define ITEMSDOCK_HPP
+#ifndef IMPORTDIALOG_HPP
+#define IMPORTDIALOG_HPP
 
 #include <QtWidgets>
 #include <QtCore>
 #include <QtSql>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class ItemsDock; }
+namespace Ui {	class ImportDialog; }
 QT_END_NAMESPACE
 
-class ItemsDock : public QDockWidget
+class ImportDialog : public QDialog
 {
 
 		Q_OBJECT
 
 	private:
 
-		Ui::ItemsDock *ui;
+		Ui::ImportDialog *ui;
 
-		QSqlTableModel* model = nullptr;
-		QSqlDatabase& database;
-
-		QString limiter;
-
-		int userID = 0;
-		int sheetID = 0;
+		QList<QLabel*> labels;
+		QList<QSpinBox*> spins;
 
 	public:
 
-		explicit ItemsDock(QSqlDatabase& db, QWidget *parent = nullptr);
-		virtual ~ItemsDock(void) override;
-
-		void setFilter(const QString& filter);
-		QString getFilter(void) const;
-
-	private slots:
-
-		void selectionChanged(const QModelIndex& item);
+		explicit ImportDialog(QWidget *parent = nullptr);
+		virtual ~ImportDialog(void) override;
 
 	public slots:
 
-		void setupDatabase(int user);
-		void clearDatabase(void);
+		void setFields(const QStringList& rows);
+		QVariantMap getFields(void) const;
 
-		void refreshList(void);
+		virtual void accept(void) override;
 
-		void selectItem(int id);
+	private slots:
 
-		void selectNext(void);
-		void selectPrevious(void);
+		void pathClicked(void);
+		void logsClicked(void);
 
 	signals:
 
-		void onItemSelected(int);
-		void onImageSelected(const QString&);
+		void onAccepted(const QString&,
+					 const QString&,
+					 const QVariantMap&,
+					 bool = false);
 
 };
 
-#endif // ITEMSDOCK_HPP
+#endif // IMPORTDIALOG_HPP

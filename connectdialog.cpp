@@ -97,10 +97,8 @@ void ConnectDialog::refused(const QString& Error)
 	QMessageBox::critical(this, tr("Error"), Error); setEnabled(true);
 }
 
-void ConnectDialog::connected(bool OK)
+void ConnectDialog::connected(void)
 {
-	if (!OK) return;
-
 	QSettings Settings("K-OSP", "Indexer");
 
 	Settings.beginGroup("Database");

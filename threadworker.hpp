@@ -18,63 +18,48 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef ITEMSDOCK_HPP
-#define ITEMSDOCK_HPP
+#ifndef THREADWORKER_HPP
+#define THREADWORKER_HPP
 
-#include <QtWidgets>
 #include <QtCore>
 #include <QtSql>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class ItemsDock; }
-QT_END_NAMESPACE
-
-class ItemsDock : public QDockWidget
+class ThreadWorker : public QObject
 {
 
 		Q_OBJECT
 
 	private:
 
-		Ui::ItemsDock *ui;
-
-		QSqlTableModel* model = nullptr;
 		QSqlDatabase& database;
-
-		QString limiter;
-
-		int userID = 0;
-		int sheetID = 0;
 
 	public:
 
-		explicit ItemsDock(QSqlDatabase& db, QWidget *parent = nullptr);
-		virtual ~ItemsDock(void) override;
-
-		void setFilter(const QString& filter);
-		QString getFilter(void) const;
-
-	private slots:
-
-		void selectionChanged(const QModelIndex& item);
+		explicit ThreadWorker(QSqlDatabase& db, QObject *parent = nullptr);
+		virtual ~ThreadWorker(void) override;
 
 	public slots:
 
-		void setupDatabase(int user);
-		void clearDatabase(void);
+		void exportData(const QString& path,
+					 const QVariantList& users,
+					 int status,
+					 int validation,
+					 int lock,
+					 const QDateTime& from,
+					 const QDateTime& to);
 
-		void refreshList(void);
-
-		void selectItem(int id);
-
-		void selectNext(void);
-		void selectPrevious(void);
+		void importData(const QString& path,
+					 const QString& logs,
+					 QVariantMap map,
+					 bool header);
 
 	signals:
 
-		void onItemSelected(int);
-		void onImageSelected(const QString&);
+		void onSetup(int, int);
+		void onProgress(int);
+
+		void onFinish(const QString&, int = 0);
 
 };
 
-#endif // ITEMSDOCK_HPP
+#endif // THREADWORKER_HPP

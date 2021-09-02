@@ -18,11 +18,11 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "imagewidget.hpp"
-#include "ui_imagewidget.h"
+#include "imagedock.hpp"
+#include "ui_imagedock.h"
 
-ImageWidget::ImageWidget(QWidget *parent) :
-	QWidget(parent),
+ImageDock::ImageDock(QWidget *parent) :
+	QDockWidget(parent),
 	ui(new Ui::ImageWidget)
 {
 	ui->setupUi(this);
@@ -42,24 +42,24 @@ ImageWidget::ImageWidget(QWidget *parent) :
 	oldSelect->deleteLater();
 
 	connect(ui->listView->selectionModel(), &QItemSelectionModel::currentRowChanged,
-		   this, &ImageWidget::imageIndexChanged);
+		   this, &ImageDock::imageIndexChanged);
 
 	connect(ui->listView->selectionModel(), &QItemSelectionModel::selectionChanged,
-		   this, &ImageWidget::selectionRangeChanged);
+		   this, &ImageDock::selectionRangeChanged);
 
 	connect(ui->prev, &QPushButton::clicked,
-		   this, &ImageWidget::prevImage);
+		   this, &ImageDock::prevImage);
 
 	connect(ui->next, &QPushButton::clicked,
-		   this, &ImageWidget::nextImage);
+		   this, &ImageDock::nextImage);
 }
 
-ImageWidget::~ImageWidget(void)
+ImageDock::~ImageDock(void)
 {
 	delete ui;
 }
 
-void ImageWidget::wheelEvent(QWheelEvent* event)
+void ImageDock::wheelEvent(QWheelEvent* event)
 {
 	QWidget::wheelEvent(event);
 
@@ -70,7 +70,7 @@ void ImageWidget::wheelEvent(QWheelEvent* event)
 	}
 }
 
-void ImageWidget::setImage(const QString& path)
+void ImageDock::setImage(const QString& path)
 {
 	while (model->rowCount()) model->removeRow(0);
 
@@ -104,13 +104,13 @@ void ImageWidget::setImage(const QString& path)
 	setIndex(0);
 }
 
-void ImageWidget::setPrefix(const QString& path)
+void ImageDock::setPrefix(const QString& path)
 {
 	if (path.isEmpty()) prefix.clear();
 	else prefix = path + '/';
 }
 
-void ImageWidget::setIndex(int index)
+void ImageDock::setIndex(int index)
 {
 	if (index < 0 || index >= list.size())
 	{
@@ -132,38 +132,38 @@ void ImageWidget::setIndex(int index)
 	}
 }
 
-void ImageWidget::nextImage(void)
+void ImageDock::nextImage(void)
 {
 	if (currentIndex + 1 >= list.size()) setIndex(0);
 	else setIndex(currentIndex + 1);
 }
 
-void ImageWidget::prevImage(void)
+void ImageDock::prevImage(void)
 {
 	if (currentIndex - 1 < 0) setIndex(list.size() - 1);
 	else setIndex(currentIndex - 1);
 }
 
-void ImageWidget::zoomIn(void)
+void ImageDock::zoomIn(void)
 {
 	ui->label->setPixmap(currentImage.transformed(QTransform().rotate(rotation))
 					 .scaledToHeight(int((scale += 0.1) * currentImage.height())));
 }
 
-void ImageWidget::zoomOut(void)
+void ImageDock::zoomOut(void)
 {
 	ui->label->setPixmap(currentImage.transformed(QTransform().rotate(rotation))
 					 .scaledToHeight(int((scale -= 0.1) * currentImage.height())));
 }
 
-void ImageWidget::zoomOrg(void)
+void ImageDock::zoomOrg(void)
 {
 	ui->label->setPixmap(currentImage.transformed(QTransform().rotate(rotation)));
 
 	scale = 1.0;
 }
 
-void ImageWidget::zoomFit(void)
+void ImageDock::zoomFit(void)
 {
 	auto Img = currentImage.transformed(QTransform().rotate(rotation))
 			 .scaled(ui->scrollArea->size(), Qt::KeepAspectRatio);
@@ -173,7 +173,7 @@ void ImageWidget::zoomFit(void)
 	ui->label->setPixmap(Img);
 }
 
-void ImageWidget::rotateLeft(void)
+void ImageDock::rotateLeft(void)
 {
 	if ((rotation -= 90) <= -360) rotation = 0;
 
@@ -181,7 +181,7 @@ void ImageWidget::rotateLeft(void)
 					 .scaledToHeight(int(scale * currentImage.height())));
 }
 
-void ImageWidget::rotateRight(void)
+void ImageDock::rotateRight(void)
 {
 	if ((rotation += 90) >= 360) rotation = 0;
 
@@ -189,7 +189,7 @@ void ImageWidget::rotateRight(void)
 					 .scaledToHeight(int(scale * currentImage.height())));
 }
 
-void ImageWidget::clear(void)
+void ImageDock::clear(void)
 {
 	while (model->rowCount()) model->removeRow(0);
 
@@ -203,13 +203,13 @@ void ImageWidget::clear(void)
 	currentIndex = 0;
 }
 
-void ImageWidget::imageIndexChanged(const QModelIndex& index)
+void ImageDock::imageIndexChanged(const QModelIndex& index)
 {
 	if (!index.isValid()) setIndex(-1);
 	else setIndex(index.row());
 }
 
-void ImageWidget::selectionRangeChanged(const QItemSelection& s, const QItemSelection& d)
+void ImageDock::selectionRangeChanged(const QItemSelection& s, const QItemSelection& d)
 {
 	if (s.isEmpty() && !d.isEmpty())
 		ui->listView->selectionModel()->select(d, QItemSelectionModel::ClearAndSelect);

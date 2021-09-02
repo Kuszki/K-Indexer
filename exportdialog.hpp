@@ -18,63 +18,50 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef ITEMSDOCK_HPP
-#define ITEMSDOCK_HPP
+#ifndef EXPORTDIALOG_HPP
+#define EXPORTDIALOG_HPP
 
 #include <QtWidgets>
 #include <QtCore>
-#include <QtSql>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class ItemsDock; }
+namespace Ui {	class ExportDialog; }
 QT_END_NAMESPACE
 
-class ItemsDock : public QDockWidget
+class ExportDialog : public QDialog
 {
 
 		Q_OBJECT
 
 	private:
 
-		Ui::ItemsDock *ui;
-
-		QSqlTableModel* model = nullptr;
-		QSqlDatabase& database;
-
-		QString limiter;
-
-		int userID = 0;
-		int sheetID = 0;
+		Ui::ExportDialog *ui;
 
 	public:
 
-		explicit ItemsDock(QSqlDatabase& db, QWidget *parent = nullptr);
-		virtual ~ItemsDock(void) override;
-
-		void setFilter(const QString& filter);
-		QString getFilter(void) const;
-
-	private slots:
-
-		void selectionChanged(const QModelIndex& item);
+		explicit ExportDialog(QWidget *parent = nullptr);
+		virtual ~ExportDialog(void) override;
 
 	public slots:
 
-		void setupDatabase(int user);
-		void clearDatabase(void);
+		void setUsers(const QVariantMap& map);
+		QVariantList getUsers(void) const;
 
-		void refreshList(void);
+		virtual void accept(void) override;
 
-		void selectItem(int id);
+	private slots:
 
-		void selectNext(void);
-		void selectPrevious(void);
+		void openClicked(void);
+		void dataChanged(void);
 
 	signals:
 
-		void onItemSelected(int);
-		void onImageSelected(const QString&);
+		void onAccepted(const QString&,
+					 const QVariantList&,
+					 int, int, int,
+					 const QDateTime&,
+					 const QDateTime&);
 
 };
 
-#endif // ITEMSDOCK_HPP
+#endif // EXPORTDIALOG_HPP

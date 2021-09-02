@@ -29,14 +29,31 @@ MainWindow::MainWindow(QWidget *parent)
 
 	ui->setupUi(this);
 
+	ui->centralwidget->deleteLater();
+
 	ui->actionConnect->setEnabled(true);
 	ui->actionDisconnect->setEnabled(false);
 	ui->actionImport->setEnabled(false);
+	ui->actionExport->setEnabled(false);
 	ui->actionFind->setEnabled(false);
+	ui->actionNext->setEnabled(false);
+	ui->actionPrevious->setEnabled(false);
+	ui->actionLocknext->setEnabled(false);
+	ui->actionSave->setEnabled(false);
+	ui->actionLock->setEnabled(false);
+	ui->actionUnlock->setEnabled(false);
+	ui->actionCommit->setEnabled(false);
+	ui->actionUndochange->setEnabled(false);
+	ui->actionQuerydialog->setEnabled(false);
 
+	wthread = new QThread(this);
+	wthread->start();
+
+	image = new ImageDock(this);
 	items = new ItemsDock(database, this);
 	meta = new MetaDock(database, this);
 
+	addDockWidget(Qt::TopDockWidgetArea, image);
 	addDockWidget(Qt::LeftDockWidgetArea, items);
 	addDockWidget(Qt::RightDockWidgetArea, meta);
 
@@ -53,37 +70,38 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->actionLockdocks->setChecked(Settings.value("lock", false).toBool());
 	Settings.endGroup();
 
+	Settings.beginGroup("Settings");
+	ui->actionMessages->setChecked(Settings.value("messages", true).toBool());
+	Settings.endGroup();
+
 	if (isMaximized()) setGeometry(QApplication::desktop()->availableGeometry(this));
-
-	connect(ui->actionPageup, &QAction::triggered,
-		   ui->image, &ImageWidget::nextImage);
-
-	connect(ui->actionPagedown, &QAction::triggered,
-		   ui->image, &ImageWidget::prevImage);
-
-	connect(ui->actionZoomin, &QAction::triggered,
-		   ui->image, &ImageWidget::zoomIn);
-
-	connect(ui->actionZoomout, &QAction::triggered,
-		   ui->image, &ImageWidget::zoomOut);
-
-	connect(ui->actionZoomorg, &QAction::triggered,
-		   ui->image, &ImageWidget::zoomOrg);
-
-	connect(ui->actionZoomfit, &QAction::triggered,
-		   ui->image, &ImageWidget::zoomFit);
-
-	connect(ui->actionRotateleft, &QAction::triggered,
-		   ui->image, &ImageWidget::rotateLeft);
-
-	connect(ui->actionRotateright, &QAction::triggered,
-		   ui->image, &ImageWidget::rotateRight);
 
 	connect(ui->actionConnect, &QAction::triggered,
 		   this, &MainWindow::connectActionClicked);
 
 	connect(ui->actionDisconnect, &QAction::triggered,
 		   this, &MainWindow::disconnectActionClicked);
+
+	connect(ui->actionQuerydialog, &QAction::triggered,
+		   this, &MainWindow::queryActionClicked);
+
+	connect(ui->actionLock, &QAction::triggered,
+		   this, &MainWindow::lockActionClicked);
+
+	connect(ui->actionUnlock, &QAction::triggered,
+		   this, &MainWindow::unlockActionClicked);
+
+	connect(ui->actionLocknext, &QAction::triggered,
+		   this, &MainWindow::nextjobActionClicked);
+
+	connect(ui->actionCommit, &QAction::triggered,
+		   this, &MainWindow::commitActionClicked);
+
+	connect(ui->actionExport, &QAction::triggered,
+		   this, &MainWindow::exportActionClicked);
+
+	connect(ui->actionImport, &QAction::triggered,
+		   this, &MainWindow::importActionClicked);
 
 	connect(ui->actionAllowclose, &QAction::toggled,
 		   this, &MainWindow::dockOptionsChanged);
@@ -97,11 +115,41 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->actionLockdocks, &QAction::toggled,
 		   this, &MainWindow::dockOptionsChanged);
 
+	connect(ui->actionPageup, &QAction::triggered,
+		   image, &ImageDock::nextImage);
+
+	connect(ui->actionPagedown, &QAction::triggered,
+		   image, &ImageDock::prevImage);
+
+	connect(ui->actionZoomin, &QAction::triggered,
+		   image, &ImageDock::zoomIn);
+
+	connect(ui->actionZoomout, &QAction::triggered,
+		   image, &ImageDock::zoomOut);
+
+	connect(ui->actionZoomorg, &QAction::triggered,
+		   image, &ImageDock::zoomOrg);
+
+	connect(ui->actionZoomfit, &QAction::triggered,
+		   image, &ImageDock::zoomFit);
+
+	connect(ui->actionRotateleft, &QAction::triggered,
+		   image, &ImageDock::rotateLeft);
+
+	connect(ui->actionRotateright, &QAction::triggered,
+		   image, &ImageDock::rotateRight);
+
 	connect(ui->actionSave, &QAction::triggered,
 		   meta, &MetaDock::saveRecord);
 
 	connect(ui->actionUndochange, &QAction::triggered,
 		   meta, &MetaDock::rollbackRecord);
+
+	connect(ui->actionNext, &QAction::triggered,
+		   items, &ItemsDock::selectNext);
+
+	connect(ui->actionPrevious, &QAction::triggered,
+		   items, &ItemsDock::selectPrevious);
 
 	connect(this, &MainWindow::onDatabaseLogin,
 		   items, &ItemsDock::setupDatabase);
@@ -109,14 +157,32 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(this, &MainWindow::onDatabaseLogout,
 		   items, &ItemsDock::clearDatabase);
 
+	connect(this, &MainWindow::onDocumentLock,
+		   items, &ItemsDock::refreshList);
+
+	connect(this, &MainWindow::onDocumentUnlock,
+		   items, &ItemsDock::refreshList);
+
 	connect(this, &MainWindow::onDatabaseLogin,
 		   meta, &MetaDock::setupDatabase);
 
 	connect(this, &MainWindow::onDatabaseLogout,
 		   meta, &MetaDock::clearDatabase);
 
+	connect(this, &MainWindow::onDocumentLock,
+		   meta, &MetaDock::lockRecord);
+
+	connect(this, &MainWindow::onDocumentUnlock,
+		   meta, &MetaDock::unlockRecord);
+
+	connect(this, &MainWindow::onImagepathUpdate,
+		   image, &ImageDock::setPrefix);
+
+	connect(this, &MainWindow::onDatabaseLogout,
+		   image, &ImageDock::clear);
+
 	connect(items, &ItemsDock::onImageSelected,
-		   ui->image, &ImageWidget::setImage);
+		   image, &ImageDock::setImage);
 
 	connect(items, &ItemsDock::onItemSelected,
 		   meta, &MetaDock::setupRecord);
@@ -146,23 +212,26 @@ MainWindow::~MainWindow(void)
 	Settings.setValue("lock", ui->actionLockdocks->isChecked());
 	Settings.endGroup();
 
+	Settings.beginGroup("Settings");
+	Settings.setValue("messages", ui->actionMessages->isChecked());
+	Settings.endGroup();
+
+	wthread->exit();
+	wthread->wait();
+
 	delete ui;
 }
 
 void MainWindow::openDatabase(const QString& driver, const QString& server, const QString& name, const QString& user, const QString& pass, const QString& path)
 {
-	static int defaultPort = 0;
-
 	if (database.isOpen()) database.close();
 
 	database = QSqlDatabase::addDatabase(driver);
 	imgPath = path;
-	userID = 0;
+	userID = -1;
 
-	if (!defaultPort) defaultPort = database.port();
-
-	if (!server.contains(':')) database.setPort(defaultPort);
-	else database.setPort(server.section(':', 1).toInt());
+	if (server.contains(':'))
+		database.setPort(server.section(':', 1).toInt());
 
 	database.setHostName(server.section(':', 0, 0));
 	database.setDatabaseName(name);
@@ -186,17 +255,24 @@ void MainWindow::openDatabase(const QString& driver, const QString& server, cons
 		if (query.exec() && query.next()) userID = query.value(0).toInt();
 		else emit onDatabaseError(tr("User authentication error"));
 
-		if (!userID) database.close();
+		if (userID < 0) database.close();
 	}
 
-	ui->actionConnect->setEnabled(!userID);
-	ui->actionDisconnect->setEnabled(userID);
-	ui->actionFind->setEnabled(userID);
-	ui->actionImport->setEnabled(userID);
+	ui->actionConnect->setEnabled(userID == -1);
+	ui->actionDisconnect->setEnabled(userID != -1);
+	ui->actionFind->setEnabled(userID != -1);
+	ui->actionImport->setEnabled(userID != -1);
+	ui->actionExport->setEnabled(userID != -1);
+	ui->actionLocknext->setEnabled(userID != -1);
+	ui->actionNext->setEnabled(userID != -1);
+	ui->actionPrevious->setEnabled(userID != -1);
+	ui->actionQuerydialog->setEnabled(userID != -1);
 
-	ui->image->setPrefix(path);
-
-	emit onDatabaseLogin(userID);
+	if (userID >= 0)
+	{
+		emit onDatabaseLogin(userID);
+		emit onImagepathUpdate(path);
+	}
 }
 
 void MainWindow::connectActionClicked(void)
@@ -212,20 +288,230 @@ void MainWindow::connectActionClicked(void)
 
 void MainWindow::disconnectActionClicked(void)
 {
-	database.close();
-
 	ui->actionConnect->setEnabled(true);
 	ui->actionDisconnect->setEnabled(false);
+	ui->actionImport->setEnabled(false);
+	ui->actionExport->setEnabled(false);
 	ui->actionFind->setEnabled(false);
-
-	ui->image->clear();
+	ui->actionNext->setEnabled(false);
+	ui->actionPrevious->setEnabled(false);
+	ui->actionLocknext->setEnabled(false);
+	ui->actionSave->setEnabled(false);
+	ui->actionLock->setEnabled(false);
+	ui->actionUnlock->setEnabled(false);
+	ui->actionUndochange->setEnabled(false);
+	ui->actionQuerydialog->setEnabled(false);
 
 	emit onDatabaseLogout();
+
+	database.close();
 }
 
 void MainWindow::lockActionClicked(void)
 {
+	const QString title = tr("Unable to lock document");
 
+	QSqlQuery query(database);
+	int code = 0;
+
+	query.prepare("SELECT sheet, user FROM locks WHERE sheet = ?");
+	query.addBindValue(sheetID);
+
+	if (query.exec())
+	{
+		if (query.next())
+		{
+			code = query.value(1).toInt() == userID ? 1 : 2;
+		}
+	}
+	else code = -1;
+
+	switch (code)
+	{
+		case 1:
+			showErrorMessage(tr("Document is already locked"), title);
+		return;
+		case 2:
+			showErrorMessage(tr("Document is locked by another user"), title);
+		return;
+		case -1:
+			showErrorMessage(tr("Unable to execute query"), title);
+		return;
+	}
+
+	query.prepare("SELECT user FROM main WHERE id = ?");
+	query.addBindValue(sheetID);
+
+	if (query.exec())
+	{
+		if (query.next())
+		{
+			code = query.value(0).toInt() == userID ||
+				  query.value(0).toInt() == 0 ||
+				  query.value(0).isNull() ||
+				  userID == 0 ? 0 : 3;
+		}
+	}
+	else code = -1;
+
+	switch (code)
+	{
+		case 3:
+			showErrorMessage(tr("Document is assigned to another user"), title);
+		return;
+		case -1:
+			showErrorMessage(tr("Unable to execute query"), title);
+		return;
+	}
+
+	query.prepare("INSERT INTO locks (sheet, user) VALUES (?, ?)");
+	query.addBindValue(sheetID);
+	query.addBindValue(userID);
+
+	if (query.exec())
+	{
+		ui->statusbar->showMessage(tr("Document locked"));
+
+		emit onDocumentLock(sheetID);
+	}
+	else showErrorMessage(tr("Unable to execute query"), title);
+}
+
+void MainWindow::unlockActionClicked(void)
+{
+	const QString title = tr("Unable to unlock document");
+
+	QSqlQuery query(database);
+	int code = 0;
+
+	query.prepare("SELECT sheet, user FROM locks WHERE sheet = ?");
+	query.addBindValue(sheetID);
+
+	if (query.exec())
+	{
+		if (query.next())
+		{
+			code = query.value(1).toInt() == userID ? 0 : 1;
+		}
+		else code = 2;
+	}
+	else code = -1;
+
+	switch (code)
+	{
+		case 1:
+			showErrorMessage(tr("Document is locked by another user"), title);
+		return;
+		case 2:
+			showErrorMessage(tr("Document is not locked"), title);
+		return;
+		case -1:
+			showErrorMessage(tr("Unable to execute query"), title);
+		return;
+	}
+
+	query.prepare("DELETE FROM locks WHERE sheet = ?");
+	query.addBindValue(sheetID);
+
+	if (query.exec())
+	{
+		ui->statusbar->showMessage(tr("Document unlocked"));
+
+		emit onDocumentUnlock(sheetID);
+	}
+	else showErrorMessage(tr("Unable to execute query"), title);
+}
+
+void MainWindow::nextjobActionClicked(void)
+{
+	QSqlQuery query(database), insert(database);
+
+	query.prepare("SELECT id, path FROM main WHERE "
+			    "id NOT IN (SELECT sheet FROM locks) AND "
+			    "(user IS NULL OR user = 0)");
+
+	insert.prepare("INSERT INTO locks (sheet, user) VALUES (?, ?)");
+
+	if (query.exec()) while (query.next())
+	{
+		insert.addBindValue(query.value(0));
+		insert.addBindValue(userID);
+
+		if (insert.exec())
+		{
+			const QString path = query.value(1).toString();
+			sheetID = query.value(0).toInt();
+
+			insert.finish();
+			insert.clear();
+
+			query.finish();
+			query.clear();
+
+			items->refreshList();
+			items->selectItem(sheetID);
+			meta->setupRecord(sheetID);
+			image->setImage(path);
+
+			ui->statusbar->showMessage(tr("Document locked"));
+
+			return;
+		}
+	}
+
+	showErrorMessage(tr("Unable to lock next document"), tr("Error"));
+}
+
+void MainWindow::commitActionClicked(void)
+{
+	if (meta->saveRecord()) unlockActionClicked();
+}
+
+void MainWindow::exportActionClicked(void)
+{
+	ExportDialog* dialog = new ExportDialog(this); dialog->open();
+
+	QSqlQuery query(database);
+	QVariantMap map;
+
+	query.prepare("SELECT id, name FROM users WHERE id = ? OR 0 = ?");
+	query.addBindValue(userID);
+	query.addBindValue(userID);
+
+	if (query.exec()) while (query.next())
+	{
+		map.insert(query.value(1).toString(), query.value(0));
+	}
+
+	if (!map.isEmpty()) dialog->setUsers(map);
+
+	connect(dialog, &ExportDialog::finished, dialog, &ExportDialog::deleteLater);
+	connect(dialog, &ExportDialog::onAccepted, this, &MainWindow::performExport);
+}
+
+void MainWindow::importActionClicked(void)
+{
+	ImportDialog* dialog = new ImportDialog(this); dialog->open();
+
+	const QSqlRecord record = database.record("main");
+	QStringList list;
+
+	for (int i = 1; i < record.count(); ++i)
+	{
+		list.append(record.fieldName(i));
+	}
+
+	if (!list.isEmpty()) dialog->setFields(list);
+
+	connect(dialog, &ImportDialog::finished, dialog, &ImportDialog::deleteLater);
+	connect(dialog, &ImportDialog::onAccepted, this, &MainWindow::performImport);
+}
+
+void MainWindow::queryActionClicked(void)
+{
+	SqleditorDialog* dialog = new SqleditorDialog(database, this); dialog->show();
+
+	connect(dialog, &SqleditorDialog::finished, dialog, &SqleditorDialog::deleteLater);
 }
 
 void MainWindow::dockOptionsChanged(void)
@@ -262,12 +548,123 @@ void MainWindow::dockOptionsChanged(void)
 
 void MainWindow::recordIndexSelected(int index)
 {
+	ui->actionSave->setEnabled(index);
+	ui->actionLock->setEnabled(index);
+	ui->actionUnlock->setEnabled(index);
+	ui->actionCommit->setEnabled(index);
+	ui->actionUndochange->setEnabled(index);
+
 	sheetID = index;
 }
 
-void MainWindow::metaDataSaved(int sheet, bool ok, const QString& msg)
+void MainWindow::metaDataSaved(int ok, const QString& msg)
 {
-	if (ok) ui->statusbar->showMessage(tr("Record saved"));
-	else ui->statusbar->showMessage(tr("Error: %1").arg(msg));
+	if (ok == 0) ui->statusbar->showMessage(tr("No changes to save"));
+	else if (ok == 1) ui->statusbar->showMessage(tr("Data saved"));
+	else showErrorMessage(msg, tr("Unable to save data"));
+
+	if (ok == 1) items->refreshList();
+}
+
+void MainWindow::showInfoMessage(const QString& msg, const QString& title)
+{
+	if (!ui->actionMessages->isChecked()) ui->statusbar->showMessage(msg);
+	else QMessageBox::information(this, title, msg, QMessageBox::Ok);
+}
+
+void MainWindow::showErrorMessage(const QString& msg, const QString& title)
+{
+	if (!ui->actionMessages->isChecked()) ui->statusbar->showMessage(msg);
+	else QMessageBox::critical(this, title, msg, QMessageBox::Ok);
+}
+
+void MainWindow::showWarningMessage(const QString& msg, const QString& title)
+{
+	if (!ui->actionMessages->isChecked()) ui->statusbar->showMessage(msg);
+	else QMessageBox::warning(this, title, msg, QMessageBox::Ok);
+}
+
+void MainWindow::performExport(const QString& path, const QVariantList& users, int status, int validation, int lock, const QDateTime& from, const QDateTime& to)
+{
+	ThreadWorker* worker = new ThreadWorker(database);
+	worker->moveToThread(wthread);
+
+	QProgressBar* progress = new QProgressBar();
+	progress->setRange(0, 0);
+
+	ui->statusbar->addPermanentWidget(progress);
+	this->setEnabled(false);
+
+	connect(worker, &ThreadWorker::onFinish, this, &MainWindow::finishExport);
+
+	connect(worker, &ThreadWorker::onFinish, worker, &ThreadWorker::deleteLater);
+
+	connect(worker, &ThreadWorker::onFinish, progress, &QProgressBar::deleteLater);
+	connect(worker, &ThreadWorker::onSetup, progress, &QProgressBar::setRange);
+	connect(worker, &ThreadWorker::onProgress, progress, &QProgressBar::setValue);
+
+	connect(this, &MainWindow::onExportRequest, worker, &ThreadWorker::exportData);
+
+	emit onExportRequest(path, users, status, validation, lock, from, to);
+}
+
+void MainWindow::performImport(const QString& path, const QString& logs, const QVariantMap& map, bool header)
+{
+	ThreadWorker* worker = new ThreadWorker(database);
+	worker->moveToThread(wthread);
+
+	QProgressBar* progress = new QProgressBar();
+	progress->setRange(0, 0);
+
+	ui->statusbar->addPermanentWidget(progress);
+	this->setEnabled(false);
+
+	connect(worker, &ThreadWorker::onFinish, this, &MainWindow::finishImport);
+
+	connect(worker, &ThreadWorker::onFinish, items, &ItemsDock::refreshList);
+
+	connect(worker, &ThreadWorker::onFinish, worker, &ThreadWorker::deleteLater);
+
+	connect(worker, &ThreadWorker::onFinish, progress, &QProgressBar::deleteLater);
+	connect(worker, &ThreadWorker::onSetup, progress, &QProgressBar::setRange);
+	connect(worker, &ThreadWorker::onProgress, progress, &QProgressBar::setValue);
+
+	connect(this, &MainWindow::onImportRequest, worker, &ThreadWorker::importData);
+
+	emit onImportRequest(path, logs, map, header);
+}
+
+void MainWindow::finishExport(const QString& msg, int code)
+{
+	switch (code)
+	{
+		case 1:
+			showErrorMessage(msg, tr("Export error"));
+		break;
+		case 2:
+			showWarningMessage(msg, tr("Export finished"));
+		break;
+		default:
+			showInfoMessage(msg, tr("Export finished"));
+	}
+
+	setEnabled(true);
+}
+
+void MainWindow::finishImport(const QString& msg, int code)
+{
+	switch (code)
+	{
+		case 1:
+			showErrorMessage(msg, tr("Import error"));
+		break;
+		case 2:
+			showWarningMessage(msg, tr("Import finished"));
+		break;
+		default:
+			showInfoMessage(msg, tr("Import finished"));
+	}
+
+	setEnabled(true);
 }
 

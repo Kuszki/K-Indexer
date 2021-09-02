@@ -44,6 +44,8 @@ class MetaDock : public QDockWidget
 		QDataWidgetMapper* mapper = nullptr;
 		QSqlDatabase& database;
 
+		QVariantList values;
+
 		QList<QLabel*> labels;
 		QList<QWidget*> widgets;
 		QList<int> indexes;
@@ -51,10 +53,14 @@ class MetaDock : public QDockWidget
 		int sheetID = 0;
 		int userID = 0;
 
+		bool locked = true;
+
 	public:
 
 		explicit MetaDock(QSqlDatabase& db, QWidget *parent = nullptr);
 		virtual ~MetaDock(void) override;
+
+		bool isChanged(void) const;
 
 	private slots:
 
@@ -68,13 +74,15 @@ class MetaDock : public QDockWidget
 
 		void setupRecord(int id);
 
-		void saveRecord(void);
+		bool saveRecord(void);
 		void rollbackRecord(void);
+
+		void lockRecord(int id);
+		void unlockRecord(int id);
 
 	signals:
 
-		void onRecordSave(int, bool,
-					   const QString&);
+		void onRecordSave(int, const QString& = QString());
 
 };
 

@@ -18,63 +18,57 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef ITEMSDOCK_HPP
-#define ITEMSDOCK_HPP
+#ifndef SQLEDITORDIALOG_HPP
+#define SQLEDITORDIALOG_HPP
 
 #include <QtWidgets>
 #include <QtCore>
 #include <QtSql>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class ItemsDock; }
+namespace Ui {	class SqleditorDialog; }
 QT_END_NAMESPACE
 
-class ItemsDock : public QDockWidget
+class SqleditorDialog : public QDialog
 {
 
 		Q_OBJECT
 
 	private:
 
-		Ui::ItemsDock *ui;
+		Ui::SqleditorDialog *ui;
+		QSqlDatabase& db;
 
-		QSqlTableModel* model = nullptr;
-		QSqlDatabase& database;
+		QStringListModel* list;
+		QSqlQueryModel* res;
+		QSqlTableModel* tab;
 
-		QString limiter;
+		bool trans = false;
 
-		int userID = 0;
-		int sheetID = 0;
+	protected:
+
+		void switchModel(QAbstractItemModel* model);
 
 	public:
 
-		explicit ItemsDock(QSqlDatabase& db, QWidget *parent = nullptr);
-		virtual ~ItemsDock(void) override;
-
-		void setFilter(const QString& filter);
-		QString getFilter(void) const;
+		explicit SqleditorDialog(QSqlDatabase& database,
+							QWidget *parent = nullptr);
+		virtual ~SqleditorDialog(void) override;
 
 	private slots:
 
-		void selectionChanged(const QModelIndex& item);
+		void executeActionClicked(void);
+		void commitActionClicked(void);
+		void rollbackButtonClicked(void);
+		void appendButtonClicked(void);
+		void deleteButtonClicked(void);
 
-	public slots:
+		void tableItemSelected(const QModelIndex& index);
+		void recordItemSelected(void);
 
-		void setupDatabase(int user);
-		void clearDatabase(void);
-
-		void refreshList(void);
-
-		void selectItem(int id);
-
-		void selectNext(void);
-		void selectPrevious(void);
-
-	signals:
-
-		void onItemSelected(int);
-		void onImageSelected(const QString&);
+		void tableItemClicked(const QModelIndex& index);
+		void fieldItemClicked(const QModelIndex& index);
 
 };
 
-#endif // ITEMSDOCK_HPP
+#endif // SQLEDITORDIALOG_HPP
