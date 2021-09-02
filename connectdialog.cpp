@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
- *  Firebird database editor                                               *
- *  Copyright (C) 2016  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
+ *  K-Indexer : index documents in SQL database                            *
+ *  Copyright (C) 2020  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -22,7 +22,8 @@
 #include "ui_connectdialog.h"
 
 ConnectDialog::ConnectDialog(QWidget *Parent)
-: QDialog(Parent), ui(new Ui::ConnectDialog)
+	: QDialog(Parent)
+	, ui(new Ui::ConnectDialog)
 {
 	ui->setupUi(this);
 

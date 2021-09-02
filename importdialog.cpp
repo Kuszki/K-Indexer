@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
- *  {description}                                                          *
+ *  K-Indexer : index documents in SQL database                            *
  *  Copyright (C) 2020  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
@@ -21,9 +21,9 @@
 #include "importdialog.hpp"
 #include "ui_importdialog.h"
 
-ImportDialog::ImportDialog(QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::ImportDialog)
+ImportDialog::ImportDialog(QWidget *parent)
+	: QDialog(parent)
+	, ui(new Ui::ImportDialog)
 {
 	ui->setupUi(this);
 

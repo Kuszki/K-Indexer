@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
- *  {description}                                                          *
+ *  K-Indexer : index documents in SQL database                            *
  *  Copyright (C) 2020  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
@@ -21,23 +21,10 @@
 #include "sqleditordialog.hpp"
 #include "ui_sqleditordialog.h"
 
-void SqleditorDialog::switchModel(QAbstractItemModel* model)
-{
-	if (ui->tableView->model() == model) return;
-
-	ui->tableView->selectionModel()->deleteLater();
-	ui->tableView->setModel(model);
-
-	ui->delButton->setEnabled(false);
-	ui->addButton->setEnabled(model == tab);
-
-	connect(ui->tableView->selectionModel(),
-		   &QItemSelectionModel::selectionChanged,
-		   this, &SqleditorDialog::recordItemSelected);
-}
-
 SqleditorDialog::SqleditorDialog(QSqlDatabase& database, QWidget *parent)
-: QDialog(parent), ui(new Ui::SqleditorDialog), db(database)
+	: QDialog(parent)
+	, ui(new Ui::SqleditorDialog)
+	, db(database)
 {
 	ui->setupUi(this); new SqlHighlighter(ui->queryEdit->document());
 
@@ -116,6 +103,21 @@ SqleditorDialog::SqleditorDialog(QSqlDatabase& database, QWidget *parent)
 SqleditorDialog::~SqleditorDialog(void)
 {
 	delete ui;
+}
+
+void SqleditorDialog::switchModel(QAbstractItemModel* model)
+{
+	if (ui->tableView->model() == model) return;
+
+	ui->tableView->selectionModel()->deleteLater();
+	ui->tableView->setModel(model);
+
+	ui->delButton->setEnabled(false);
+	ui->addButton->setEnabled(model == tab);
+
+	connect(ui->tableView->selectionModel(),
+		   &QItemSelectionModel::selectionChanged,
+		   this, &SqleditorDialog::recordItemSelected);
 }
 
 void SqleditorDialog::executeActionClicked(void)

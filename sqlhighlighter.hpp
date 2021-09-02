@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
- *  KLScript code highlighter for KLLibs                                   *
- *  Copyright (C) 2015  Łukasz "Kuszki" Dróżdż  l.drozdz@o2.pl             *
+ *  K-Indexer : index documents in SQL database                            *
+ *  Copyright (C) 2020  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -24,55 +24,30 @@
 #include <QtWidgets>
 #include <QtCore>
 
-/*! \file		klhighlighter.hpp
- *  \brief	Deklaracje dla klasy SqlHighlighter i jej składników.
- *
- */
-
-/*! \file		klhighlighter.cpp
- *  \brief	Implementacja klasy SqlHighlighter i jej składników.
- *
- */
-
-/*! \brief	Mechanizm wyróżniający elementy składni.
- *
- * Implementacja subklasy `QSyntaxHighlighter` umożliwiająca wyróżnianie składni `KLScript` w dokumentach Qt.
- *
- */
 class SqlHighlighter : public QSyntaxHighlighter
 {
 
 		Q_OBJECT
 
-	/*! \brief		Wyliczenie styli wyróżnienia.
-	 *
-	 * Pozwala ograniczyć pule styli do wybranych pozycji.
-	 *
-	 */
 	public: enum STYLE
 	{
-		NUMBERS,		//!< Liczby.
-		KEYWORDS,		//!< Słowa kluczowe.
-		OPERATORS,	//!< Operatory matematyczne.
-		STRINGS,		//!< Słowa kluczowe kończące program.
-		MATHS,		//!< Funkcje matematyczne.
-		COMMENTS		//!< Komentarze.
+		NUMBERS,
+		KEYWORDS,
+		OPERATORS,
+		STRINGS,
+		MATHS,
+		COMMENTS
 	};
 
 	protected:
 
-		/*! \brief		Reprezentacja wyróżnienia.
-		 *
-		 * Definiuje zasady wyróżnienia i jego styl.
-		 *
-		 */
 		struct SqlHighlighterRule
 		{
-			QTextCharFormat Format;	//!< Styl tekstu.
-			QRegExp Expresion;		//!< Wyrażenie reguralne.
+			QTextCharFormat Format;
+			QRegExp Expresion;
 		};
 
-		QMap<STYLE, SqlHighlighterRule> Rules;	//!< Kontener na wyróżnienia.
+		QMap<STYLE, SqlHighlighterRule> Rules;
 
 		virtual void highlightBlock(const QString& Text) override;
 
@@ -82,37 +57,11 @@ class SqlHighlighter : public QSyntaxHighlighter
 		static const QStringList SqlOperators;
 		static const QStringList SqlBuiltin;
 
-		/*! \brief		Konstruktor domyślny.
-		 *  \param [in]	Parent Dokument roboczy.
-		 *
-		 * Inicjuje pole rodzica i tworzy wrzystkie domyślne reguły wyróżnień.
-		 *
-		 */
-		SqlHighlighter(QTextDocument* Parent);
-
-		/*! \brief		Destruktor.
-		 *
-		 * Zwalnia wszystkie użyte zasoby.
-		 *
-		 */
+		explicit SqlHighlighter(QTextDocument* Parent);
 		virtual ~SqlHighlighter(void) override;
 
-		/*! \brief		Ustala styl.
-		 *  \param [in]	Style	Indeks stylu.
-		 *  \param [in]	Format	Format stylu.
-		 *
-		 * Ustala nowy styl dla wybranego fragmentu kodu.
-		 *
-		 */
 		void SetFormat(STYLE Style, const QTextCharFormat& Format);
 
-		/*! \brief		Pobiera styl.
-		 *  \param [in]	Style Indeks stylu.
-		 *  \return		Styl wybranego fragmentu.
-		 *
-		 * Pobiera styl wybranego fragmentu kodu.
-		 *
-		 */
 		QTextCharFormat GetFormat(STYLE Style) const;
 
 		static QStandardItemModel* getSqlHelperModel(QObject* Parent,

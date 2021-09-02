@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
- *  {description}                                                          *
+ *  K-Indexer : index documents in SQL database                            *
  *  Copyright (C) 2020  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
@@ -23,10 +23,10 @@
 
 const QString MetaDock::wrongstyle = "text-decoration: underline wavy red;";
 
-MetaDock::MetaDock(QSqlDatabase& db, QWidget *parent) :
-	QDockWidget(parent),
-	ui(new Ui::MetaDock),
-	database(db)
+MetaDock::MetaDock(QSqlDatabase& db, QWidget *parent)
+	: QDockWidget(parent)
+	, ui(new Ui::MetaDock)
+	, database(db)
 {
 	ui->setupUi(this);
 }

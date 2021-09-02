@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
- *  {description}                                                          *
+ *  K-Indexer : index documents in SQL database                            *
  *  Copyright (C) 2020  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
@@ -20,9 +20,8 @@
 
 #include "mainwindow.hpp"
 
-#include <QApplication>
-#include <QLibraryInfo>
-#include <QTranslator>
+#include <QtCore>
+#include <QtGui>
 
 int main(int argc, char *argv[])
 {

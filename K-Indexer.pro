@@ -49,5 +49,5 @@ TRANSLATIONS += \
     K-Indexer_pl.ts
 
 RESOURCES += \
-	resources.qrc
+    resources.qrc
 

@@ -106,12 +106,12 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
         <translation>Otwórz</translation>
     </message>
     <message>
-        <location filename="connectdialog.cpp" line="75"/>
+        <location filename="connectdialog.cpp" line="76"/>
         <source>Select scans directory</source>
         <translation>Wskaż ścieżkę skanów</translation>
     </message>
     <message>
-        <location filename="connectdialog.cpp" line="97"/>
+        <location filename="connectdialog.cpp" line="98"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
@@ -269,17 +269,17 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
 <context>
     <name>FilterWidget</name>
     <message>
-        <location filename="filterwidget.cpp" line="279"/>
+        <location filename="filterwidget.cpp" line="280"/>
         <source>Select values</source>
         <translation>Wybierz wartości</translation>
     </message>
     <message>
-        <location filename="filterwidget.cpp" line="339"/>
+        <location filename="filterwidget.cpp" line="340"/>
         <source>Yes</source>
         <translation>Tak</translation>
     </message>
     <message>
-        <location filename="filterwidget.cpp" line="340"/>
+        <location filename="filterwidget.cpp" line="341"/>
         <source>No</source>
         <translation>Nie</translation>
     </message>
@@ -920,7 +920,7 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
         <translation>Usuń rekord</translation>
     </message>
     <message>
-        <location filename="sqleditordialog.ui" line="176"/>
+        <location filename="sqleditordialog.ui" line="166"/>
         <source>Exit</source>
         <translation>Zakończ</translation>
     </message>
@@ -935,7 +935,7 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
         <translation>Wycofaj</translation>
     </message>
     <message numerus="yes">
-        <location filename="sqleditordialog.cpp" line="161"/>
+        <location filename="sqleditordialog.cpp" line="167"/>
         <source>Query complete, %n row(s) affected</source>
         <translation>
             <numerusform>Zapytanie ukończone, zmodyfikowano %n wiersz</numerusform>

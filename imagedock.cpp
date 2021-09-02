@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
- *  {description}                                                          *
+ *  K-Indexer : index documents in SQL database                            *
  *  Copyright (C) 2020  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
@@ -21,9 +21,9 @@
 #include "imagedock.hpp"
 #include "ui_imagedock.h"
 
-ImageDock::ImageDock(QWidget *parent) :
-	QDockWidget(parent),
-	ui(new Ui::ImageWidget)
+ImageDock::ImageDock(QWidget *parent)
+	: QDockWidget(parent)
+	, ui(new Ui::ImageWidget)
 {
 	ui->setupUi(this);
 

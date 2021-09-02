@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
- *  {description}                                                          *
+ *  K-Indexer : index documents in SQL database                            *
  *  Copyright (C) 2020  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
@@ -21,10 +21,10 @@
 #include "itemsdock.hpp"
 #include "ui_itemsdock.h"
 
-ItemsDock::ItemsDock(QSqlDatabase& db, QWidget *parent) :
-	QDockWidget(parent),
-	ui(new Ui::ItemsDock),
-	database(db)
+ItemsDock::ItemsDock(QSqlDatabase& db, QWidget *parent)
+	: QDockWidget(parent)
+	, ui(new Ui::ItemsDock)
+	, database(db)
 {
 	ui->setupUi(this);
 

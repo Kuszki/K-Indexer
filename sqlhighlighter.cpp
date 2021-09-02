@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
- *  KLScript code highlighter for KLLibs                                   *
- *  Copyright (C) 2015  Łukasz "Kuszki" Dróżdż  l.drozdz@o2.pl             *
+ *  K-Indexer : index documents in SQL database                            *
+ *  Copyright (C) 2020  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -61,7 +61,7 @@ const QStringList SqlHighlighter::SqlBuiltin =
 };
 
 SqlHighlighter::SqlHighlighter(QTextDocument* Parent)
-: QSyntaxHighlighter(Parent)
+	: QSyntaxHighlighter(Parent)
 {
 	SqlHighlighterRule Rule;
 
