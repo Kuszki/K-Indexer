@@ -39,12 +39,12 @@
         <translation>Ścieżka skanów</translation>
     </message>
     <message>
-        <location filename="connectdialog.ui" line="120"/>
+        <location filename="connectdialog.ui" line="126"/>
         <source>Open folder</source>
         <translation>Otwórz folder</translation>
     </message>
     <message>
-        <location filename="connectdialog.ui" line="123"/>
+        <location filename="connectdialog.ui" line="129"/>
         <source>Open</source>
         <translation>Otwórz</translation>
     </message>
@@ -57,6 +57,174 @@
         <location filename="connectdialog.cpp" line="97"/>
         <source>Error</source>
         <translation>Błąd</translation>
+    </message>
+</context>
+<context>
+    <name>ExportDialog</name>
+    <message>
+        <location filename="exportdialog.ui" line="14"/>
+        <source>Export data</source>
+        <translation>Eksportuj dane</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="24"/>
+        <source>Output file</source>
+        <translation>Plik wyjściowy</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="39"/>
+        <source>Select output file</source>
+        <translation>Wybierz plik wyjściowy</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="52"/>
+        <source>Open</source>
+        <oldsource>Open folder</oldsource>
+        <translation>Otwórz</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="65"/>
+        <source>User</source>
+        <translation>Użytkownik</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="76"/>
+        <source>All users</source>
+        <translation>Wszyscy użytkownicy</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="84"/>
+        <source>Status</source>
+        <translation>Status</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="95"/>
+        <source>Any</source>
+        <comment>status</comment>
+        <translation>Dowolny</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="100"/>
+        <source>Done</source>
+        <translation>Ukończone</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="105"/>
+        <source>Undone</source>
+        <translation>Nieukończone</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="113"/>
+        <source>Validation</source>
+        <translation>Poprawność</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="124"/>
+        <source>Any</source>
+        <comment>validation</comment>
+        <translation>Dowolne</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="129"/>
+        <source>Valid</source>
+        <translation>Poprawne</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="134"/>
+        <source>Invalid</source>
+        <translation>Niepoprawne</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="142"/>
+        <source>Lock</source>
+        <translation>Blokada</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="158"/>
+        <source>Locked</source>
+        <translation>Zablokowane</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="153"/>
+        <source>Any</source>
+        <extracomment>locked</extracomment>
+        <translation>Dowolne</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="163"/>
+        <source>Unlocked</source>
+        <translation>Odblokowane</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="171"/>
+        <source>From</source>
+        <translation>Od</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.ui" line="188"/>
+        <source>To</source>
+        <translation>Do</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.cpp" line="67"/>
+        <source>Current user</source>
+        <translation>Obecny użytkownik</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.cpp" line="78"/>
+        <source>Select users</source>
+        <translation>Wskaż użytkowników</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.cpp" line="135"/>
+        <source>Select export file</source>
+        <translation>Wybierz plik wyjściowy</translation>
+    </message>
+    <message>
+        <location filename="exportdialog.cpp" line="136"/>
+        <source>Text files (*.txt);;CSV files (*.csv);;All files (*.*)</source>
+        <translation>Pliki tekstowe (*.txt);;Pliki CSV (*.csv);;Wszystkie pliki (*.*)</translation>
+    </message>
+</context>
+<context>
+    <name>FilterDialog</name>
+    <message>
+        <location filename="filterdialog.ui" line="14"/>
+        <source>Setup filter</source>
+        <translation>Ustawienia filrtu</translation>
+    </message>
+    <message>
+        <location filename="filterdialog.ui" line="34"/>
+        <source>Fields</source>
+        <translation>Pola</translation>
+    </message>
+    <message>
+        <location filename="filterdialog.ui" line="65"/>
+        <source>Advanced</source>
+        <translation>Zaawansowane</translation>
+    </message>
+    <message>
+        <location filename="filterdialog.ui" line="106"/>
+        <source>Query</source>
+        <translation>Kwerendy</translation>
+    </message>
+</context>
+<context>
+    <name>FilterWidget</name>
+    <message>
+        <location filename="filterwidget.cpp" line="274"/>
+        <source>Select values</source>
+        <translation>Wybierz wartości</translation>
+    </message>
+    <message>
+        <location filename="filterwidget.cpp" line="334"/>
+        <source>Yes</source>
+        <translation>Tak</translation>
+    </message>
+    <message>
+        <location filename="filterwidget.cpp" line="335"/>
+        <source>No</source>
+        <translation>Nie</translation>
     </message>
 </context>
 <context>
@@ -100,6 +268,77 @@
     </message>
 </context>
 <context>
+    <name>ImportDialog</name>
+    <message>
+        <location filename="importdialog.ui" line="14"/>
+        <source>Import data</source>
+        <translation>Importuj dane</translation>
+    </message>
+    <message>
+        <location filename="importdialog.ui" line="24"/>
+        <source>Input file</source>
+        <translation>Plik wejściowy</translation>
+    </message>
+    <message>
+        <location filename="importdialog.ui" line="39"/>
+        <source>Select output file</source>
+        <translation>Wybierz plik wejściowy</translation>
+    </message>
+    <message>
+        <location filename="importdialog.ui" line="52"/>
+        <location filename="importdialog.ui" line="93"/>
+        <source>Open</source>
+        <oldsource>Open folder</oldsource>
+        <translation>Otwórz</translation>
+    </message>
+    <message>
+        <location filename="importdialog.ui" line="65"/>
+        <source>Log file</source>
+        <translation>Plik dziennika</translation>
+    </message>
+    <message>
+        <location filename="importdialog.ui" line="80"/>
+        <location filename="importdialog.cpp" line="123"/>
+        <source>Select log file</source>
+        <translation>Wybierz plik dziennika</translation>
+    </message>
+    <message>
+        <location filename="importdialog.ui" line="106"/>
+        <source>Header</source>
+        <translation>Nagłówek</translation>
+    </message>
+    <message>
+        <location filename="importdialog.ui" line="117"/>
+        <source>Present</source>
+        <translation>Obecny</translation>
+    </message>
+    <message>
+        <location filename="importdialog.ui" line="122"/>
+        <source>Not present</source>
+        <translation>Nieobecny</translation>
+    </message>
+    <message>
+        <location filename="importdialog.cpp" line="60"/>
+        <source>Skip</source>
+        <translation>Pomiń</translation>
+    </message>
+    <message>
+        <location filename="importdialog.cpp" line="95"/>
+        <source>Select import file</source>
+        <translation>Wybierz plik wejściowy</translation>
+    </message>
+    <message>
+        <location filename="importdialog.cpp" line="96"/>
+        <source>Text files (*.txt);;CSV files (*.csv);;All files (*.*)</source>
+        <translation>Pliki tekstowe (*.txt);;Pliki CSV (*.csv);;Wszystkie pliki (*.*)</translation>
+    </message>
+    <message>
+        <location filename="importdialog.cpp" line="124"/>
+        <source>Text files (*.txt);;Log files (*.log);;All files (*.*)</source>
+        <translation>Pliki tekstowe (*.txt);;Pliki logów (*.log);;Wszystkie pliki (*.*)</translation>
+    </message>
+</context>
+<context>
     <name>ItemsDock</name>
     <message>
         <location filename="itemsdock.ui" line="18"/>
@@ -107,32 +346,42 @@
         <translation>Dokumenty</translation>
     </message>
     <message>
-        <location filename="itemsdock.ui" line="26"/>
+        <location filename="itemsdock.ui" line="59"/>
+        <source>Search in list</source>
+        <translation>Wyszukaj na liście</translation>
+    </message>
+    <message>
+        <location filename="itemsdock.ui" line="75"/>
+        <source>Clear</source>
+        <translation>Wyczyść</translation>
+    </message>
+    <message>
+        <location filename="itemsdock.ui" line="100"/>
         <source>All</source>
         <translation>Wszystkie</translation>
     </message>
     <message>
-        <location filename="itemsdock.ui" line="31"/>
+        <location filename="itemsdock.ui" line="105"/>
         <source>Locked</source>
         <translation>Zablokowane</translation>
     </message>
     <message>
-        <location filename="itemsdock.ui" line="36"/>
+        <location filename="itemsdock.ui" line="110"/>
         <source>Done</source>
         <translation>Ukończone</translation>
     </message>
     <message>
-        <location filename="itemsdock.ui" line="41"/>
+        <location filename="itemsdock.ui" line="115"/>
         <source>Invalid</source>
         <translation>Niepoprawne</translation>
     </message>
     <message>
-        <location filename="itemsdock.ui" line="62"/>
+        <location filename="itemsdock.ui" line="48"/>
         <source>Search</source>
         <translation>Wyszukaj</translation>
     </message>
     <message>
-        <location filename="itemsdock.ui" line="72"/>
+        <location filename="itemsdock.ui" line="31"/>
         <source>Reload</source>
         <translation>Odśwież</translation>
     </message>
@@ -429,85 +678,107 @@
         <translation>Zezwalaj na przemieszczanie</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="248"/>
+        <location filename="mainwindow.cpp" line="270"/>
         <source>User authentication error</source>
         <translation>Błąd autoryzacji użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="304"/>
+        <location filename="mainwindow.cpp" line="326"/>
         <source>Unable to lock document</source>
         <translation>Nie udało się zablokować dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="324"/>
+        <location filename="mainwindow.cpp" line="346"/>
         <source>Document is already locked</source>
         <translation>Dokument jest już zablokowany</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="327"/>
-        <location filename="mainwindow.cpp" line="395"/>
+        <location filename="mainwindow.cpp" line="349"/>
+        <location filename="mainwindow.cpp" line="417"/>
         <source>Document is locked by another user</source>
         <translation>Dokument jest zablokowany przez innego użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="330"/>
-        <location filename="mainwindow.cpp" line="355"/>
-        <location filename="mainwindow.cpp" line="369"/>
-        <location filename="mainwindow.cpp" line="401"/>
-        <location filename="mainwindow.cpp" line="414"/>
+        <location filename="mainwindow.cpp" line="352"/>
+        <location filename="mainwindow.cpp" line="377"/>
+        <location filename="mainwindow.cpp" line="391"/>
+        <location filename="mainwindow.cpp" line="423"/>
+        <location filename="mainwindow.cpp" line="436"/>
         <source>Unable to execute query</source>
         <translation>Brak możliwości wykonania zapytania do bazy danych</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="352"/>
+        <location filename="mainwindow.cpp" line="374"/>
         <source>Document is assigned to another user</source>
         <translation>Dokument jest przypisany do innego użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="365"/>
-        <location filename="mainwindow.cpp" line="448"/>
+        <location filename="mainwindow.cpp" line="387"/>
+        <location filename="mainwindow.cpp" line="470"/>
         <source>Document locked</source>
         <translation>Zablokowano dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="374"/>
+        <location filename="mainwindow.cpp" line="396"/>
         <source>Unable to unlock document</source>
         <translation>Nie udało się odblokować dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="398"/>
+        <location filename="mainwindow.cpp" line="420"/>
         <source>Document is not locked</source>
         <translation>Dokument nie jest zablokowany</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="410"/>
+        <location filename="mainwindow.cpp" line="432"/>
         <source>Document unlocked</source>
         <translation>Odblokowano dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="454"/>
+        <location filename="mainwindow.cpp" line="476"/>
         <source>Unable to lock next document</source>
         <translation>Nie udało się zablokować kolejnego dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="454"/>
+        <location filename="mainwindow.cpp" line="476"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="514"/>
+        <location filename="mainwindow.cpp" line="576"/>
         <source>No changes to save</source>
         <translation>Brak zmian do zapisu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="515"/>
+        <location filename="mainwindow.cpp" line="577"/>
         <source>Data saved</source>
         <translation>Zapisano dane</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="516"/>
+        <location filename="mainwindow.cpp" line="578"/>
         <source>Unable to save data</source>
         <translation>Nie udało się zapisać danych</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="656"/>
+        <source>Export error</source>
+        <translation>Błąd eksportu</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="659"/>
+        <location filename="mainwindow.cpp" line="662"/>
+        <source>Export finished</source>
+        <translation>Eksport zakończony</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="673"/>
+        <source>Import error</source>
+        <translation>Błąd importu</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="676"/>
+        <location filename="mainwindow.cpp" line="679"/>
+        <source>Import finished</source>
+        <translation>Import zakończony</translation>
     </message>
     <message>
         <source>Record saved</source>
@@ -527,6 +798,44 @@
     </message>
 </context>
 <context>
+    <name>SqlHighlighter</name>
+    <message>
+        <location filename="sqlhighlighter.cpp" line="153"/>
+        <source>Variables</source>
+        <translation>Zmienne</translation>
+    </message>
+    <message>
+        <location filename="sqlhighlighter.cpp" line="154"/>
+        <source>Operators</source>
+        <translation>Operatory</translation>
+    </message>
+    <message>
+        <location filename="sqlhighlighter.cpp" line="155"/>
+        <source>Keywords</source>
+        <translation>Słowa kluczowe</translation>
+    </message>
+    <message>
+        <location filename="sqlhighlighter.cpp" line="156"/>
+        <source>String functions</source>
+        <translation>Funkcje łańcuchowe</translation>
+    </message>
+    <message>
+        <location filename="sqlhighlighter.cpp" line="157"/>
+        <source>Numeric functions</source>
+        <translation>Funkcje numeryczne</translation>
+    </message>
+    <message>
+        <location filename="sqlhighlighter.cpp" line="158"/>
+        <source>Datetime functions</source>
+        <translation>Funkcje daty i czasu</translation>
+    </message>
+    <message>
+        <location filename="sqlhighlighter.cpp" line="159"/>
+        <source>Advanced functions</source>
+        <translation>Funkcje zaawansowane</translation>
+    </message>
+</context>
+<context>
     <name>SqleditorDialog</name>
     <message>
         <location filename="sqleditordialog.ui" line="14"/>
@@ -534,47 +843,93 @@
         <translation>Edytor zazpytań</translation>
     </message>
     <message>
-        <location filename="sqleditordialog.ui" line="27"/>
+        <location filename="sqleditordialog.ui" line="116"/>
         <source>Add record</source>
         <translation>Wstaw rekord</translation>
     </message>
     <message>
-        <location filename="sqleditordialog.ui" line="92"/>
+        <location filename="sqleditordialog.ui" line="65"/>
         <source>Type a query or select table from list and add &quot;where&quot; keyword to filter results</source>
         <translation>Wprowadź kwerende lub wybierz tabelę z listy i użyj słowa klucziowego &quot;where&quot; do filtrowania wyników</translation>
     </message>
     <message>
-        <location filename="sqleditordialog.ui" line="115"/>
+        <location filename="sqleditordialog.ui" line="102"/>
         <source>Run query</source>
         <translation>Wykonaj zapytanie</translation>
     </message>
     <message>
-        <location filename="sqleditordialog.ui" line="129"/>
+        <location filename="sqleditordialog.ui" line="130"/>
         <source>Delete record</source>
         <translation>Usuń rekord</translation>
     </message>
     <message>
-        <location filename="sqleditordialog.ui" line="140"/>
+        <location filename="sqleditordialog.ui" line="176"/>
         <source>Exit</source>
         <translation>Zakończ</translation>
     </message>
     <message>
-        <location filename="sqleditordialog.ui" line="151"/>
+        <location filename="sqleditordialog.ui" line="141"/>
         <source>Commit</source>
         <translation>Zatwierdź</translation>
     </message>
     <message>
-        <location filename="sqleditordialog.ui" line="162"/>
+        <location filename="sqleditordialog.ui" line="152"/>
         <source>Rollback</source>
         <translation>Wycofaj</translation>
     </message>
     <message numerus="yes">
-        <location filename="sqleditordialog.cpp" line="141"/>
+        <location filename="sqleditordialog.cpp" line="161"/>
         <source>Query complete, %n row(s) affected</source>
         <translation>
             <numerusform>Zapytanie ukończone, zmodyfikowano %n wiersz</numerusform>
             <numerusform>Zapytanie ukończone, zmodyfikowano %n wiersze</numerusform>
             <numerusform>Zapytanie ukończone, zmodyfikowano %n wierszy</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>ThreadWorker</name>
+    <message>
+        <location filename="threadworker.cpp" line="41"/>
+        <source>Unable to create output file</source>
+        <translation>Nie udało się utworzyć pliku wyjściowego</translation>
+    </message>
+    <message>
+        <location filename="threadworker.cpp" line="84"/>
+        <source>No data to export</source>
+        <translation>Brak danych do eksportu</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="threadworker.cpp" line="121"/>
+        <source>Exported %n row(s)</source>
+        <translation>
+            <numerusform>Eksportowano %n wiersz</numerusform>
+            <numerusform>Eksportowano %n wiersze</numerusform>
+            <numerusform>Eksportowano %n wierszy</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="threadworker.cpp" line="123"/>
+        <source>Unable to fetch data</source>
+        <translation>Nie udało się pobrać danych</translation>
+    </message>
+    <message>
+        <location filename="threadworker.cpp" line="148"/>
+        <source>Unable to open input file</source>
+        <translation>Nie udało się otworzyć pliku wejściowego</translation>
+    </message>
+    <message>
+        <location filename="threadworker.cpp" line="176"/>
+        <source>No data to import</source>
+        <translation>Brak danych do importu</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="threadworker.cpp" line="252"/>
+        <source>Imported %n row(s)</source>
+        <translation>
+            <numerusform>Importowano %n wiersz</numerusform>
+            <numerusform>Importowano %n wiersze</numerusform>
+            <numerusform>Importowano %n wierszy</numerusform>
         </translation>
     </message>
 </context>

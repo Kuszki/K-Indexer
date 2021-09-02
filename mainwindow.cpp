@@ -53,6 +53,8 @@ MainWindow::MainWindow(QWidget *parent)
 	items = new ItemsDock(database, this);
 	meta = new MetaDock(database, this);
 
+	filter = new FilterDialog(database, this);
+
 	addDockWidget(Qt::TopDockWidgetArea, image);
 	addDockWidget(Qt::LeftDockWidgetArea, items);
 	addDockWidget(Qt::RightDockWidgetArea, meta);
@@ -151,6 +153,9 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->actionPrevious, &QAction::triggered,
 		   items, &ItemsDock::selectPrevious);
 
+	connect(ui->actionFind, &QAction::triggered,
+		   filter, &FilterDialog::show);
+
 	connect(this, &MainWindow::onDatabaseLogin,
 		   items, &ItemsDock::setupDatabase);
 
@@ -181,6 +186,9 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(this, &MainWindow::onDatabaseLogout,
 		   image, &ImageDock::clear);
 
+	connect(this, &MainWindow::onDatabaseLogin,
+		   filter, &FilterDialog::setupDialog);
+
 	connect(items, &ItemsDock::onImageSelected,
 		   image, &ImageDock::setImage);
 
@@ -192,6 +200,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 	connect(items, &ItemsDock::onItemSelected,
 		   this, &MainWindow::recordIndexSelected);
+
+	connect(filter, &FilterDialog::onFiltersUpdate,
+		   items, &ItemsDock::setFilter);
+
+	connect(items, &ItemsDock::onFilterClicked,
+		   filter, &FilterDialog::show);
 
 	dockOptionsChanged();
 }

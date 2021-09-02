@@ -54,6 +54,8 @@ class ItemsDock : public QDockWidget
 		void setFilter(const QString& filter);
 		QString getFilter(void) const;
 
+		void clearFilter(void);
+
 	private slots:
 
 		void selectionChanged(const QModelIndex& item);
@@ -71,6 +73,8 @@ class ItemsDock : public QDockWidget
 		void selectPrevious(void);
 
 	signals:
+
+		void onFilterClicked(void);
 
 		void onItemSelected(int);
 		void onImageSelected(const QString&);

@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/script">
+        <file alias="advanced">sql-advanced.txt</file>
+        <file alias="datetime">sql-datetime.txt</file>
+        <file alias="keywords">sql-keywords.txt</file>
+        <file alias="numeric">sql-numeric.txt</file>
+        <file alias="operators">sql-operators.txt</file>
+        <file alias="strings">sql-strings.txt</file>
+    </qresource>
+</RCC>

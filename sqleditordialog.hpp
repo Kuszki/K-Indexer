@@ -25,6 +25,8 @@
 #include <QtCore>
 #include <QtSql>
 
+#include "sqlhighlighter.hpp"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {	class SqleditorDialog; }
 QT_END_NAMESPACE
@@ -66,8 +68,12 @@ class SqleditorDialog : public QDialog
 		void tableItemSelected(const QModelIndex& index);
 		void recordItemSelected(void);
 
+		void helperIndexChanged(int Index);
+
 		void tableItemClicked(const QModelIndex& index);
 		void fieldItemClicked(const QModelIndex& index);
+
+		void helperPasteRequest(const QModelIndex& Index);
 
 };
 

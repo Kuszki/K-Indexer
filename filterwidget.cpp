@@ -21,12 +21,21 @@
 #include "filterwidget.hpp"
 #include "ui_filterwidget.h"
 
-FilterWidget::FilterWidget(int ID, const DatabaseDriver::FIELD& Field, QWidget* Parent)
+const QStringList FilterWidget::Operators =
+{
+	"=", "<>", ">=", ">", "<=", "<", "BETWEEN",
+	"LIKE", "NOT LIKE",
+	"IN", "NOT IN",
+	"IS NULL", "IS NOT NULL"
+};
+
+FilterWidget::FilterWidget(const QVariantMap& field, QWidget* Parent)
 : QWidget(Parent), ui(new Ui::FilterWidget)
 {
-	ui->setupUi(this); setParameters(ID, Field);
+	ui->setupUi(this); setParameters(field);
 
-	connect(ui->Field, &QCheckBox::toggled, this, &FilterWidget::onStatusChanged);
+	connect(ui->Field, &QCheckBox::toggled,
+		   this, &FilterWidget::onStatusChanged);
 }
 
 FilterWidget::~FilterWidget(void)
@@ -209,11 +218,6 @@ QString FilterWidget::getLabel(void) const
 	return ui->Field->text();
 }
 
-int FilterWidget::getIndex(void) const
-{
-	return Index;
-}
-
 void FilterWidget::operatorChanged(const QString& Name)
 {
 	const bool IS = Name == "IS NULL" || Name == "IS NOT NULL";
@@ -234,46 +238,46 @@ void FilterWidget::resetIndex(void)
 	if (auto C = qobject_cast<QComboBox*>(sender())) C->setCurrentIndex(0);
 }
 
-void FilterWidget::setParameters(int ID, const DatabaseDriver::FIELD& Field)
+void FilterWidget::setParameters(const QVariantMap& Field)
 {
-	ui->Field->setText(Field.Label); ui->Field->setToolTip(Field.Name); Index = ID;
-	ui->Operator->clear(); QStringList Operators = DatabaseDriver::Operators;
+	const QString fname = Field.value("name").toString();
+	const QString flabel = Field.value("label", fname).toString();
+	const QVariantMap fdict = Field.value("dict").toMap();
+	const int ftype = Field.value("type").toInt();
+
+	ui->Field->setText(flabel); ui->Field->setToolTip(fname);
+	ui->Operator->clear(); QStringList Operators = FilterWidget::Operators;
 
 	if (Simple) Simple->deleteLater(); Simple = nullptr;
 	if (Widget) Widget->deleteLater(); Widget = nullptr;
 
-	if (!Field.Dict.isEmpty() || Field.Type == DatabaseDriver::BOOL)
+	if (!fdict.isEmpty() || ftype == QVariant::Bool)
 	{
 		Operators.removeOne(">"); Operators.removeOne("<");
 		Operators.removeOne(">="); Operators.removeOne("<=");
 	}
 
-	if (Field.Dict.isEmpty() || Field.Type == DatabaseDriver::MASK)
-	{
-		Operators.removeOne("IN"); Operators.removeOne("NOT IN");
-	}
-
-	if (Field.Type != DatabaseDriver::STRING)
+	if (ftype != QVariant::String)
 	{
 		Operators.removeOne("LIKE"); Operators.removeOne("NOT LIKE");
 	}
 
-	if (Field.Type != DatabaseDriver::INTEGER && Field.Type != DatabaseDriver::DOUBLE &&
-	    Field.Type != DatabaseDriver::DATE && Field.Type != DatabaseDriver::DATETIME)
+	if (ftype != QVariant::Int && ftype != QVariant::Double &&
+	    ftype != QVariant::Date && ftype != QVariant::DateTime)
 	{
 		Operators.removeOne("BETWEEN");
 	}
 
-	if (!Field.Dict.isEmpty())
+	if (!fdict.isEmpty())
 	{
-		auto Model = new QStandardItemModel(Field.Dict.size(), 1);
+		auto Model = new QStandardItemModel(fdict.size(), 1);
 		auto Item = new QStandardItem(tr("Select values")); int j = 0;
 
-		for (auto i = Field.Dict.constBegin(); i != Field.Dict.constEnd(); ++i)
+		for (auto i = fdict.constBegin(); i != fdict.constEnd(); ++i)
 		{
-			auto Item = new QStandardItem(QString(i.value()).replace('|', '\n'));
+			auto Item = new QStandardItem(i.key());
 
-			Item->setData(i.key());
+			Item->setData(i.value());
 			Item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
 			Item->setCheckState(Qt::Unchecked);
 
@@ -284,68 +288,46 @@ void FilterWidget::setParameters(int ID, const DatabaseDriver::FIELD& Field)
 		Item->setFlags(Qt::ItemIsEnabled);
 		Model->insertRow(0, Item);
 
-		switch (Field.Type)
+		auto Combo = new QComboBox(this); Widget = Combo;
+		auto Mixed = new QComboBox(this); Simple = Mixed;
+
+		Combo->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+
+		for (auto i = fdict.constBegin(); i != fdict.constEnd(); ++i)
 		{
-			case DatabaseDriver::MASK:
-			{
-				auto Combo = new QComboBox(this); Widget = Combo;
-
-				Combo->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
-
-				Model->setParent(Widget);
-				Combo->setModel(Model);
-				Combo->setProperty("MASK", true);
-
-				connect(Combo, &QComboBox::currentTextChanged, this, &FilterWidget::resetIndex);
-			}
-			break;
-			default:
-			{
-				auto Combo = new QComboBox(this); Widget = Combo;
-				auto Mixed = new QComboBox(this); Simple = Mixed;
-
-				Combo->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
-
-				for (auto i = Field.Dict.constBegin(); i != Field.Dict.constEnd(); ++i)
-				{
-					Combo->addItem(QString(i.value()).replace('|', '\n'), i.key());
-				}
-
-				Combo->model()->sort(0);
-				Combo->setEditable(true);
-				Combo->setProperty("MASK", false);
-
-				Model->setParent(Widget);
-				Mixed->setModel(Model);
-
-				connect(Mixed, &QComboBox::currentTextChanged, this, &FilterWidget::resetIndex);
-			}
+			Combo->addItem(i.key(), i.value());
 		}
+
+		Combo->model()->sort(0);
+		Combo->setEditable(true);
+		Combo->setProperty("MASK", false);
+
+		Model->setParent(Widget);
+		Mixed->setModel(Model);
+
+		connect(Mixed, &QComboBox::currentTextChanged, this, &FilterWidget::resetIndex);
 
 		Datatype = QVariant::Int;
 	}
 	else
 	{
-		switch (Field.Type)
+		switch (ftype)
 		{
-			case DatabaseDriver::INTEGER:
-			case DatabaseDriver::SMALLINT:
+			case QVariant::Int:
 			{
-				const int Max = Field.Type == DatabaseDriver::SMALLINT ? 255 : INT_MAX;
-
 				auto SpinA = new QSpinBox(this); Widget = SpinA;
 				auto SpinB = new QSpinBox(this); Simple = SpinB;
 
 				SpinA->setSingleStep(1);
-				SpinA->setRange(0, Max);
+				SpinA->setRange(INT32_MIN, INT32_MAX);
 
 				SpinB->setSingleStep(1);
-				SpinB->setRange(0, Max);
+				SpinB->setRange(INT32_MIN, INT32_MAX);
 
 				Datatype = QVariant::Int;
 			}
 			break;
-			case DatabaseDriver::BOOL:
+			case QVariant::Bool:
 			{
 				auto Combo = new QComboBox(this); Widget = Combo;
 
@@ -356,21 +338,21 @@ void FilterWidget::setParameters(int ID, const DatabaseDriver::FIELD& Field)
 				Datatype = QVariant::Bool;
 			}
 			break;
-			case DatabaseDriver::DOUBLE:
+			case QVariant::Double:
 			{
 				auto SpinA = new QDoubleSpinBox(this); Widget = SpinA;
 				auto SpinB = new QDoubleSpinBox(this); Simple = SpinB;
 
 				SpinA->setSingleStep(1.0);
-				SpinA->setRange(0.0, 10000.0);
+				SpinA->setRange(-Q_INFINITY, Q_INFINITY);
 
 				SpinB->setSingleStep(1.0);
-				SpinB->setRange(0.0, 10000.0);
+				SpinB->setRange(-Q_INFINITY, Q_INFINITY);
 
 				Datatype = QVariant::Double;
 			}
 			break;
-			case DatabaseDriver::DATE:
+			case QVariant::Date:
 			{
 				auto DateA = new QDateEdit(this); Widget = DateA;
 				auto DateB = new QDateEdit(this); Simple = DateB;
@@ -384,7 +366,7 @@ void FilterWidget::setParameters(int ID, const DatabaseDriver::FIELD& Field)
 				Datatype = QVariant::Date;
 			}
 			break;
-			case DatabaseDriver::DATETIME:
+			case QVariant::DateTime:
 			{
 				auto DateA = new QDateTimeEdit(this); Widget = DateA;
 				auto DateB = new QDateTimeEdit(this); Simple = DateB;
@@ -406,7 +388,7 @@ void FilterWidget::setParameters(int ID, const DatabaseDriver::FIELD& Field)
 
 				Datatype = QVariant::String;
 
-				if (Field.Type != DatabaseDriver::STRING)
+				if (ftype != QVariant::String)
 				{
 					const int Index = Operators.indexOf("IS NULL");
 
@@ -440,7 +422,7 @@ void FilterWidget::setParameters(int ID, const DatabaseDriver::FIELD& Field)
 		connect(ui->Field, &QCheckBox::toggled, Simple, &QWidget::setEnabled);
 	}
 
-	setObjectName(Field.Name);
+	setObjectName(fname);
 	ui->Operator->addItems(Operators);
 	operatorChanged(ui->Operator->currentText());
 }
@@ -471,22 +453,7 @@ void FilterWidget::setValue(const QVariant& Value)
 
 	if (auto W = dynamic_cast<QComboBox*>(Widget))
 	{
-		if (W->property("MASK").toBool())
-		{
-			auto M = dynamic_cast<QStandardItemModel*>(W->model());
-
-			for (int i = 1; i < M->rowCount(); ++i)
-			{
-				const bool Checked = Value.toInt() & (1 << M->item(i)->data().toInt());
-
-				M->item(i)->setCheckState(Checked ? Qt::Checked : Qt::Unchecked);
-			}
-		}
-		else
-		{
-			W->setCurrentText(Value.toString());
-		}
-
+		W->setCurrentText(Value.toString());
 	}
 	else if (auto W = dynamic_cast<QLineEdit*>(Widget))
 	{

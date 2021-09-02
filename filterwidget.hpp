@@ -21,26 +21,22 @@
 #ifndef FILTERWIDGET_HPP
 #define FILTERWIDGET_HPP
 
-#include <QStandardItemModel>
-#include <QDoubleSpinBox>
-#include <QDateTimeEdit>
-#include <QListWidget>
-#include <QComboBox>
-#include <QLineEdit>
-#include <QSpinBox>
-#include <QWidget>
+#include <QtWidgets>
+#include <QtCore>
+#include <QtSql>
 
-#include "databasedriver.hpp"
-
-namespace Ui
-{
-	class FilterWidget;
-}
+QT_BEGIN_NAMESPACE
+namespace Ui { class FilterWidget; }
+QT_END_NAMESPACE
 
 class FilterWidget : public QWidget
 {
 
 		Q_OBJECT
+
+	public:
+
+		static const QStringList Operators;
 
 	private:
 
@@ -48,13 +44,13 @@ class FilterWidget : public QWidget
 
 		QWidget* Simple = nullptr;
 		QWidget* Widget = nullptr;
-		Ui::FilterWidget* ui;
 
-		int Index = 0;
+		Ui::FilterWidget* ui;
 
 	public:
 
-		explicit FilterWidget(int ID, const DatabaseDriver::FIELD& Field, QWidget* Parent = nullptr);
+		explicit FilterWidget(const QVariantMap& field,
+						  QWidget* Parent = nullptr);
 		virtual ~FilterWidget(void) override;
 
 		QPair<QString, QVariant> getBinding(void) const;
@@ -62,8 +58,6 @@ class FilterWidget : public QWidget
 		QString getCondition(void) const;
 		QVariant getValue(void) const;
 		QString getLabel(void) const;
-
-		int getIndex(void) const;
 
 	private slots:
 
@@ -74,7 +68,7 @@ class FilterWidget : public QWidget
 
 	public slots:
 
-		void setParameters(int ID, const DatabaseDriver::FIELD& Field);
+		void setParameters(const QVariantMap& Field);
 		void setValue(const QVariant& Value);
 		void setChecked(bool Checked);
 

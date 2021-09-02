@@ -48,9 +48,6 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="toolTip">
-        <string>Open folder</string>
-       </property>
        <property name="text">
         <string>Open</string>
        </property>
@@ -91,9 +88,6 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Open folder</string>
        </property>
        <property name="text">
         <string>Open</string>

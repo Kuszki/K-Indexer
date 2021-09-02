@@ -29,6 +29,7 @@
 #include "connectdialog.hpp"
 #include "exportdialog.hpp"
 #include "importdialog.hpp"
+#include "filterdialog.hpp"
 
 #include "imagedock.hpp"
 #include "itemsdock.hpp"
@@ -54,6 +55,8 @@ class MainWindow : public QMainWindow
 		ImageDock* image;
 		ItemsDock* items;
 		MetaDock* meta;
+
+		FilterDialog* filter;
 
 		QSqlDatabase database;
 		QString imgPath;

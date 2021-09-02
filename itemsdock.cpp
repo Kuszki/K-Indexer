@@ -44,6 +44,12 @@ ItemsDock::ItemsDock(QSqlDatabase& db, QWidget *parent) :
 
 	connect(ui->refreshButton, &QToolButton::clicked,
 		   this, &ItemsDock::refreshList);
+
+	connect(ui->clearButton, &QToolButton::clicked,
+		   this, &ItemsDock::clearFilter);
+
+	connect(ui->searchButton, &QToolButton::clicked,
+		   this, &ItemsDock::onFilterClicked);
 }
 
 ItemsDock::~ItemsDock(void)
@@ -56,7 +62,7 @@ void ItemsDock::setFilter(const QString& filter)
 	const QString old = limiter;
 
 	if (filter.isEmpty()) limiter.clear();
-	else limiter = '(' + filter.simplified() + ')';
+	else limiter = filter.simplified();
 
 	if (old != limiter) refreshList();
 }
@@ -64,6 +70,11 @@ void ItemsDock::setFilter(const QString& filter)
 QString ItemsDock::getFilter(void) const
 {
 	return limiter;
+}
+
+void ItemsDock::clearFilter(void)
+{
+	setFilter(QString());
 }
 
 void ItemsDock::selectionChanged(const QModelIndex& item)
@@ -132,6 +143,9 @@ void ItemsDock::refreshList(void)
 
 	if (!test.isEmpty())
 		filter.append(QString("path LIKE '%%1%'").arg(test));
+
+	if (!limiter.isEmpty())
+		filter.append(QString("(%1)").arg(limiter));
 
 	if (index == 1)
 		filter.append(QString("id IN (SELECT sheet FROM locks WHERE user = %1 OR %1 = 0)").arg(userID));

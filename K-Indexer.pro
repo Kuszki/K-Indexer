@@ -4,6 +4,8 @@ CONFIG  += c++19
 SOURCES += \
     connectdialog.cpp \
     exportdialog.cpp \
+    filterdialog.cpp \
+    filterwidget.cpp \
     imagedock.cpp \
     importdialog.cpp \
     itemsdock.cpp \
@@ -11,22 +13,28 @@ SOURCES += \
     mainwindow.cpp \
     metadock.cpp \
     sqleditordialog.cpp \
+    sqlhighlighter.cpp \
     threadworker.cpp
 
 HEADERS += \
     connectdialog.hpp \
     exportdialog.hpp \
+    filterdialog.hpp \
+    filterwidget.hpp \
     imagedock.hpp \
     importdialog.hpp \
     itemsdock.hpp \
     mainwindow.hpp \
     metadock.hpp \
     sqleditordialog.hpp \
+    sqlhighlighter.hpp \
     threadworker.hpp
 
 FORMS += \
     connectdialog.ui \
     exportdialog.ui \
+    filterdialog.ui \
+    filterwidget.ui \
     imagedock.ui \
     importdialog.ui \
     itemsdock.ui \
@@ -36,4 +44,7 @@ FORMS += \
 
 TRANSLATIONS += \
     K-Indexer_pl.ts
+
+RESOURCES += \
+	resources.qrc
 

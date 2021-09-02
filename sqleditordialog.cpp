@@ -39,7 +39,7 @@ void SqleditorDialog::switchModel(QAbstractItemModel* model)
 SqleditorDialog::SqleditorDialog(QSqlDatabase& database, QWidget *parent)
 : QDialog(parent), ui(new Ui::SqleditorDialog), db(database)
 {
-	ui->setupUi(this);
+	ui->setupUi(this); new SqlHighlighter(ui->queryEdit->document());
 
 	const auto mask = QSql::Tables | QSql::Views;
 	const QStringList tabs = db.tables(QSql::TableType(mask));
@@ -51,6 +51,7 @@ SqleditorDialog::SqleditorDialog(QSqlDatabase& database, QWidget *parent)
 	tab->setEditStrategy(QSqlTableModel::OnManualSubmit);
 
 	QStringListModel* model = new QStringListModel(tabs, this);
+	QStandardItemModel* helper = SqlHighlighter::getSqlHelperModel(this);
 
 	ui->tableView->model()->deleteLater();
 	ui->tableView->selectionModel()->deleteLater();
@@ -65,6 +66,13 @@ SqleditorDialog::SqleditorDialog(QSqlDatabase& database, QWidget *parent)
 	ui->fieldsView->setModel(new QStringListModel(this));
 
 	ui->splitter->setSizes({ 200, 575 });
+
+	ui->helperView->model()->deleteLater();
+	ui->helperView->selectionModel()->deleteLater();
+
+	ui->helperCombo->setModel(helper);
+	ui->helperView->setModel(helper);
+	ui->helperView->setRootIndex(helper->index(0, 0));
 
 	connect(ui->tabsView->selectionModel(),
 		   &QItemSelectionModel::currentRowChanged,
@@ -93,6 +101,12 @@ SqleditorDialog::SqleditorDialog(QSqlDatabase& database, QWidget *parent)
 
 	connect(ui->exitButton, &QToolButton::clicked,
 		   this, &SqleditorDialog::reject);
+
+	connect(ui->helperView, &QListView::doubleClicked,
+		   this, &SqleditorDialog::helperPasteRequest);
+
+	connect(ui->helperCombo, qOverload<int>(&QComboBox::currentIndexChanged),
+		   this, &SqleditorDialog::helperIndexChanged);
 }
 
 SqleditorDialog::~SqleditorDialog(void)
@@ -219,6 +233,18 @@ void SqleditorDialog::recordItemSelected(void)
 	ui->delButton->setEnabled(mok && !rows.isEmpty());
 }
 
+void SqleditorDialog::helperIndexChanged(int Index)
+{
+	auto Model = ui->helperCombo->model();
+
+	if (Model && Index != -1)
+	{
+		auto Root = Model->index(Index, 0);
+
+		ui->helperView->setRootIndex(Root);
+	}
+}
+
 void SqleditorDialog::tableItemClicked(const QModelIndex& index)
 {
 	if (!index.isValid()) return;
@@ -235,4 +261,11 @@ void SqleditorDialog::fieldItemClicked(const QModelIndex& index)
 	if (!index.isValid()) return;
 
 	ui->queryEdit->appendPlainText(index.data().toString());
+}
+
+void SqleditorDialog::helperPasteRequest(const QModelIndex& Index)
+{
+	const QString Value = ui->helperView->model()->data(Index).toString();
+
+	if (!Value.isEmpty()) ui->queryEdit->insertPlainText(Value);
 }

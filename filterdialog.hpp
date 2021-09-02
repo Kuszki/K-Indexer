@@ -21,26 +21,16 @@
 #ifndef FILTERDIALOG_HPP
 #define FILTERDIALOG_HPP
 
-#include <QAbstractButton>
-#include <QFileDialog>
-#include <QPushButton>
-#include <QMessageBox>
-#include <QClipboard>
-#include <QCheckBox>
-#include <QDialog>
-#include <QHash>
-#include <QMenu>
+#include <QtWidgets>
+#include <QtCore>
+#include <QtSql>
 
-#include "databasedriver.hpp"
-#include "geometrywidget.hpp"
-#include "redactionwidget.hpp"
+#include "sqlhighlighter.hpp"
 #include "filterwidget.hpp"
-#include "klhighlighter.hpp"
 
-namespace Ui
-{
-	class FilterDialog;
-}
+QT_BEGIN_NAMESPACE
+namespace Ui { class FilterDialog; }
+QT_END_NAMESPACE
 
 class FilterDialog : public QDialog
 {
@@ -50,87 +40,41 @@ class FilterDialog : public QDialog
 	private:
 
 		Ui::FilterDialog* ui;
-
-		KLHighlighter* Highlighter;
-
-		QActionGroup* saveMode;
-
-		QAction* resetClass;
-		QAction* resetFields;
-		QAction* resetGeometry;
-		QAction* resetRedaction;
-		QAction* resetAdvanced;
-
-		QHash<QString, QString> Classes;
-		QHash<QString, QString> Points;
-		QHash<QString, QString> Lines;
-		QHash<QString, QString> Surfaces;
-
-		QList<QSet<int>> Attributes;
-
-		unsigned Above = 0;
-		QString Limiter;
+		QSqlDatabase& database;
 
 	public:
 
-		explicit FilterDialog(QWidget* Parent = nullptr, const QStringList& Variables = QStringList(),
-						  const QList<DatabaseDriver::FIELD>& Fields = QList<DatabaseDriver::FIELD>(),
-						  const QList<DatabaseDriver::TABLE>& Tables = QList<DatabaseDriver::TABLE>(),
-						  unsigned Common = 0, bool Singletons = false);
+		explicit FilterDialog(QSqlDatabase& db,
+						  QWidget* Parent = nullptr);
 		virtual ~FilterDialog(void) override;
 
-		QString getLimiterFile(void) const;
 		QString getFilterRules(void) const;
 		QString getAdvancedRules(void) const;
+		QString getQueryRules(void) const;
 
-		QList<int> getUsedFields(void) const;
-		QHash<int, QVariant> getGeometryRules(void) const;
-		QHash<int, QVariant> getRedactionRules(void) const;
-		QHash<int, QVariant> getFieldsRules(void) const;
-
-		double getRadius(void) const;
-
-	protected:
-
-		QPair<QString, int> validateScript(const QString& Script) const;
+		QVariantMap getFieldsRules(void) const;
 
 	private slots:
 
-		void classSearchEdited(const QString& Search);
-		void simpleSearchEdited(const QString& Search);
-
 		void resetButtonClicked(void);
-
-		void limiterBoxChecked(bool Checked);
-
-		void classBoxChecked(void);
-
-		void filterRulesChanged(void);
-
-		void newButtonClicked(void);
-		void validateButtonClicked(void);
-		void selectButtonClicked(void);
-		void unselectButtonClicked(void);
 
 		void helperIndexChanged(int Index);
 
-		void tooltipShowRequest(QModelIndex Index);
-		void variablePasteRequest(QModelIndex Index);
+		void tooltipShowRequest(const QModelIndex& Index);
+		void variablePasteRequest(const QModelIndex& Index);
 
 	public slots:
 
 		virtual void accept(void) override;
 
-		void setFields(const QStringList& Variables,
-					const QList<DatabaseDriver::FIELD>& Fields,
-					const QList<DatabaseDriver::TABLE>& Tables,
-					unsigned Common = 0, bool Singletons = false);
+		void setFields(const QVariantList& list,
+					const QVariantList& queries);
+
+		void setupDialog(int user);
 
 	signals:
 
-		void onFiltersUpdate(const QString&, const QString&, const QList<int>&,
-						 const QHash<int, QVariant>&, const QHash<int, QVariant>&,
-						 const QString&, double, int);
+		void onFiltersUpdate(const QString&);
 
 };
 
