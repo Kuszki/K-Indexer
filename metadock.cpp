@@ -129,22 +129,26 @@ void MetaDock::setupDatabase(int user)
 
 	const auto record = model->record();
 
-	for (int i = 4; i < record.count(); ++i)
+	for (int i = 1; i < record.count(); ++i)
 	{
 		if (model->headerData(i, Qt::Horizontal, Qt::UserRole).toInt() & 0b010) continue;
+
+		const bool r = model->headerData(i, Qt::Horizontal, Qt::UserRole).toInt() & 0b100;
 
 		QLabel* label = new QLabel(model->headerData(i, Qt::Horizontal).toString(), this);
 		QWidget* widget = nullptr;
 
 		QSqlTableModel* rel = model->relationModel(i);
 
-		if (rel)
+		if (r) widget = new QLineEdit(this);
+		else if (rel)
 		{
 			const int col = rel->fieldIndex(model->relation(i).displayColumn());
 			QComboBox* combo = new QComboBox(this);
 
 			combo->setModel(rel);
 			combo->setModelColumn(col);
+			combo->setEditable(true);
 
 			widget = combo;
 		}
@@ -170,9 +174,28 @@ void MetaDock::setupDatabase(int user)
 				widget = spin;
 			}
 			break;
+			case QVariant::UInt:
+			{
+				auto spin = new QSpinBox(this);
+
+				spin->setMinimum(0);
+				spin->setMaximum(INT32_MAX);
+
+				widget = spin;
+			}
+			break;
 			case QVariant::DateTime:
 			{
 				auto edit = new QDateTimeEdit(this);
+
+				edit->setCalendarPopup(true);
+
+				widget = edit;
+			}
+			break;
+			case QVariant::Date:
+			{
+				auto edit = new QDateEdit(this);
 
 				edit->setCalendarPopup(true);
 
@@ -201,14 +224,11 @@ void MetaDock::setupDatabase(int user)
 				}
 			}
 			break;
-			case QVariant::Bool:
-				widget = new QCheckBox(this);
-			break;
-			case QVariant::Date:
-				widget = new QDateEdit(this);
-			break;
 			case QVariant::Time:
 				widget = new QTimeEdit(this);
+			break;
+			case QVariant::Bool:
+				widget = new QCheckBox(this);
 			break;
 			default:
 				widget = new QLineEdit(this);
@@ -295,10 +315,13 @@ bool MetaDock::saveRecord(void)
 		emit onRecordSave(0); return true;
 	}
 
-	if (userID > 0 || model->data(model->index(0, 2)).isNull())
+	const int usr = model->fieldIndex("user");
+	const int tim = model->fieldIndex("time");
+
+	if (userID > 0 || model->data(model->index(0, usr)).isNull())
 	{
-		model->setData(model->index(0, 2), userID);
-		model->setData(model->index(0, 3), QDateTime::currentDateTimeUtc());
+		model->setData(model->index(0, usr), userID);
+		model->setData(model->index(0, tim), QDateTime::currentDateTime());
 	}
 
 	bool ok = model->submitAll();

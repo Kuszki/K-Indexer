@@ -81,8 +81,11 @@ void ItemsDock::selectionChanged(const QModelIndex& item)
 {
 	if (!model || !item.isValid()) return;
 
-	const auto indexI = model->index(item.row(), 0, item.parent());
-	const auto indexP = model->index(item.row(), 1, item.parent());
+	const int uid = model->fieldIndex("id");
+	const int img = model->fieldIndex("path");
+
+	const auto indexI = model->index(item.row(), uid, item.parent());
+	const auto indexP = model->index(item.row(), img, item.parent());
 
 	ui->listView->selectionModel()->select(indexI,
 					QItemSelectionModel::ClearAndSelect |
@@ -195,8 +198,11 @@ void ItemsDock::selectNext(void)
 	if (index.isValid()) row = (index.row() + 1) < model->rowCount() ?
 							  index.row() + 1 : 0;
 
-	const auto indexI = model->index(row, 0);
-	const auto indexP = model->index(row, 1);
+	const int uid = model->fieldIndex("id");
+	const int img = model->fieldIndex("path");
+
+	const auto indexI = model->index(row, uid);
+	const auto indexP = model->index(row, img);
 
 	ui->listView->selectionModel()->select(indexI,
 					QItemSelectionModel::ClearAndSelect |
@@ -219,8 +225,11 @@ void ItemsDock::selectPrevious(void)
 							  model->rowCount() - 1 :
 							  index.row() - 1;
 
-	const auto indexI = model->index(row, 0);
-	const auto indexP = model->index(row, 1);
+	const int uid = model->fieldIndex("id");
+	const int img = model->fieldIndex("path");
+
+	const auto indexI = model->index(row, uid);
+	const auto indexP = model->index(row, img);
 
 	ui->listView->selectionModel()->select(indexI,
 					QItemSelectionModel::ClearAndSelect |

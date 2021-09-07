@@ -55,9 +55,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 	filter = new FilterDialog(database, this);
 
-	addDockWidget(Qt::TopDockWidgetArea, image);
+	addDockWidget(Qt::RightDockWidgetArea, image);
 	addDockWidget(Qt::LeftDockWidgetArea, items);
-	addDockWidget(Qt::RightDockWidgetArea, meta);
+	addDockWidget(Qt::LeftDockWidgetArea, meta);
 
 	Settings.beginGroup("Window");
 	setTabPosition(Qt::AllDockWidgetAreas, QTabWidget::TabPosition::North);

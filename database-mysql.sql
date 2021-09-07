@@ -30,7 +30,7 @@ CREATE TABLE main
   id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   path varchar(64) NOT NULL,
   user int(10) UNSIGNED DEFAULT NULL,
-  time datetime DEFAULT CURRENT_TIMESTAMP(),
+  time datetime DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY (path),
   KEY (user)
