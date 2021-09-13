@@ -63,6 +63,8 @@ void ImageDock::wheelEvent(QWheelEvent* event)
 {
 	QWidget::wheelEvent(event);
 
+	if (currentImage.isNull()) return;
+
 	if (!currentImage.isNull() && QApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
 	{
 		if (event->angleDelta().y() > 0) zoomIn();
@@ -74,7 +76,7 @@ void ImageDock::setImage(const QString& path)
 {
 	while (model->rowCount()) model->removeRow(0);
 
-	QImageReader reader(prefix + path);
+	QImageReader reader(current = prefix + path);
 	int imageId = 0;
 
 	list.clear();
@@ -134,30 +136,40 @@ void ImageDock::setIndex(int index)
 
 void ImageDock::nextImage(void)
 {
+	if (currentImage.isNull()) return;
+
 	if (currentIndex + 1 >= list.size()) setIndex(0);
 	else setIndex(currentIndex + 1);
 }
 
 void ImageDock::prevImage(void)
 {
+	if (currentImage.isNull()) return;
+
 	if (currentIndex - 1 < 0) setIndex(list.size() - 1);
 	else setIndex(currentIndex - 1);
 }
 
 void ImageDock::zoomIn(void)
 {
+	if (currentImage.isNull()) return;
+
 	ui->label->setPixmap(currentImage.transformed(QTransform().rotate(rotation))
 					 .scaledToHeight(int((scale += 0.1) * currentImage.height())));
 }
 
 void ImageDock::zoomOut(void)
 {
+	if (currentImage.isNull()) return;
+
 	ui->label->setPixmap(currentImage.transformed(QTransform().rotate(rotation))
 					 .scaledToHeight(int((scale -= 0.1) * currentImage.height())));
 }
 
 void ImageDock::zoomOrg(void)
 {
+	if (currentImage.isNull()) return;
+
 	ui->label->setPixmap(currentImage.transformed(QTransform().rotate(rotation)));
 
 	scale = 1.0;
@@ -165,6 +177,8 @@ void ImageDock::zoomOrg(void)
 
 void ImageDock::zoomFit(void)
 {
+	if (currentImage.isNull()) return;
+
 	auto Img = currentImage.transformed(QTransform().rotate(rotation))
 			 .scaled(ui->scrollArea->size(), Qt::KeepAspectRatio);
 
@@ -175,6 +189,8 @@ void ImageDock::zoomFit(void)
 
 void ImageDock::rotateLeft(void)
 {
+	if (currentImage.isNull()) return;
+
 	if ((rotation -= 90) <= -360) rotation = 0;
 
 	ui->label->setPixmap(currentImage.transformed(QTransform().rotate(rotation))
@@ -183,10 +199,27 @@ void ImageDock::rotateLeft(void)
 
 void ImageDock::rotateRight(void)
 {
+	if (currentImage.isNull()) return;
+
 	if ((rotation += 90) >= 360) rotation = 0;
 
 	ui->label->setPixmap(currentImage.transformed(QTransform().rotate(rotation))
 					 .scaledToHeight(int(scale * currentImage.height())));
+}
+
+void ImageDock::openFile(void)
+{
+	if (currentImage.isNull()) return;
+
+	QDesktopServices::openUrl(QUrl::fromLocalFile(current));
+}
+
+void ImageDock::openFolder(void)
+{
+	if (currentImage.isNull()) return;
+
+	const QString path = QFileInfo(current).dir().absolutePath();
+	QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }
 
 void ImageDock::clear(void)

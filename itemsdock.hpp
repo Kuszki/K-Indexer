@@ -43,6 +43,9 @@ class ItemsDock : public QDockWidget
 
 		QString limiter;
 
+		int uidIndex = -1;
+		int imgIndex = -1;
+
 		int userID = 0;
 		int sheetID = 0;
 

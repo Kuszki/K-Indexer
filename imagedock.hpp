@@ -41,6 +41,7 @@ class ImageDock : public QDockWidget
 		QList<QPixmap> list;
 
 		QString prefix;
+		QString current;
 
 		QPixmap currentImage;
 		int currentIndex = 0;
@@ -74,6 +75,9 @@ class ImageDock : public QDockWidget
 
 		void rotateLeft(void);
 		void rotateRight(void);
+
+		void openFile(void);
+		void openFolder(void);
 
 		void clear(void);
 

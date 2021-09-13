@@ -123,7 +123,7 @@ void ThreadWorker::exportData(const QString& path, const QVariantList& users, in
 	else emit onFinish(tr("Unable to fetch data"), 1);
 }
 
-void ThreadWorker::importData(const QString& path, const QString& logs, QVariantMap map, bool header)
+void ThreadWorker::importData(const QString& path, const QString& logs, QVariantMap map, bool header, int user)
 {
 	const char sep = path.endsWith(".csv") ? ';' : '\t';
 	const int keyID = map.take("path").toInt();
@@ -191,7 +191,7 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 
 	if (!rows.isEmpty()) emit onSetup(0, rows.size());
 
-	query.prepare(QString("UPDATE main SET %1 WHERE path = ?").arg(sets.join(", ")));
+	query.prepare(QString("UPDATE main SET %1 WHERE path = ? AND (user = ? OR 0 = ?)").arg(sets.join(", ")));
 
 	for (auto i = found.cbegin(); i != found.cend(); ++i) if (rows.contains(i.key()))
 	{
@@ -209,8 +209,10 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 		}
 
 		query.addBindValue(name);
+		query.addBindValue(user);
+		query.addBindValue(user);
 
-		if (query.exec()) total += 1;
+		if (query.exec()) total += query.numRowsAffected();
 		else if (logfile.isOpen())
 		{
 			logstream << name << ": " << query.lastError().text() << Qt::endl;

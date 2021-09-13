@@ -144,6 +144,12 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->actionRotateright, &QAction::triggered,
 		   image, &ImageDock::rotateRight);
 
+	connect(ui->actionOpenfile, &QAction::triggered,
+		   image, &ImageDock::openFile);
+
+	connect(ui->actionOpenfolder, &QAction::triggered,
+		   image, &ImageDock::openFolder);
+
 	connect(ui->actionSave, &QAction::triggered,
 		   meta, &MetaDock::saveRecord);
 
@@ -158,6 +164,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 	connect(ui->actionFind, &QAction::triggered,
 		   filter, &FilterDialog::show);
+
+	connect(this, &MainWindow::onDatabaseLogout,
+		   filter, &FilterDialog::close);
 
 	connect(this, &MainWindow::onDatabaseLogin,
 		   items, &ItemsDock::setupDatabase);
@@ -408,7 +417,9 @@ void MainWindow::unlockActionClicked(void)
 	{
 		if (query.next())
 		{
-			code = query.value(1).toInt() == userID ? 0 : 1;
+			code = query.value(1).toInt() == userID ||
+				  userID == 0 ?
+					  0 : 1;
 		}
 		else code = 2;
 	}
@@ -445,7 +456,7 @@ void MainWindow::nextjobActionClicked(void)
 
 	query.prepare("SELECT id, path FROM main WHERE "
 			    "id NOT IN (SELECT sheet FROM locks) AND "
-			    "(user IS NULL OR user = 0)");
+			    "user IS NULL");
 
 	insert.prepare("INSERT INTO locks (sheet, user) VALUES (?, ?)");
 
@@ -457,7 +468,7 @@ void MainWindow::nextjobActionClicked(void)
 		if (insert.exec())
 		{
 			const QString path = query.value(1).toString();
-			sheetID = query.value(0).toInt();
+			const int id = query.value(0).toInt();
 
 			insert.finish();
 			insert.clear();
@@ -466,13 +477,13 @@ void MainWindow::nextjobActionClicked(void)
 			query.clear();
 
 			items->refreshList();
-			items->selectItem(sheetID);
-			meta->setupRecord(sheetID);
+			items->selectItem(id);
+			meta->setupRecord(id);
 			image->setImage(path);
 
 			ui->statusbar->showMessage(tr("Document locked"));
 
-			return;
+			recordIndexSelected(id); return;
 		}
 	}
 
@@ -526,9 +537,10 @@ void MainWindow::importActionClicked(void)
 
 void MainWindow::queryActionClicked(void)
 {
-	SqleditorDialog* dialog = new SqleditorDialog(database, this); dialog->show();
+	SqleditorDialog* dialog = new SqleditorDialog(database, userID == 0, this); dialog->show();
 
 	connect(dialog, &SqleditorDialog::finished, dialog, &SqleditorDialog::deleteLater);
+	connect(this, &MainWindow::onDatabaseLogout, dialog, &SqleditorDialog::deleteLater);
 }
 
 void MainWindow::aboutActionClicked(void)
@@ -655,7 +667,7 @@ void MainWindow::performImport(const QString& path, const QString& logs, const Q
 
 	connect(this, &MainWindow::onImportRequest, worker, &ThreadWorker::importData);
 
-	emit onImportRequest(path, logs, map, header);
+	emit onImportRequest(path, logs, map, header, userID);
 }
 
 void MainWindow::finishExport(const QString& msg, int code)

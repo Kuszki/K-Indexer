@@ -96,6 +96,9 @@
     <addaction name="separator"/>
     <addaction name="actionRotateleft"/>
     <addaction name="actionRotateright"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpenfile"/>
+    <addaction name="actionOpenfolder"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -167,6 +170,9 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionOpenfile"/>
+   <addaction name="actionOpenfolder"/>
+   <addaction name="separator"/>
    <addaction name="actionPageup"/>
    <addaction name="actionPagedown"/>
    <addaction name="separator"/>
@@ -523,13 +529,32 @@
   </action>
   <action name="actionCommit">
    <property name="icon">
-    <iconset theme="emblem-default"/>
+    <iconset theme="emblem-default">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Commit</string>
    </property>
    <property name="shortcut">
     <string>Alt+Return</string>
+   </property>
+  </action>
+  <action name="actionOpenfile">
+   <property name="icon">
+    <iconset theme="window-new">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Open file</string>
+   </property>
+  </action>
+  <action name="actionOpenfolder">
+   <property name="icon">
+    <iconset theme="view-restore">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Open folder</string>
    </property>
   </action>
  </widget>

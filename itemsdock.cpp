@@ -81,11 +81,8 @@ void ItemsDock::selectionChanged(const QModelIndex& item)
 {
 	if (!model || !item.isValid()) return;
 
-	const int uid = model->fieldIndex("id");
-	const int img = model->fieldIndex("path");
-
-	const auto indexI = model->index(item.row(), uid, item.parent());
-	const auto indexP = model->index(item.row(), img, item.parent());
+	const auto indexI = model->index(item.row(), uidIndex, item.parent());
+	const auto indexP = model->index(item.row(), imgIndex, item.parent());
 
 	ui->listView->selectionModel()->select(indexI,
 					QItemSelectionModel::ClearAndSelect |
@@ -108,6 +105,10 @@ void ItemsDock::setupDatabase(int user)
 	model->setTable("main");
 	model->select();
 
+	const QSqlRecord rec = database.record("main");
+	uidIndex = rec.indexOf("id");
+	imgIndex = rec.indexOf("path");
+
 	ui->listView->setModel(model);
 	ui->listView->setModelColumn(1);
 
@@ -115,6 +116,8 @@ void ItemsDock::setupDatabase(int user)
 	ui->typesCombo->setEnabled(true);
 	ui->searchEdit->setEnabled(true);
 	ui->refreshButton->setEnabled(true);
+	ui->clearButton->setEnabled(true);
+	ui->searchButton->setEnabled(true);
 
 	connect(ui->listView->selectionModel(),
 		   &QItemSelectionModel::currentRowChanged,
@@ -127,14 +130,20 @@ void ItemsDock::clearDatabase(void)
 	ui->typesCombo->setEnabled(false);
 	ui->searchEdit->setEnabled(false);
 	ui->refreshButton->setEnabled(false);
+	ui->clearButton->setEnabled(false);
+	ui->searchButton->setEnabled(false);
 
 	if (model)
 	{
+		ui->listView->clearSelection();
+
 		ui->listView->model()->deleteLater();
 		ui->listView->selectionModel()->deleteLater();
 
 		model = nullptr;
 	}
+
+	userID = sheetID = -1;
 }
 
 void ItemsDock::refreshList(void)
@@ -151,11 +160,13 @@ void ItemsDock::refreshList(void)
 		filter.append(QString("(%1)").arg(limiter));
 
 	if (index == 1)
-		filter.append(QString("id IN (SELECT sheet FROM locks WHERE user = %1 OR %1 = 0)").arg(userID));
+		filter.append(QString("id NOT IN (SELECT sheet FROM locks) AND (user = %1 OR %1 = 0) AND user IS NOT NULL").arg(userID));
 	else if (index == 2)
-		filter.append(QString("id NOT IN (SELECT sheet FROM locks) AND (user = %1 OR %1 = 0)").arg(userID));
+		filter.append(QString("id IN (SELECT sheet FROM locks WHERE user = %1 OR %1 = 0)").arg(userID));
 	else if (index == 3)
-		filter.append(QString("id IN (SELECT id FROM invalid) AND (user = %1 OR %1 = 0)").arg(userID));
+		filter.append(QString("id IN (SELECT id FROM invalid) AND (user = %1 OR %1 = 0) AND user IS NOT NULL").arg(userID));
+	else if (index == 4)
+		filter.append(QString("id NOT IN (SELECT sheet FROM locks) AND user IS NULL"));
 
 	model->setFilter(filter.join(" AND "));
 	model->select();
@@ -198,11 +209,8 @@ void ItemsDock::selectNext(void)
 	if (index.isValid()) row = (index.row() + 1) < model->rowCount() ?
 							  index.row() + 1 : 0;
 
-	const int uid = model->fieldIndex("id");
-	const int img = model->fieldIndex("path");
-
-	const auto indexI = model->index(row, uid);
-	const auto indexP = model->index(row, img);
+	const auto indexI = model->index(row, uidIndex);
+	const auto indexP = model->index(row, imgIndex);
 
 	ui->listView->selectionModel()->select(indexI,
 					QItemSelectionModel::ClearAndSelect |
@@ -225,11 +233,8 @@ void ItemsDock::selectPrevious(void)
 							  model->rowCount() - 1 :
 							  index.row() - 1;
 
-	const int uid = model->fieldIndex("id");
-	const int img = model->fieldIndex("path");
-
-	const auto indexI = model->index(row, uid);
-	const auto indexP = model->index(row, img);
+	const auto indexI = model->index(row, uidIndex);
+	const auto indexP = model->index(row, imgIndex);
 
 	ui->listView->selectionModel()->select(indexI,
 					QItemSelectionModel::ClearAndSelect |

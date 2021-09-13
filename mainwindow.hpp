@@ -141,7 +141,7 @@ class MainWindow : public QMainWindow
 		void onImportRequest(const QString&,
 						 const QString&,
 						 const QVariantMap&,
-						 bool);
+						 bool, int);
 
 };
 

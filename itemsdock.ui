@@ -102,17 +102,22 @@
       </item>
       <item>
        <property name="text">
-        <string>Locked</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
         <string>Done</string>
        </property>
       </item>
       <item>
        <property name="text">
+        <string>Locked</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
         <string>Invalid</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Unassigned</string>
        </property>
       </item>
      </widget>

@@ -46,6 +46,7 @@ class SqleditorDialog : public QDialog
 		QSqlTableModel* tab;
 
 		bool trans = false;
+		bool admin = false;
 
 	protected:
 
@@ -54,8 +55,12 @@ class SqleditorDialog : public QDialog
 	public:
 
 		explicit SqleditorDialog(QSqlDatabase& database,
+							bool isadmin = false,
 							QWidget *parent = nullptr);
 		virtual ~SqleditorDialog(void) override;
+
+		void setAdmin(bool isadmin);
+		bool isAdmin(void) const;
 
 	private slots:
 

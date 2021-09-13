@@ -51,7 +51,8 @@ class ThreadWorker : public QObject
 		void importData(const QString& path,
 					 const QString& logs,
 					 QVariantMap map,
-					 bool header);
+					 bool header,
+					 int user = 0);
 
 	signals:
 

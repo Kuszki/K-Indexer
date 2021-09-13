@@ -80,7 +80,7 @@ void MetaDock::lockWidgets(bool lock)
 
 		const bool r = model->headerData(id, Qt::Horizontal, Qt::UserRole).toInt() & 0b100;
 
-		widgets[i]->setEnabled(!lock && !r);
+		widgets[i]->setEnabled((userID == 0 || !lock) && !r);
 	}
 }
 
@@ -93,6 +93,10 @@ void MetaDock::setupDatabase(int user)
 	model->setEditStrategy(QSqlTableModel::OnManualSubmit);
 	model->setTable("main");
 	model->setFilter("main.id = 0");
+
+	const QSqlRecord rec = database.record("main");
+	usrIndex = rec.indexOf("user");
+	timIndex = rec.indexOf("time");
 
 	QSqlQuery query(database);
 
@@ -131,7 +135,8 @@ void MetaDock::setupDatabase(int user)
 
 	for (int i = 1; i < record.count(); ++i)
 	{
-		if (model->headerData(i, Qt::Horizontal, Qt::UserRole).toInt() & 0b010) continue;
+		if (model->headerData(i, Qt::Horizontal, Qt::UserRole).toInt() & 0b010)
+			if (user != 0) continue;
 
 		const bool r = model->headerData(i, Qt::Horizontal, Qt::UserRole).toInt() & 0b100;
 
@@ -264,11 +269,13 @@ void MetaDock::clearDatabase(void)
 	labels.clear();
 	widgets.clear();
 	indexes.clear();
+
+	sheetID = userID = -1;
 }
 
 void MetaDock::setupRecord(int id)
 {
-	if (!model || !mapper || id == sheetID) return;
+	if (!model || !mapper) return;
 	else if (mapper->submit() && isChanged())
 	{
 		saveRecord();
@@ -285,7 +292,7 @@ void MetaDock::setupRecord(int id)
 
 	const bool ok = model->rowCount() == 1;
 
-	locked = query.exec() && query.next();
+	locked = userID == 0 || (query.exec() && query.next());
 	sheetID = ok ? id : 0;
 	values.clear();
 
@@ -315,13 +322,10 @@ bool MetaDock::saveRecord(void)
 		emit onRecordSave(0); return true;
 	}
 
-	const int usr = model->fieldIndex("user");
-	const int tim = model->fieldIndex("time");
-
-	if (userID > 0 || model->data(model->index(0, usr)).isNull())
+	if (userID > 0 || model->data(model->index(0, usrIndex)).isNull())
 	{
-		model->setData(model->index(0, usr), userID);
-		model->setData(model->index(0, tim), QDateTime::currentDateTime());
+		model->setData(model->index(0, usrIndex), userID);
+		model->setData(model->index(0, timIndex), QDateTime::currentDateTime());
 	}
 
 	bool ok = model->submitAll();

@@ -53,6 +53,9 @@ class MetaDock : public QDockWidget
 		int sheetID = 0;
 		int userID = 0;
 
+		int usrIndex = -1;
+		int timIndex = -1;
+
 		bool locked = true;
 
 	public:

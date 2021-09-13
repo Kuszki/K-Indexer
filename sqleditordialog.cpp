@@ -21,10 +21,11 @@
 #include "sqleditordialog.hpp"
 #include "ui_sqleditordialog.h"
 
-SqleditorDialog::SqleditorDialog(QSqlDatabase& database, QWidget *parent)
+SqleditorDialog::SqleditorDialog(QSqlDatabase& database, bool isadmin, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::SqleditorDialog)
 	, db(database)
+	, admin(isadmin)
 {
 	ui->setupUi(this); new SqlHighlighter(ui->queryEdit->document());
 
@@ -60,6 +61,12 @@ SqleditorDialog::SqleditorDialog(QSqlDatabase& database, QWidget *parent)
 	ui->helperCombo->setModel(helper);
 	ui->helperView->setModel(helper);
 	ui->helperView->setRootIndex(helper->index(0, 0));
+
+	ui->saveButton->setEnabled(isadmin);
+	ui->undoButton->setEnabled(isadmin);
+
+	if (!isadmin)
+		ui->tableView->setEditTriggers(QTableView::NoEditTriggers);
 
 	connect(ui->tabsView->selectionModel(),
 		   &QItemSelectionModel::currentRowChanged,
@@ -105,6 +112,28 @@ SqleditorDialog::~SqleditorDialog(void)
 	delete ui;
 }
 
+void SqleditorDialog::setAdmin(bool isadmin)
+{
+	const bool tmodel = ui->tableView->model() == tab;
+	const bool selrow = tmodel && !ui->tableView
+					->selectionModel()
+					->selectedRows()
+					.isEmpty();
+
+	ui->saveButton->setEnabled(isadmin);
+	ui->undoButton->setEnabled(isadmin);
+
+	ui->addButton->setEnabled(tmodel && isadmin);
+	ui->delButton->setEnabled(selrow && isadmin);
+
+	admin = isadmin;
+}
+
+bool SqleditorDialog::isAdmin(void) const
+{
+	return admin;
+}
+
 void SqleditorDialog::switchModel(QAbstractItemModel* model)
 {
 	if (ui->tableView->model() == model) return;
@@ -113,7 +142,7 @@ void SqleditorDialog::switchModel(QAbstractItemModel* model)
 	ui->tableView->setModel(model);
 
 	ui->delButton->setEnabled(false);
-	ui->addButton->setEnabled(model == tab);
+	ui->addButton->setEnabled(model == tab && admin);
 
 	connect(ui->tableView->selectionModel(),
 		   &QItemSelectionModel::selectionChanged,
@@ -122,14 +151,27 @@ void SqleditorDialog::switchModel(QAbstractItemModel* model)
 
 void SqleditorDialog::executeActionClicked(void)
 {
-	const QString text = ui->queryEdit->toPlainText()
-					 .replace(QRegExp("\\s+"), " ")
-					 .trimmed();
+	QStringList lines = ui->queryEdit->toPlainText().split('\n');
+
+	lines.replaceInStrings(QRegExp("--.*"), QString());
+
+	QString text = lines.join(' ').simplified();
 
 	if (ui->tableView->model() == tab)
 		tab->revertAll();
 
-	if (text.isEmpty()) return;
+	if (!admin && text.contains(';'))
+		text = text.left(text.indexOf(';'));
+
+	if (text.isEmpty())
+	{
+		if (ui->tableView->model() == tab) tab->select();
+		else
+		{
+			list->setStringList({ tr("No query selected") });
+			this->switchModel(list);
+		}
+	}
 	else if (text.startsWith("where ", Qt::CaseInsensitive))
 	{
 		tab->setFilter(text.mid(6));
@@ -153,7 +195,7 @@ void SqleditorDialog::executeActionClicked(void)
 		else
 			this->switchModel(res);
 	}
-	else
+	else if (admin)
 	{
 		if (!trans) trans = db.transaction();
 		QSqlQuery query(text, db);
@@ -168,6 +210,11 @@ void SqleditorDialog::executeActionClicked(void)
 							  nullptr, query.numRowsAffected()) });
 		}
 
+		this->switchModel(list);
+	}
+	else
+	{
+		list->setStringList({ tr("No privileges to execute this query") });
 		this->switchModel(list);
 	}
 }
@@ -209,7 +256,7 @@ void SqleditorDialog::deleteButtonClicked(void)
 		return a.row() > b.row();
 	});
 
-	for (const auto r : rows) tab->removeRow(r.row(), r.parent());
+	for (const auto& r : rows) tab->removeRow(r.row(), r.parent());
 
 	ui->delButton->setEnabled(false);
 }
@@ -233,10 +280,11 @@ void SqleditorDialog::tableItemSelected(const QModelIndex& index)
 
 void SqleditorDialog::recordItemSelected(void)
 {
-	const bool mok = ui->tableView->model() == tab;
-	const auto rows = ui->tableView->selectionModel()->selectedRows();
+	const bool ok = admin &&
+				 ui->tableView->model() == tab &&
+				 ui->tableView->selectionModel()->selectedRows().isEmpty();
 
-	ui->delButton->setEnabled(mok && !rows.isEmpty());
+	ui->delButton->setEnabled(ok);
 }
 
 void SqleditorDialog::helperIndexChanged(int Index)

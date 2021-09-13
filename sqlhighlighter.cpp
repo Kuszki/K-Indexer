@@ -31,7 +31,7 @@ const QStringList SqlHighlighter::SqlKeywords =
 	"LIMIT", "NOT", "NULL", "OR", "ORDER", "OUTER", "PRIMARY",
 	"PROCEDURE", "REPLACE", "RIGHT", "ROWNUM", "SELECT",
 	"SET", "TABLE", "TOP", "TRUNCATE", "UNION", "UNIQUE",
-	"UPDATE", "VALUES", "VIEW", "WHERE"
+	"UPDATE", "VALUES", "VIEW", "WHERE", "ON"
 
 };
 
@@ -96,7 +96,7 @@ SqlHighlighter::SqlHighlighter(QTextDocument* Parent)
 	Rule.Format.setForeground(Qt::darkRed);
 	Rule.Format.setFontWeight(QFont::Bold);
 
-	Rule.Expresion = QRegExp("\"(?:\\.|(\\\\\\\")|[^\\\"\"\\n])*\"");
+	Rule.Expresion = QRegExp("\'(?:\\.|(\\\\\\\')|[^\\\'\'\\n])*\'");
 
 	Rules.insert(STRINGS, Rule);
 
@@ -104,7 +104,7 @@ SqlHighlighter::SqlHighlighter(QTextDocument* Parent)
 	Rule.Format.setFontWeight(QFont::Normal);
 	Rule.Format.setFontItalic(true);
 
-	Rule.Expresion = QRegExp("--\\s.*");
+	Rule.Expresion = QRegExp("--.*");
 
 	Rules.insert(COMMENTS, Rule);
 }
