@@ -148,6 +148,8 @@ void ItemsDock::clearDatabase(void)
 
 void ItemsDock::refreshList(void)
 {
+	if (!model) return;
+
 	const QString test = ui->searchEdit->text().trimmed().replace('\'', "\'\'");
 	const int index = ui->typesCombo->currentIndex();
 
@@ -171,9 +173,6 @@ void ItemsDock::refreshList(void)
 	model->setFilter(filter.join(" AND "));
 	model->select();
 
-	while (model->canFetchMore())
-		model->fetchMore();
-
 	selectItem(sheetID);
 }
 
@@ -182,9 +181,9 @@ void ItemsDock::selectItem(int id)
 	if (model) ui->listView->selectionModel()->clearSelection();
 	else return;
 
-	for (int i = 0; i < model->rowCount(); ++i)
+	if (id > 0) for (int i = 0; i < model->rowCount(); ++i)
 	{
-		const auto in = model->index(i, 0);
+		const auto in = model->index(i, uidIndex);
 
 		if (model->data(in).toInt() == id)
 		{
@@ -193,6 +192,13 @@ void ItemsDock::selectItem(int id)
 				QItemSelectionModel::Rows);
 
 			break;
+		}
+		else if (i == model->rowCount() - 1)
+		{
+			if (model->canFetchMore())
+			{
+				model->fetchMore();
+			}
 		}
 	}
 

@@ -214,6 +214,9 @@ void FilterDialog::setupDialog(int user)
 
 	QSqlQuery query(database), select(database);
 
+	query.setForwardOnly(true);
+	select.setForwardOnly(true);
+
 	query.prepare("SELECT colindex, srctable, srckey, srcval FROM joins");
 
 	if (query.exec()) while (query.next()) if (fields.contains(query.value(0).toInt()))

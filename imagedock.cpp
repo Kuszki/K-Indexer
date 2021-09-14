@@ -64,8 +64,7 @@ void ImageDock::wheelEvent(QWheelEvent* event)
 	QWidget::wheelEvent(event);
 
 	if (currentImage.isNull()) return;
-
-	if (!currentImage.isNull() && QApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
+	else if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
 	{
 		if (event->angleDelta().y() > 0) zoomIn();
 		else if (event->angleDelta().y() < 0) zoomOut();
@@ -136,7 +135,7 @@ void ImageDock::setIndex(int index)
 
 void ImageDock::nextImage(void)
 {
-	if (currentImage.isNull()) return;
+	if (list.isEmpty()) return;
 
 	if (currentIndex + 1 >= list.size()) setIndex(0);
 	else setIndex(currentIndex + 1);
@@ -144,7 +143,7 @@ void ImageDock::nextImage(void)
 
 void ImageDock::prevImage(void)
 {
-	if (currentImage.isNull()) return;
+	if (list.isEmpty()) return;
 
 	if (currentIndex - 1 < 0) setIndex(list.size() - 1);
 	else setIndex(currentIndex - 1);
@@ -209,14 +208,14 @@ void ImageDock::rotateRight(void)
 
 void ImageDock::openFile(void)
 {
-	if (currentImage.isNull()) return;
+	if (list.isEmpty()) return;
 
 	QDesktopServices::openUrl(QUrl::fromLocalFile(current));
 }
 
 void ImageDock::openFolder(void)
 {
-	if (currentImage.isNull()) return;
+	if (list.isEmpty()) return;
 
 	const QString path = QFileInfo(current).dir().absolutePath();
 	QDesktopServices::openUrl(QUrl::fromLocalFile(path));

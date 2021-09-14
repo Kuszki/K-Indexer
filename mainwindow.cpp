@@ -49,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
 	wthread = new QThread(this);
 	wthread->start();
 
+	orgTitle = windowTitle();
+
 	image = new ImageDock(this);
 	items = new ItemsDock(database, this);
 	meta = new MetaDock(database, this);
@@ -274,6 +276,7 @@ void MainWindow::openDatabase(const QString& driver, const QString& server, cons
 
 		QSqlQuery query(database);
 
+		query.setForwardOnly(true);
 		query.prepare("SELECT id FROM users WHERE name = ? AND pass = ?");
 		query.addBindValue(user);
 		query.addBindValue(hash);
@@ -296,6 +299,11 @@ void MainWindow::openDatabase(const QString& driver, const QString& server, cons
 
 	if (userID >= 0)
 	{
+		setWindowTitle(QString("%1 - %2@%3")
+					.arg(orgTitle)
+					.arg(user)
+					.arg(name));
+
 		emit onDatabaseLogin(userID);
 		emit onImagepathUpdate(path);
 	}
@@ -331,6 +339,8 @@ void MainWindow::disconnectActionClicked(void)
 	emit onDatabaseLogout();
 
 	database.close();
+
+	setWindowTitle(orgTitle);
 }
 
 void MainWindow::lockActionClicked(void)
@@ -339,6 +349,8 @@ void MainWindow::lockActionClicked(void)
 
 	QSqlQuery query(database);
 	int code = 0;
+
+	query.setForwardOnly(true);
 
 	query.prepare("SELECT sheet, user FROM locks WHERE sheet = ?");
 	query.addBindValue(sheetID);
@@ -373,7 +385,6 @@ void MainWindow::lockActionClicked(void)
 		if (query.next())
 		{
 			code = query.value(0).toInt() == userID ||
-				  query.value(0).toInt() == 0 ||
 				  query.value(0).isNull() ||
 				  userID == 0 ? 0 : 3;
 		}
@@ -409,6 +420,8 @@ void MainWindow::unlockActionClicked(void)
 
 	QSqlQuery query(database);
 	int code = 0;
+
+	query.setForwardOnly(true);
 
 	query.prepare("SELECT sheet, user FROM locks WHERE sheet = ?");
 	query.addBindValue(sheetID);
@@ -454,9 +467,11 @@ void MainWindow::nextjobActionClicked(void)
 {
 	QSqlQuery query(database), insert(database);
 
-	query.prepare("SELECT id, path FROM main WHERE "
-			    "id NOT IN (SELECT sheet FROM locks) AND "
-			    "user IS NULL");
+	query.setForwardOnly(true);
+	insert.setForwardOnly(true);
+
+	query.prepare("SELECT id, path FROM main WHERE user IS NULL AND "
+			    "id NOT IN (SELECT sheet FROM locks)");
 
 	insert.prepare("INSERT INTO locks (sheet, user) VALUES (?, ?)");
 
@@ -502,6 +517,7 @@ void MainWindow::exportActionClicked(void)
 	QSqlQuery query(database);
 	QVariantMap map;
 
+	query.setForwardOnly(true);
 	query.prepare("SELECT id, name FROM users WHERE id = ? OR 0 = ?");
 	query.addBindValue(userID);
 	query.addBindValue(userID);

@@ -38,13 +38,13 @@ MetaDock::~MetaDock(void)
 
 bool MetaDock::isChanged(void) const
 {
-	if (!model && model->rowCount() != 1) return false;
+	if (!model || model->rowCount() != 1 || values.isEmpty()) return false;
 	else for (int i = 0; i < model->columnCount(); ++i)
 	{
 		auto index = model->index(0, i);
 		auto data = model->data(index);
 
-		if (values[i] != data) return true;
+		if (values.value(i, data) != data) return true;
 	}
 
 	return false;
@@ -80,7 +80,7 @@ void MetaDock::lockWidgets(bool lock)
 
 		const bool r = model->headerData(id, Qt::Horizontal, Qt::UserRole).toInt() & 0b100;
 
-		widgets[i]->setEnabled((userID == 0 || !lock) && !r);
+		widgets[i]->setEnabled(!lock && !r);
 	}
 }
 
@@ -99,6 +99,8 @@ void MetaDock::setupDatabase(int user)
 	timIndex = rec.indexOf("time");
 
 	QSqlQuery query(database);
+
+	query.setForwardOnly(true);
 
 	query.prepare("SELECT colindex, srctable, srckey, srcval FROM joins");
 
@@ -255,7 +257,7 @@ void MetaDock::setupDatabase(int user)
 
 void MetaDock::clearDatabase(void)
 {
-	if (model) saveRecord();
+	if (model && values.size()) saveRecord();
 
 	for (auto w : labels) w->deleteLater();
 	for (auto w : widgets) w->deleteLater();
@@ -283,6 +285,8 @@ void MetaDock::setupRecord(int id)
 
 	QSqlQuery query(database);
 
+	query.setForwardOnly(true);
+
 	query.prepare("SELECT sheet FROM locks WHERE user = ? AND sheet = ?");
 	query.addBindValue(userID);
 	query.addBindValue(id);
@@ -292,7 +296,7 @@ void MetaDock::setupRecord(int id)
 
 	const bool ok = model->rowCount() == 1;
 
-	locked = userID == 0 || (query.exec() && query.next());
+	locked = query.exec() && query.next();
 	sheetID = ok ? id : 0;
 	values.clear();
 

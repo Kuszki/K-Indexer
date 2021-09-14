@@ -263,7 +263,8 @@ void FilterWidget::setParameters(const QVariantMap& Field)
 		Operators.removeOne("LIKE"); Operators.removeOne("NOT LIKE");
 	}
 
-	if (ftype != QVariant::Int && ftype != QVariant::Double &&
+	if (ftype != QVariant::UInt && ftype != QVariant::Int &&
+	    ftype != QVariant::Double &&
 	    ftype != QVariant::Date && ftype != QVariant::DateTime)
 	{
 		Operators.removeOne("BETWEEN");
@@ -331,6 +332,20 @@ void FilterWidget::setParameters(const QVariantMap& Field)
 				SpinB->setRange(INT32_MIN, INT32_MAX);
 
 				Datatype = QVariant::Int;
+			}
+			break;
+			case QVariant::UInt:
+			{
+				auto SpinA = new QSpinBox(this); Widget = SpinA;
+				auto SpinB = new QSpinBox(this); Simple = SpinB;
+
+				SpinA->setSingleStep(1);
+				SpinA->setRange(0, INT32_MAX);
+
+				SpinB->setSingleStep(1);
+				SpinB->setRange(0, INT32_MAX);
+
+				Datatype = QVariant::UInt;
 			}
 			break;
 			case QVariant::Bool:

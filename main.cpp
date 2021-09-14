@@ -44,6 +44,9 @@ int main(int argc, char *argv[])
 	appTranslator.load("K-Indexer_" + QLocale::system().name());
 	a.installTranslator(&appTranslator);
 
+	QVariant v("");
+	v.convert(QMetaType::Int);
+
 	MainWindow w;
 	w.show();
 

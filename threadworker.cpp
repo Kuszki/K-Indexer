@@ -34,6 +34,8 @@ void ThreadWorker::exportData(const QString& path, const QVariantList& users, in
 	QFile file(path);
 	QSqlQuery query(database);
 
+	query.setForwardOnly(true);
+
 	QSet<int> indS, indV, indL;
 
 	if (!file.open(QFile::WriteOnly | QFile::Text))
@@ -135,9 +137,11 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 	QSqlQuery query(database);
 	QTextStream logstream(&logfile);
 
-	QMap<QString, QStringList> rows;
-	QMap<QString, int> found;
+	QHash<QString, QStringList> rows;
+	QHash<QString, int> found;
 	QStringList sets;
+
+	query.setForwardOnly(true);
 
 	int step = 0, total = 0;
 
@@ -156,8 +160,6 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 		QByteArrayList array = file.readLine()
 						   .trimmed()
 						   .split(sep);
-
-
 
 		QStringList line;
 
@@ -202,7 +204,9 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 			const QString col = keys[j];
 			const int index = map[col].toInt();
 
-			QVariant val = rows[name].value(index);
+			const QString str = rows[name].value(index);
+
+			QVariant val = str.isEmpty() ? QVariant() : str;
 			val.convert(int(record.field(keys[j]).type()));
 
 			query.addBindValue(val);
@@ -234,7 +238,9 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 			const QString col = keys[j];
 			const int index = map[col].toInt();
 
-			QVariant val = i.value().value(index);
+			const QString str = i.value().value(index);
+
+			QVariant val = str.isEmpty() ? QVariant() : str;
 			val.convert(int(record.field(keys[j]).type()));
 
 			query.addBindValue(val);

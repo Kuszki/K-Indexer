@@ -62,6 +62,8 @@ class MainWindow : public QMainWindow
 		QSqlDatabase database;
 		QString imgPath;
 
+		QString orgTitle;
+
 		int sheetID = -1;
 		int userID = -1;
 

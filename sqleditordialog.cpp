@@ -282,7 +282,7 @@ void SqleditorDialog::recordItemSelected(void)
 {
 	const bool ok = admin &&
 				 ui->tableView->model() == tab &&
-				 ui->tableView->selectionModel()->selectedRows().isEmpty();
+				 !ui->tableView->selectionModel()->selectedRows().isEmpty();
 
 	ui->delButton->setEnabled(ok);
 }
@@ -302,6 +302,8 @@ void SqleditorDialog::helperIndexChanged(int Index)
 void SqleditorDialog::tableItemClicked(const QModelIndex& index)
 {
 	if (!index.isValid()) return;
+
+	ui->tableView->clearSelection();
 
 	tab->revertAll();
 	tab->setTable(index.data().toString());
