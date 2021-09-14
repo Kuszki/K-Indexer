@@ -269,17 +269,17 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
 <context>
     <name>FilterWidget</name>
     <message>
-        <location filename="filterwidget.cpp" line="280"/>
+        <location filename="filterwidget.cpp" line="281"/>
         <source>Select values</source>
         <translation>Wybierz wartości</translation>
     </message>
     <message>
-        <location filename="filterwidget.cpp" line="340"/>
+        <location filename="filterwidget.cpp" line="355"/>
         <source>Yes</source>
         <translation>Tak</translation>
     </message>
     <message>
-        <location filename="filterwidget.cpp" line="341"/>
+        <location filename="filterwidget.cpp" line="356"/>
         <source>No</source>
         <translation>Nie</translation>
     </message>
@@ -287,12 +287,12 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
 <context>
     <name>ImageDock</name>
     <message>
-        <location filename="imagedock.cpp" line="119"/>
+        <location filename="imagedock.cpp" line="118"/>
         <source>Unable to load image</source>
         <translation>Nie udało się wczytać obrazu</translation>
     </message>
     <message>
-        <location filename="imagedock.cpp" line="233"/>
+        <location filename="imagedock.cpp" line="232"/>
         <source>Select document</source>
         <translation>Wybierz dokument</translation>
     </message>
@@ -751,105 +751,105 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
         <translation>Zezwalaj na przemieszczanie</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="282"/>
+        <location filename="mainwindow.cpp" line="285"/>
         <source>User authentication error</source>
         <translation>Błąd autoryzacji użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="338"/>
+        <location filename="mainwindow.cpp" line="348"/>
         <source>Unable to lock document</source>
         <translation>Nie udało się zablokować dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="358"/>
+        <location filename="mainwindow.cpp" line="370"/>
         <source>Document is already locked</source>
         <translation>Dokument jest już zablokowany</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="361"/>
-        <location filename="mainwindow.cpp" line="431"/>
+        <location filename="mainwindow.cpp" line="373"/>
+        <location filename="mainwindow.cpp" line="444"/>
         <source>Document is locked by another user</source>
         <translation>Dokument jest zablokowany przez innego użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="364"/>
-        <location filename="mainwindow.cpp" line="389"/>
-        <location filename="mainwindow.cpp" line="403"/>
-        <location filename="mainwindow.cpp" line="437"/>
+        <location filename="mainwindow.cpp" line="376"/>
+        <location filename="mainwindow.cpp" line="400"/>
+        <location filename="mainwindow.cpp" line="414"/>
         <location filename="mainwindow.cpp" line="450"/>
+        <location filename="mainwindow.cpp" line="463"/>
         <source>Unable to execute query</source>
         <translation>Brak możliwości wykonania zapytania do bazy danych</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="386"/>
+        <location filename="mainwindow.cpp" line="397"/>
         <source>Document is assigned to another user</source>
         <translation>Dokument jest przypisany do innego użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="399"/>
-        <location filename="mainwindow.cpp" line="484"/>
+        <location filename="mainwindow.cpp" line="410"/>
+        <location filename="mainwindow.cpp" line="499"/>
         <source>Document locked</source>
         <translation>Zablokowano dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="408"/>
+        <location filename="mainwindow.cpp" line="419"/>
         <source>Unable to unlock document</source>
         <translation>Nie udało się odblokować dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="434"/>
+        <location filename="mainwindow.cpp" line="447"/>
         <source>Document is not locked</source>
         <translation>Dokument nie jest zablokowany</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="446"/>
+        <location filename="mainwindow.cpp" line="459"/>
         <source>Document unlocked</source>
         <translation>Odblokowano dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="490"/>
+        <location filename="mainwindow.cpp" line="505"/>
         <source>Unable to lock next document</source>
         <translation>Nie udało się zablokować kolejnego dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="490"/>
+        <location filename="mainwindow.cpp" line="505"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="598"/>
+        <location filename="mainwindow.cpp" line="614"/>
         <source>No changes to save</source>
         <translation>Brak zmian do zapisu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="599"/>
+        <location filename="mainwindow.cpp" line="615"/>
         <source>Data saved</source>
         <translation>Zapisano dane</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="600"/>
+        <location filename="mainwindow.cpp" line="616"/>
         <source>Unable to save data</source>
         <translation>Nie udało się zapisać danych</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="678"/>
+        <location filename="mainwindow.cpp" line="694"/>
         <source>Export error</source>
         <translation>Błąd eksportu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="681"/>
-        <location filename="mainwindow.cpp" line="684"/>
+        <location filename="mainwindow.cpp" line="697"/>
+        <location filename="mainwindow.cpp" line="700"/>
         <source>Export finished</source>
         <translation>Eksport zakończony</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="695"/>
+        <location filename="mainwindow.cpp" line="711"/>
         <source>Import error</source>
         <translation>Błąd importu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="698"/>
-        <location filename="mainwindow.cpp" line="701"/>
+        <location filename="mainwindow.cpp" line="714"/>
+        <location filename="mainwindow.cpp" line="717"/>
         <source>Import finished</source>
         <translation>Import zakończony</translation>
     </message>
@@ -951,12 +951,12 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
         <translation>Wycofaj</translation>
     </message>
     <message>
-        <location filename="sqleditordialog.cpp" line="167"/>
+        <location filename="sqleditordialog.cpp" line="171"/>
         <source>No query selected</source>
         <translation>Nie wprowadzono żadnej kwerendy</translation>
     </message>
     <message numerus="yes">
-        <location filename="sqleditordialog.cpp" line="205"/>
+        <location filename="sqleditordialog.cpp" line="209"/>
         <source>Query complete, %n row(s) affected</source>
         <translation>
             <numerusform>Zapytanie ukończone, zmodyfikowano %n wiersz</numerusform>
@@ -965,7 +965,7 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
         </translation>
     </message>
     <message>
-        <location filename="sqleditordialog.cpp" line="213"/>
+        <location filename="sqleditordialog.cpp" line="217"/>
         <source>No privileges to execute this query</source>
         <translation>Brak updawnień do wykonania zapytania</translation>
     </message>
@@ -973,17 +973,17 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
 <context>
     <name>ThreadWorker</name>
     <message>
-        <location filename="threadworker.cpp" line="41"/>
+        <location filename="threadworker.cpp" line="43"/>
         <source>Unable to create output file</source>
         <translation>Nie udało się utworzyć pliku wyjściowego</translation>
     </message>
     <message>
-        <location filename="threadworker.cpp" line="84"/>
+        <location filename="threadworker.cpp" line="86"/>
         <source>No data to export</source>
         <translation>Brak danych do eksportu</translation>
     </message>
     <message numerus="yes">
-        <location filename="threadworker.cpp" line="121"/>
+        <location filename="threadworker.cpp" line="123"/>
         <source>Exported %n row(s)</source>
         <translation>
             <numerusform>Eksportowano %n wiersz</numerusform>
@@ -992,22 +992,22 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
         </translation>
     </message>
     <message>
-        <location filename="threadworker.cpp" line="123"/>
+        <location filename="threadworker.cpp" line="125"/>
         <source>Unable to fetch data</source>
         <translation>Nie udało się pobrać danych</translation>
     </message>
     <message>
-        <location filename="threadworker.cpp" line="148"/>
+        <location filename="threadworker.cpp" line="152"/>
         <source>Unable to open input file</source>
         <translation>Nie udało się otworzyć pliku wejściowego</translation>
     </message>
     <message>
-        <location filename="threadworker.cpp" line="176"/>
+        <location filename="threadworker.cpp" line="178"/>
         <source>No data to import</source>
         <translation>Brak danych do importu</translation>
     </message>
     <message numerus="yes">
-        <location filename="threadworker.cpp" line="254"/>
+        <location filename="threadworker.cpp" line="260"/>
         <source>Imported %n row(s)</source>
         <translation>
             <numerusform>Importowano %n wiersz</numerusform>

@@ -193,9 +193,10 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 
 	if (!rows.isEmpty()) emit onSetup(0, rows.size());
 
-	query.prepare(QString("UPDATE main SET %1 WHERE path = ? AND (user = ? OR 0 = ?)").arg(sets.join(", ")));
+	if (!sets.isEmpty()) query.prepare(QString("UPDATE main SET %1 WHERE path = ? AND (user = ? OR 0 = ?)")
+								.arg(sets.join(", ")));
 
-	for (auto i = found.cbegin(); i != found.cend(); ++i) if (rows.contains(i.key()))
+	if (!sets.isEmpty()) for (auto i = found.cbegin(); i != found.cend(); ++i) if (rows.contains(i.key()))
 	{
 		const QString name = i.key();
 
@@ -225,9 +226,10 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 		emit onProgress(++step);
 	}
 
-	query.prepare(QString("INSERT INTO main (%1, path) VALUES (?%2)")
-			    .arg(keys.join(", "))
-			    .arg(QString(", ?").repeated(keys.size())));
+	if (!keys.isEmpty()) query.prepare(QString("INSERT INTO main (%1, path) VALUES (?%2)")
+								.arg(keys.join(", "))
+								.arg(QString(", ?").repeated(keys.size())));
+	else query.prepare("INSERT INTO main (path) VALUES (?)");
 
 	for (auto i = rows.cbegin(); i != rows.cend(); ++i) if (!found.contains(i.key()))
 	{
