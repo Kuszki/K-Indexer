@@ -133,6 +133,8 @@ void ItemsDock::clearDatabase(void)
 	ui->clearButton->setEnabled(false);
 	ui->searchButton->setEnabled(false);
 
+	limiter.clear();
+
 	if (model)
 	{
 		ui->listView->clearSelection();

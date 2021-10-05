@@ -1,4 +1,5 @@
 DROP VIEW IF EXISTS invalid;
+DROP VIEW IF EXISTS output;
 
 DROP TABLE IF EXISTS quers;
 DROP TABLE IF EXISTS meta;
@@ -65,6 +66,9 @@ CREATE TABLE users
 
 CREATE VIEW invalid AS
   SELECT id, user FROM main WHERE 1=0;
+  
+CREATE VIEW output AS
+  SELECT id, path FROM main;
 
 ALTER TABLE locks
   ADD CONSTRAINT locks_sheet FOREIGN KEY (sheet) REFERENCES main (id) ON DELETE CASCADE ON UPDATE CASCADE,
