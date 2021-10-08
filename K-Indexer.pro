@@ -15,6 +15,7 @@ SOURCES += \
     metadock.cpp \
     sqleditordialog.cpp \
     sqlhighlighter.cpp \
+    summarydock.cpp \
     threadworker.cpp
 
 HEADERS += \
@@ -30,6 +31,7 @@ HEADERS += \
     metadock.hpp \
     sqleditordialog.hpp \
     sqlhighlighter.hpp \
+    summarydock.hpp \
     threadworker.hpp
 
 FORMS += \
@@ -43,7 +45,8 @@ FORMS += \
     itemsdock.ui \
     mainwindow.ui \
     metadock.ui \
-    sqleditordialog.ui
+    sqleditordialog.ui \
+    summarydock.ui
 
 TRANSLATIONS += \
     K-Indexer_pl.ts

@@ -751,105 +751,105 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
         <translation>Zezwalaj na przemieszczanie</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="285"/>
+        <location filename="mainwindow.cpp" line="299"/>
         <source>User authentication error</source>
         <translation>Błąd autoryzacji użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="348"/>
+        <location filename="mainwindow.cpp" line="362"/>
         <source>Unable to lock document</source>
         <translation>Nie udało się zablokować dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="370"/>
+        <location filename="mainwindow.cpp" line="384"/>
         <source>Document is already locked</source>
         <translation>Dokument jest już zablokowany</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="373"/>
-        <location filename="mainwindow.cpp" line="444"/>
+        <location filename="mainwindow.cpp" line="387"/>
+        <location filename="mainwindow.cpp" line="458"/>
         <source>Document is locked by another user</source>
         <translation>Dokument jest zablokowany przez innego użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="376"/>
-        <location filename="mainwindow.cpp" line="400"/>
+        <location filename="mainwindow.cpp" line="390"/>
         <location filename="mainwindow.cpp" line="414"/>
-        <location filename="mainwindow.cpp" line="450"/>
-        <location filename="mainwindow.cpp" line="463"/>
+        <location filename="mainwindow.cpp" line="428"/>
+        <location filename="mainwindow.cpp" line="464"/>
+        <location filename="mainwindow.cpp" line="477"/>
         <source>Unable to execute query</source>
         <translation>Brak możliwości wykonania zapytania do bazy danych</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="397"/>
+        <location filename="mainwindow.cpp" line="411"/>
         <source>Document is assigned to another user</source>
         <translation>Dokument jest przypisany do innego użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="410"/>
-        <location filename="mainwindow.cpp" line="499"/>
+        <location filename="mainwindow.cpp" line="424"/>
+        <location filename="mainwindow.cpp" line="525"/>
         <source>Document locked</source>
         <translation>Zablokowano dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="419"/>
+        <location filename="mainwindow.cpp" line="433"/>
         <source>Unable to unlock document</source>
         <translation>Nie udało się odblokować dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="447"/>
+        <location filename="mainwindow.cpp" line="461"/>
         <source>Document is not locked</source>
         <translation>Dokument nie jest zablokowany</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="459"/>
+        <location filename="mainwindow.cpp" line="473"/>
         <source>Document unlocked</source>
         <translation>Odblokowano dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="505"/>
+        <location filename="mainwindow.cpp" line="527"/>
         <source>Unable to lock next document</source>
         <translation>Nie udało się zablokować kolejnego dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="505"/>
+        <location filename="mainwindow.cpp" line="527"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="614"/>
+        <location filename="mainwindow.cpp" line="636"/>
         <source>No changes to save</source>
         <translation>Brak zmian do zapisu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="615"/>
+        <location filename="mainwindow.cpp" line="637"/>
         <source>Data saved</source>
         <translation>Zapisano dane</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="616"/>
+        <location filename="mainwindow.cpp" line="638"/>
         <source>Unable to save data</source>
         <translation>Nie udało się zapisać danych</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="694"/>
+        <location filename="mainwindow.cpp" line="716"/>
         <source>Export error</source>
         <translation>Błąd eksportu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="697"/>
-        <location filename="mainwindow.cpp" line="700"/>
+        <location filename="mainwindow.cpp" line="719"/>
+        <location filename="mainwindow.cpp" line="722"/>
         <source>Export finished</source>
         <translation>Eksport zakończony</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="711"/>
+        <location filename="mainwindow.cpp" line="733"/>
         <source>Import error</source>
         <translation>Błąd importu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="714"/>
-        <location filename="mainwindow.cpp" line="717"/>
+        <location filename="mainwindow.cpp" line="736"/>
+        <location filename="mainwindow.cpp" line="739"/>
         <source>Import finished</source>
         <translation>Import zakończony</translation>
     </message>
@@ -971,6 +971,66 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
     </message>
 </context>
 <context>
+    <name>SummaryDock</name>
+    <message>
+        <location filename="summarydock.ui" line="18"/>
+        <source>Summary</source>
+        <translation>Podsumowanie</translation>
+    </message>
+    <message>
+        <location filename="summarydock.ui" line="37"/>
+        <source>Locked</source>
+        <translation>Zablokowane</translation>
+    </message>
+    <message>
+        <location filename="summarydock.ui" line="44"/>
+        <location filename="summarydock.ui" line="61"/>
+        <location filename="summarydock.ui" line="78"/>
+        <location filename="summarydock.ui" line="102"/>
+        <location filename="summarydock.ui" line="119"/>
+        <location filename="summarydock.ui" line="143"/>
+        <location filename="summarydock.cpp" line="46"/>
+        <location filename="summarydock.cpp" line="47"/>
+        <location filename="summarydock.cpp" line="48"/>
+        <location filename="summarydock.cpp" line="49"/>
+        <location filename="summarydock.cpp" line="50"/>
+        <location filename="summarydock.cpp" line="51"/>
+        <location filename="summarydock.cpp" line="65"/>
+        <location filename="summarydock.cpp" line="74"/>
+        <location filename="summarydock.cpp" line="82"/>
+        <location filename="summarydock.cpp" line="92"/>
+        <location filename="summarydock.cpp" line="102"/>
+        <location filename="summarydock.cpp" line="114"/>
+        <source>Unknown</source>
+        <translation>Brak danych</translation>
+    </message>
+    <message>
+        <location filename="summarydock.ui" line="54"/>
+        <source>Done</source>
+        <translation>Ukończone</translation>
+    </message>
+    <message>
+        <location filename="summarydock.ui" line="71"/>
+        <source>Left</source>
+        <translation>Pozostałe</translation>
+    </message>
+    <message>
+        <location filename="summarydock.ui" line="95"/>
+        <source>Done valid</source>
+        <translation>Ukończone poprawne</translation>
+    </message>
+    <message>
+        <location filename="summarydock.ui" line="112"/>
+        <source>Done invalid</source>
+        <translation>Ukończone niepoprawne</translation>
+    </message>
+    <message>
+        <location filename="summarydock.ui" line="136"/>
+        <source>Done today</source>
+        <translation>Ukończone dzisiaj</translation>
+    </message>
+</context>
+<context>
     <name>ThreadWorker</name>
     <message>
         <location filename="threadworker.cpp" line="43"/>
@@ -1007,7 +1067,7 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
         <translation>Brak danych do importu</translation>
     </message>
     <message numerus="yes">
-        <location filename="threadworker.cpp" line="260"/>
+        <location filename="threadworker.cpp" line="262"/>
         <source>Imported %n row(s)</source>
         <translation>
             <numerusform>Importowano %n wiersz</numerusform>

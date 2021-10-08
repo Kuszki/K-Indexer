@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
 	orgTitle = windowTitle();
 
 	image = new ImageDock(this);
+	summary = new SummaryDock(database, this);
 	items = new ItemsDock(database, this);
 	meta = new MetaDock(database, this);
 
@@ -60,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
 	addDockWidget(Qt::RightDockWidgetArea, image);
 	addDockWidget(Qt::LeftDockWidgetArea, items);
 	addDockWidget(Qt::LeftDockWidgetArea, meta);
+	addDockWidget(Qt::LeftDockWidgetArea, summary);
 
 	Settings.beginGroup("Window");
 	setTabPosition(Qt::AllDockWidgetAreas, QTabWidget::TabPosition::North);
@@ -169,6 +171,18 @@ MainWindow::MainWindow(QWidget *parent)
 
 	connect(this, &MainWindow::onDatabaseLogout,
 		   filter, &FilterDialog::close);
+
+	connect(this, &MainWindow::onDatabaseLogin,
+		   summary, &SummaryDock::setupDatabase);
+
+	connect(this, &MainWindow::onDatabaseLogout,
+		   summary, &SummaryDock::clearDatabase);
+
+	connect(this, &MainWindow::onDocumentLock,
+		   summary, &SummaryDock::refreshList);
+
+	connect(this, &MainWindow::onDocumentUnlock,
+		   summary, &SummaryDock::refreshList);
 
 	connect(this, &MainWindow::onDatabaseLogin,
 		   items, &ItemsDock::setupDatabase);
@@ -465,44 +479,52 @@ void MainWindow::unlockActionClicked(void)
 
 void MainWindow::nextjobActionClicked(void)
 {
-	QSqlQuery query(database), insert(database);
+	QList<QPair<int, QString>> list;
+	QSqlQuery query(database);
+
+	QPair<int, QString> select;
+	bool first = true;
+
+	const bool trans = database.transaction();
 
 	query.setForwardOnly(true);
-	insert.setForwardOnly(true);
+	query.prepare("SELECT id, path FROM getlock");
 
-	query.prepare("SELECT id, path FROM main WHERE user IS NULL AND "
-			    "id NOT IN (SELECT sheet FROM locks)");
-
-	insert.prepare("INSERT INTO locks (sheet, user) VALUES (?, ?)");
-
-	if (query.exec()) while (query.next())
+	if (query.exec()) while (query.next()) list.append(
 	{
-		insert.addBindValue(query.value(0));
-		insert.addBindValue(userID);
+		query.value(0).toInt(),
+		query.value(1).toString()
+	});
 
-		if (insert.exec())
+	query.prepare("INSERT INTO locks (sheet, user) VALUES (?, ?)");
+
+	for (const auto& p : list)
+	{
+		query.addBindValue(p.first);
+		query.addBindValue(userID);
+
+		if (query.exec() && first)
 		{
-			const QString path = query.value(1).toString();
-			const int id = query.value(0).toInt();
-
-			insert.finish();
-			insert.clear();
-
-			query.finish();
-			query.clear();
-
-			items->refreshList();
-			items->selectItem(id);
-			meta->setupRecord(id);
-			image->setImage(path);
-
-			ui->statusbar->showMessage(tr("Document locked"));
-
-			recordIndexSelected(id); return;
+			first = false;
+			select = p;
 		}
 	}
 
-	showErrorMessage(tr("Unable to lock next document"), tr("Error"));
+	if (first) database.rollback();
+	else if (trans) first = !database.commit();
+
+	if (!first)
+	{
+		items->refreshList();
+		items->selectItem(select.first);
+		meta->setupRecord(select.first);
+		image->setImage(select.second);
+
+		recordIndexSelected(select.first);
+
+		ui->statusbar->showMessage(tr("Document locked"));
+	}
+	else showErrorMessage(tr("Unable to lock next document"), tr("Error"));
 }
 
 void MainWindow::commitActionClicked(void)

@@ -69,6 +69,9 @@ CREATE VIEW invalid AS
   
 CREATE VIEW output AS
   SELECT id, path FROM main;
+  
+CREATE VIEW getlock AS 
+  SELECT id, path FROM main WHERE user IS NULL AND id NOT IN (SELECT sheet FROM locks) LIMIT 1
 
 ALTER TABLE locks
   ADD CONSTRAINT locks_sheet FOREIGN KEY (sheet) REFERENCES main (id) ON DELETE CASCADE ON UPDATE CASCADE,

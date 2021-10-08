@@ -32,6 +32,7 @@
 #include "filterdialog.hpp"
 #include "aboutdialog.hpp"
 
+#include "summarydock.hpp"
 #include "imagedock.hpp"
 #include "itemsdock.hpp"
 #include "metadock.hpp"
@@ -53,6 +54,7 @@ class MainWindow : public QMainWindow
 
 		QThread* wthread;
 
+		SummaryDock* summary;
 		ImageDock* image;
 		ItemsDock* items;
 		MetaDock* meta;
