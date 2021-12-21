@@ -1,5 +1,5 @@
 QT      += core gui sql widgets
-CONFIG  += c++19
+CONFIG  += c++20
 
 SOURCES += \
     aboutdialog.cpp \
