@@ -1,7 +1,5 @@
-QT      += core gui sql widgets concurrent
-CONFIG  += c++19 link_pkgconfig
-
-DEFINES += USE_ImageMagick
+QT      += core gui sql widgets concurrent pdf
+CONFIG  += c++19
 
 SOURCES += \
     aboutdialog.cpp \
@@ -58,9 +56,3 @@ TRANSLATIONS += \
 
 RESOURCES += \
     resources.qrc
-
-packagesExist(Magick++)
-{
-    DEFINES += HAVE_ImageMagick
-    PKGCONFIG += Magick++
-}

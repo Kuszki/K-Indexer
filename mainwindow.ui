@@ -100,6 +100,9 @@
     <addaction name="separator"/>
     <addaction name="actionOpenfile"/>
     <addaction name="actionOpenfolder"/>
+    <addaction name="separator"/>
+    <addaction name="actionShowpreview"/>
+    <addaction name="actionAutofit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -560,10 +563,34 @@
   </action>
   <action name="actionScan">
    <property name="icon">
-    <iconset theme="scanner"/>
+    <iconset theme="scanner">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Scan folder</string>
+   </property>
+  </action>
+  <action name="actionShowpreview">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="document-print-preview">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Show preview</string>
+   </property>
+  </action>
+  <action name="actionAutofit">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="system-lock-screen"/>
+   </property>
+   <property name="text">
+    <string>Fit automatically</string>
    </property>
   </action>
  </widget>

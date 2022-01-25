@@ -57,6 +57,10 @@ class ItemsDock : public QDockWidget
 		void setFilter(const QString& filter);
 		QString getFilter(void) const;
 
+		QSet<int> getLocked(void);
+		QSet<int> getDone(void);
+		QSet<int> getInvalid(void);
+
 		void clearFilter(void);
 
 	private slots:
@@ -69,6 +73,7 @@ class ItemsDock : public QDockWidget
 		void clearDatabase(void);
 
 		void refreshList(void);
+		void applyColors(void);
 
 		void selectItem(int id);
 

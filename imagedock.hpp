@@ -24,10 +24,7 @@
 #include <QtConcurrent>
 #include <QtWidgets>
 #include <QtCore>
-
-#if HAVE_ImageMagick
-#include <Magick++.h>
-#endif
+#include <QtPdf>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {	class ImageWidget; }
@@ -52,9 +49,13 @@ class ImageDock : public QDockWidget
 
 		QPixmap currentImage;
 		int currentIndex = 0;
+		int currentCount = 0;
 
 		double scale = 1.0;
 		int rotation = 0;
+
+		bool doPreview = true;
+		bool doAutofit = true;
 
 	public:
 
@@ -63,6 +64,11 @@ class ImageDock : public QDockWidget
 
 		static QList<QPixmap> loadImages(const QString& path);
 		static QList<QPixmap> loadPreviews(const QList<QPixmap>& list);
+
+		QPixmap getImage(int index) const;
+
+		bool isPreview(void) const;
+		bool isAutofit(void) const;
 
 	protected:
 
@@ -76,6 +82,9 @@ class ImageDock : public QDockWidget
 		void setPrefix(const QString& path);
 
 		void setIndex(int index);
+
+		void setPreview(bool enable);
+		void setAutofit(bool enable);
 
 		void nextImage(void);
 		void prevImage(void);

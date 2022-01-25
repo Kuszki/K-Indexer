@@ -117,6 +117,11 @@
       </item>
       <item>
        <property name="text">
+        <string>Users</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
         <string>Unassigned</string>
        </property>
       </item>

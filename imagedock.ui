@@ -11,7 +11,8 @@
    </rect>
   </property>
   <property name="windowIcon">
-   <iconset theme="emblem-documents"/>
+   <iconset theme="emblem-documents">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <property name="windowTitle">
    <string>Preview</string>
@@ -59,8 +60,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>622</width>
-         <height>408</height>
+         <width>618</width>
+         <height>404</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="scroolLayout">

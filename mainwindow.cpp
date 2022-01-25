@@ -79,7 +79,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 	Settings.beginGroup("Settings");
 	ui->actionMessages->setChecked(Settings.value("messages", true).toBool());
+	ui->actionShowpreview->setChecked(Settings.value("preview", true).toBool());
+	ui->actionAutofit->setChecked(Settings.value("autofit", true).toBool());
 	Settings.endGroup();
+
+	image->setPreview(ui->actionShowpreview->isChecked());
+	image->setAutofit(ui->actionAutofit->isChecked());
 
 	if (isMaximized()) setGeometry(QApplication::desktop()->availableGeometry(this));
 
@@ -173,6 +178,12 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->actionFind, &QAction::triggered,
 	        filter, &FilterDialog::show);
 
+	connect(ui->actionShowpreview, &QAction::toggled,
+	        image, &ImageDock::setPreview);
+
+	connect(ui->actionAutofit, &QAction::toggled,
+	        image, &ImageDock::setAutofit);
+
 	connect(this, &MainWindow::onDatabaseLogout,
 	        filter, &FilterDialog::close);
 
@@ -260,6 +271,8 @@ MainWindow::~MainWindow(void)
 
 	Settings.beginGroup("Settings");
 	Settings.setValue("messages", ui->actionMessages->isChecked());
+	Settings.setValue("preview", ui->actionShowpreview->isChecked());
+	Settings.setValue("autofit", ui->actionAutofit->isChecked());
 	Settings.endGroup();
 
 	wthread->exit();
