@@ -1,5 +1,7 @@
-QT      += core gui sql widgets
-CONFIG  += c++20
+QT      += core gui sql widgets concurrent
+CONFIG  += c++19 link_pkgconfig
+
+DEFINES += USE_ImageMagick
 
 SOURCES += \
     aboutdialog.cpp \
@@ -13,6 +15,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     metadock.cpp \
+    scandialog.cpp \
     sqleditordialog.cpp \
     sqlhighlighter.cpp \
     summarydock.cpp \
@@ -29,6 +32,7 @@ HEADERS += \
     itemsdock.hpp \
     mainwindow.hpp \
     metadock.hpp \
+    scandialog.hpp \
     sqleditordialog.hpp \
     sqlhighlighter.hpp \
     summarydock.hpp \
@@ -45,6 +49,7 @@ FORMS += \
     itemsdock.ui \
     mainwindow.ui \
     metadock.ui \
+    scandialog.ui \
     sqleditordialog.ui \
     summarydock.ui
 
@@ -54,3 +59,8 @@ TRANSLATIONS += \
 RESOURCES += \
     resources.qrc
 
+packagesExist(Magick++)
+{
+    DEFINES += HAVE_ImageMagick
+    PKGCONFIG += Magick++
+}

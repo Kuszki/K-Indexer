@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
- *  K-Indexer : index documents in SQL database                            *
- *  Copyright (C) 2020  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
+ *  {description}                                                          *
+ *  Copyright (C) 2022  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -18,53 +18,45 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef THREADWORKER_HPP
-#define THREADWORKER_HPP
+#ifndef SCANDIALOG_HPP
+#define SCANDIALOG_HPP
 
+#include <QtWidgets>
 #include <QtCore>
-#include <QtSql>
 
-class ThreadWorker : public QObject
+QT_BEGIN_NAMESPACE
+namespace Ui { class ScanDialog; }
+QT_END_NAMESPACE
+
+class ScanDialog : public QDialog
 {
-
 		Q_OBJECT
 
 	private:
 
-		QSqlDatabase& database;
+		Ui::ScanDialog *ui;
 
 	public:
 
-		explicit ThreadWorker(QSqlDatabase& db, QObject *parent = nullptr);
-		virtual ~ThreadWorker(void) override;
+		explicit ScanDialog(QWidget *parent = nullptr);
+		virtual ~ScanDialog(void) override;
+
+		QStringList getFilter(void) const;
 
 	public slots:
 
-		void exportData(const QString& path,
-		                const QVariantList& users,
-		                int status,
-		                int validation,
-		                int lock,
-		                const QDateTime& from,
-		                const QDateTime& to);
+		virtual void accept(void) override;
 
-		void importData(const QString& path,
-		                const QString& logs,
-		                QVariantMap map,
-		                bool header,
-		                int user = 0);
+		void setFilter(const QStringList& filter);
 
-		void scanData(const QString& path,
-		              const QString& prefix,
-		              const QStringList& filter);
+	private slots:
+
+		void openClicked(void);
 
 	signals:
 
-		void onSetup(int, int);
-		void onProgress(int);
-
-		void onFinish(const QString&, int = 0);
+		void onAccepted(const QString&, const QStringList&);
 
 };
 
-#endif // THREADWORKER_HPP
+#endif // SCANDIALOG_HPP

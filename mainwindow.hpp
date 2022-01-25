@@ -31,6 +31,7 @@
 #include "importdialog.hpp"
 #include "filterdialog.hpp"
 #include "aboutdialog.hpp"
+#include "scandialog.hpp"
 
 #include "summarydock.hpp"
 #include "imagedock.hpp"
@@ -77,11 +78,11 @@ class MainWindow : public QMainWindow
 	private slots:
 
 		void openDatabase(const QString& driver,
-					   const QString& server,
-					   const QString& name,
-					   const QString& user,
-					   const QString& pass,
-					   const QString& path);
+		                  const QString& server,
+		                  const QString& name,
+		                  const QString& user,
+		                  const QString& pass,
+		                  const QString& path);
 
 		void connectActionClicked(void);
 		void disconnectActionClicked(void);
@@ -93,6 +94,8 @@ class MainWindow : public QMainWindow
 
 		void exportActionClicked(void);
 		void importActionClicked(void);
+
+		void scanActionClicked(void);
 
 		void queryActionClicked(void);
 
@@ -109,21 +112,26 @@ class MainWindow : public QMainWindow
 		void showWarningMessage(const QString& msg, const QString& title = QString());
 
 		void performExport(const QString& path,
-					    const QVariantList& users,
-					    int status,
-					    int validation,
-					    int lock,
-					    const QDateTime& from,
-					    const QDateTime& to);
+		                   const QVariantList& users,
+		                   int status,
+		                   int validation,
+		                   int lock,
+		                   const QDateTime& from,
+		                   const QDateTime& to);
 
 		void performImport(const QString& path,
-					    const QString& logs,
-					    const QVariantMap& map,
-					    bool header);
+		                   const QString& logs,
+		                   const QVariantMap& map,
+		                   bool header);
+
+		void performScan(const QString& path,
+		                 const QStringList& filter);
 
 		void finishExport(const QString& msg, int code);
 
 		void finishImport(const QString& msg, int code);
+
+		void finishScan(const QString& msg, int code);
 
 	signals:
 
@@ -137,15 +145,19 @@ class MainWindow : public QMainWindow
 		void onDocumentUnlock(int);
 
 		void onExportRequest(const QString&,
-						 const QVariantList&,
-						 int, int, int,
-						 const QDateTime&,
-						 const QDateTime&);
+		                     const QVariantList&,
+		                     int, int, int,
+		                     const QDateTime&,
+		                     const QDateTime&);
 
 		void onImportRequest(const QString&,
-						 const QString&,
-						 const QVariantMap&,
-						 bool, int);
+		                     const QString&,
+		                     const QVariantMap&,
+		                     bool, int);
+
+		void onScanRequest(const QString&,
+		                   const QString&,
+		                   const QStringList&);
 
 };
 

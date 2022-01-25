@@ -42,10 +42,11 @@ class ExportDialog : public QDialog
 		explicit ExportDialog(QWidget *parent = nullptr);
 		virtual ~ExportDialog(void) override;
 
+		QVariantList getUsers(void) const;
+
 	public slots:
 
 		void setUsers(const QVariantMap& map);
-		QVariantList getUsers(void) const;
 
 		virtual void accept(void) override;
 
@@ -57,10 +58,10 @@ class ExportDialog : public QDialog
 	signals:
 
 		void onAccepted(const QString&,
-					 const QVariantList&,
-					 int, int, int,
-					 const QDateTime&,
-					 const QDateTime&);
+		                const QVariantList&,
+		                int, int, int,
+		                const QDateTime&,
+		                const QDateTime&);
 
 };
 

@@ -21,8 +21,8 @@
 #include "threadworker.hpp"
 
 ThreadWorker::ThreadWorker(QSqlDatabase& db, QObject *parent)
-	: QObject(parent)
-	, database(db)
+     : QObject(parent)
+     , database(db)
 {}
 
 ThreadWorker::~ThreadWorker(void) {}
@@ -53,7 +53,7 @@ void ThreadWorker::exportData(const QString& path, const QVariantList& users, in
 		const auto time = query.value(2).toDateTime();
 
 		const bool ok = (from.isNull() || time >= from) &&
-					 (to.isNull() || time <= to);
+		                (to.isNull() || time <= to);
 
 		if (ok && users.contains(query.value(1)))
 		{
@@ -99,7 +99,7 @@ void ThreadWorker::exportData(const QString& path, const QVariantList& users, in
 		for (int i = 0; i < count; ++i)
 		{
 			file.write(record.fieldName(i)
-					 .toLocal8Bit());
+			           .toLocal8Bit());
 
 			file.write(i == count - 1 ? "\n" : sep);
 		}
@@ -110,9 +110,9 @@ void ThreadWorker::exportData(const QString& path, const QVariantList& users, in
 				for (int i = 0; i < count; ++i)
 				{
 					file.write(query.value(i)
-							 .toString()
-							 .toUtf8()
-							 .toPercentEncoding());
+					           .toString()
+					           .toUtf8()
+					           .toPercentEncoding());
 
 					file.write(i == count - 1 ? "\n" : sep);
 				}
@@ -158,15 +158,15 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 	while (!file.atEnd())
 	{
 		QByteArrayList array = file.readLine()
-						   .trimmed()
-						   .split(sep);
+		                       .trimmed()
+		                       .split(sep);
 
 		QStringList line;
 
 		for (const auto& col : array)
 			line.append(
-				QString::fromUtf8(
-					QByteArray::fromPercentEncoding(col)));
+			     QString::fromUtf8(
+			          QByteArray::fromPercentEncoding(col)));
 
 		QString name = line.value(keyID);
 
@@ -183,7 +183,7 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 	if (query.exec()) while (query.next())
 	{
 		found.insert(query.value(1).toString(),
-				   query.value(0).toInt());
+		             query.value(0).toInt());
 	}
 
 	for (int i = 0; i < keys.size(); ++i)
@@ -194,7 +194,7 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 	if (!rows.isEmpty()) emit onSetup(0, rows.size());
 
 	if (!sets.isEmpty()) query.prepare(QString("UPDATE main SET %1 WHERE path = ? AND (user = ? OR 0 = ?)")
-								.arg(sets.join(", ")));
+	                                   .arg(sets.join(", ")));
 
 	if (!sets.isEmpty()) for (auto i = found.cbegin(); i != found.cend(); ++i) if (rows.contains(i.key()))
 	{
@@ -227,8 +227,8 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 	}
 
 	if (!keys.isEmpty()) query.prepare(QString("INSERT INTO main (%1, path) VALUES (?%2)")
-								.arg(keys.join(", "))
-								.arg(QString(", ?").repeated(keys.size())));
+	                                   .arg(keys.join(", "))
+	                                   .arg(QString(", ?").repeated(keys.size())));
 	else query.prepare("INSERT INTO main (path) VALUES (?)");
 
 	for (auto i = rows.cbegin(); i != rows.cend(); ++i) if (!found.contains(i.key()))
@@ -260,4 +260,28 @@ void ThreadWorker::importData(const QString& path, const QString& logs, QVariant
 	}
 
 	emit onFinish(tr("Imported %n row(s)", nullptr, total));
+}
+
+void ThreadWorker::scanData(const QString& path, const QString& prefix, const QStringList& filter)
+{
+	QDirIterator iter(path, filter, QDir::Files, QDirIterator::Subdirectories);
+
+	QSqlQuery query(database); query.setForwardOnly(true);
+
+	query.prepare("INSERT INTO main (path) VALUES (?)");
+
+	emit onSetup(0, 0); int count(0);
+	const QDir dir = QDir(prefix);
+
+	while (iter.hasNext())
+	{
+		const QString str = dir.relativeFilePath(iter.next());
+
+		query.addBindValue(str);
+		count += query.exec();
+
+		qDebug() << query.lastError().text();
+	}
+
+	emit onFinish(tr("Imported %n file(s)", nullptr, count));
 }

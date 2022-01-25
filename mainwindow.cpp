@@ -22,8 +22,8 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
-	: QMainWindow(parent)
-	, ui(new Ui::MainWindow)
+: QMainWindow(parent)
+, ui(new Ui::MainWindow)
 {
 	QSettings Settings("K-OSP", "Indexer");
 
@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->actionCommit->setEnabled(false);
 	ui->actionUndochange->setEnabled(false);
 	ui->actionQuerydialog->setEnabled(false);
+	ui->actionScan->setEnabled(false);
 
 	wthread = new QThread(this);
 	wthread->start();
@@ -83,157 +84,160 @@ MainWindow::MainWindow(QWidget *parent)
 	if (isMaximized()) setGeometry(QApplication::desktop()->availableGeometry(this));
 
 	connect(ui->actionConnect, &QAction::triggered,
-		   this, &MainWindow::connectActionClicked);
+	        this, &MainWindow::connectActionClicked);
 
 	connect(ui->actionDisconnect, &QAction::triggered,
-		   this, &MainWindow::disconnectActionClicked);
+	        this, &MainWindow::disconnectActionClicked);
 
 	connect(ui->actionQuerydialog, &QAction::triggered,
-		   this, &MainWindow::queryActionClicked);
+	        this, &MainWindow::queryActionClicked);
 
 	connect(ui->actionLock, &QAction::triggered,
-		   this, &MainWindow::lockActionClicked);
+	        this, &MainWindow::lockActionClicked);
 
 	connect(ui->actionUnlock, &QAction::triggered,
-		   this, &MainWindow::unlockActionClicked);
+	        this, &MainWindow::unlockActionClicked);
 
 	connect(ui->actionLocknext, &QAction::triggered,
-		   this, &MainWindow::nextjobActionClicked);
+	        this, &MainWindow::nextjobActionClicked);
 
 	connect(ui->actionCommit, &QAction::triggered,
-		   this, &MainWindow::commitActionClicked);
+	        this, &MainWindow::commitActionClicked);
 
 	connect(ui->actionExport, &QAction::triggered,
-		   this, &MainWindow::exportActionClicked);
+	        this, &MainWindow::exportActionClicked);
 
 	connect(ui->actionImport, &QAction::triggered,
-		   this, &MainWindow::importActionClicked);
+	        this, &MainWindow::importActionClicked);
+
+	connect(ui->actionScan, &QAction::triggered,
+	        this, &MainWindow::scanActionClicked);
 
 	connect(ui->actionAbout, &QAction::triggered,
-		   this, &MainWindow::aboutActionClicked);
+	        this, &MainWindow::aboutActionClicked);
 
 	connect(ui->actionAllowclose, &QAction::toggled,
-		   this, &MainWindow::dockOptionsChanged);
+	        this, &MainWindow::dockOptionsChanged);
 
 	connect(ui->actionAllowfloat, &QAction::toggled,
-		   this, &MainWindow::dockOptionsChanged);
+	        this, &MainWindow::dockOptionsChanged);
 
 	connect(ui->actionAllowmove, &QAction::toggled,
-		   this, &MainWindow::dockOptionsChanged);
+	        this, &MainWindow::dockOptionsChanged);
 
 	connect(ui->actionLockdocks, &QAction::toggled,
-		   this, &MainWindow::dockOptionsChanged);
+	        this, &MainWindow::dockOptionsChanged);
 
 	connect(ui->actionPageup, &QAction::triggered,
-		   image, &ImageDock::nextImage);
+	        image, &ImageDock::nextImage);
 
 	connect(ui->actionPagedown, &QAction::triggered,
-		   image, &ImageDock::prevImage);
+	        image, &ImageDock::prevImage);
 
 	connect(ui->actionZoomin, &QAction::triggered,
-		   image, &ImageDock::zoomIn);
+	        image, &ImageDock::zoomIn);
 
 	connect(ui->actionZoomout, &QAction::triggered,
-		   image, &ImageDock::zoomOut);
+	        image, &ImageDock::zoomOut);
 
 	connect(ui->actionZoomorg, &QAction::triggered,
-		   image, &ImageDock::zoomOrg);
+	        image, &ImageDock::zoomOrg);
 
 	connect(ui->actionZoomfit, &QAction::triggered,
-		   image, &ImageDock::zoomFit);
+	        image, &ImageDock::zoomFit);
 
 	connect(ui->actionRotateleft, &QAction::triggered,
-		   image, &ImageDock::rotateLeft);
+	        image, &ImageDock::rotateLeft);
 
 	connect(ui->actionRotateright, &QAction::triggered,
-		   image, &ImageDock::rotateRight);
+	        image, &ImageDock::rotateRight);
 
 	connect(ui->actionOpenfile, &QAction::triggered,
-		   image, &ImageDock::openFile);
+	        image, &ImageDock::openFile);
 
 	connect(ui->actionOpenfolder, &QAction::triggered,
-		   image, &ImageDock::openFolder);
+	        image, &ImageDock::openFolder);
 
 	connect(ui->actionSave, &QAction::triggered,
-		   meta, &MetaDock::saveRecord);
+	        meta, &MetaDock::saveRecord);
 
 	connect(ui->actionUndochange, &QAction::triggered,
-		   meta, &MetaDock::rollbackRecord);
+	        meta, &MetaDock::rollbackRecord);
 
 	connect(ui->actionNext, &QAction::triggered,
-		   items, &ItemsDock::selectNext);
+	        items, &ItemsDock::selectNext);
 
 	connect(ui->actionPrevious, &QAction::triggered,
-		   items, &ItemsDock::selectPrevious);
+	        items, &ItemsDock::selectPrevious);
 
 	connect(ui->actionFind, &QAction::triggered,
-		   filter, &FilterDialog::show);
+	        filter, &FilterDialog::show);
 
 	connect(this, &MainWindow::onDatabaseLogout,
-		   filter, &FilterDialog::close);
+	        filter, &FilterDialog::close);
 
 	connect(this, &MainWindow::onDatabaseLogin,
-		   summary, &SummaryDock::setupDatabase);
+	        summary, &SummaryDock::setupDatabase);
 
 	connect(this, &MainWindow::onDatabaseLogout,
-		   summary, &SummaryDock::clearDatabase);
+	        summary, &SummaryDock::clearDatabase);
 
 	connect(this, &MainWindow::onDocumentLock,
-		   summary, &SummaryDock::refreshList);
+	        summary, &SummaryDock::refreshList);
 
 	connect(this, &MainWindow::onDocumentUnlock,
-		   summary, &SummaryDock::refreshList);
+	        summary, &SummaryDock::refreshList);
 
 	connect(this, &MainWindow::onDatabaseLogin,
-		   items, &ItemsDock::setupDatabase);
+	        items, &ItemsDock::setupDatabase);
 
 	connect(this, &MainWindow::onDatabaseLogout,
-		   items, &ItemsDock::clearDatabase);
+	        items, &ItemsDock::clearDatabase);
 
 	connect(this, &MainWindow::onDocumentLock,
-		   items, &ItemsDock::refreshList);
+	        items, &ItemsDock::refreshList);
 
 	connect(this, &MainWindow::onDocumentUnlock,
-		   items, &ItemsDock::refreshList);
+	        items, &ItemsDock::refreshList);
 
 	connect(this, &MainWindow::onDatabaseLogin,
-		   meta, &MetaDock::setupDatabase);
+	        meta, &MetaDock::setupDatabase);
 
 	connect(this, &MainWindow::onDatabaseLogout,
-		   meta, &MetaDock::clearDatabase);
+	        meta, &MetaDock::clearDatabase);
 
 	connect(this, &MainWindow::onDocumentLock,
-		   meta, &MetaDock::lockRecord);
+	        meta, &MetaDock::lockRecord);
 
 	connect(this, &MainWindow::onDocumentUnlock,
-		   meta, &MetaDock::unlockRecord);
+	        meta, &MetaDock::unlockRecord);
 
 	connect(this, &MainWindow::onImagepathUpdate,
-		   image, &ImageDock::setPrefix);
+	        image, &ImageDock::setPrefix);
 
 	connect(this, &MainWindow::onDatabaseLogout,
-		   image, &ImageDock::clear);
+	        image, &ImageDock::clear);
 
 	connect(this, &MainWindow::onDatabaseLogin,
-		   filter, &FilterDialog::setupDialog);
+	        filter, &FilterDialog::setupDialog);
 
 	connect(items, &ItemsDock::onImageSelected,
-		   image, &ImageDock::setImage);
+	        image, &ImageDock::setImage);
 
 	connect(items, &ItemsDock::onItemSelected,
-		   meta, &MetaDock::setupRecord);
+	        meta, &MetaDock::setupRecord);
 
 	connect(meta, &MetaDock::onRecordSave,
-		   this, &MainWindow::metaDataSaved);
+	        this, &MainWindow::metaDataSaved);
 
 	connect(items, &ItemsDock::onItemSelected,
-		   this, &MainWindow::recordIndexSelected);
+	        this, &MainWindow::recordIndexSelected);
 
 	connect(filter, &FilterDialog::onFiltersUpdate,
-		   items, &ItemsDock::setFilter);
+	        items, &ItemsDock::setFilter);
 
 	connect(items, &ItemsDock::onFilterClicked,
-		   filter, &FilterDialog::show);
+	        filter, &FilterDialog::show);
 
 	dockOptionsChanged();
 }
@@ -284,9 +288,9 @@ void MainWindow::openDatabase(const QString& driver, const QString& server, cons
 	else
 	{
 		const QString hash = QCryptographicHash::hash(
-							 pass.toUtf8(),
-							 QCryptographicHash::Sha1)
-						 .toHex();
+		                          pass.toUtf8(),
+		                          QCryptographicHash::Sha1)
+		                     .toHex();
 
 		QSqlQuery query(database);
 
@@ -310,13 +314,14 @@ void MainWindow::openDatabase(const QString& driver, const QString& server, cons
 	ui->actionNext->setEnabled(userID != -1);
 	ui->actionPrevious->setEnabled(userID != -1);
 	ui->actionQuerydialog->setEnabled(userID != -1);
+	ui->actionScan->setEnabled(userID != -1);
 
 	if (userID >= 0)
 	{
 		setWindowTitle(QString("%1 - %2@%3")
-					.arg(orgTitle)
-					.arg(user)
-					.arg(name));
+		               .arg(orgTitle)
+		               .arg(user)
+		               .arg(name));
 
 		emit onDatabaseLogin(userID);
 		emit onImagepathUpdate(path);
@@ -349,6 +354,7 @@ void MainWindow::disconnectActionClicked(void)
 	ui->actionUnlock->setEnabled(false);
 	ui->actionUndochange->setEnabled(false);
 	ui->actionQuerydialog->setEnabled(false);
+	ui->actionScan->setEnabled(false);
 
 	emit onDatabaseLogout();
 
@@ -399,8 +405,8 @@ void MainWindow::lockActionClicked(void)
 		if (query.next())
 		{
 			code = query.value(0).toInt() == userID ||
-				  query.value(0).isNull() ||
-				  userID == 0 ? 0 : 3;
+			       query.value(0).isNull() ||
+			       userID == 0 ? 0 : 3;
 		}
 	}
 	else code = -1;
@@ -445,8 +451,8 @@ void MainWindow::unlockActionClicked(void)
 		if (query.next())
 		{
 			code = query.value(1).toInt() == userID ||
-				  userID == 0 ?
-					  0 : 1;
+			       userID == 0 ?
+			            0 : 1;
 		}
 		else code = 2;
 	}
@@ -492,8 +498,8 @@ void MainWindow::nextjobActionClicked(void)
 
 	if (query.exec()) while (query.next()) list.append(
 	{
-		query.value(0).toInt(),
-		query.value(1).toString()
+	     query.value(0).toInt(),
+	     query.value(1).toString()
 	});
 
 	query.prepare("INSERT INTO locks (sheet, user) VALUES (?, ?)");
@@ -573,6 +579,14 @@ void MainWindow::importActionClicked(void)
 	connect(dialog, &ImportDialog::onAccepted, this, &MainWindow::performImport);
 }
 
+void MainWindow::scanActionClicked(void)
+{
+	ScanDialog* dialog = new ScanDialog(this); dialog->open();
+
+	connect(dialog, &ExportDialog::finished, dialog, &ScanDialog::deleteLater);
+	connect(dialog, &ScanDialog::onAccepted, this, &MainWindow::performScan);
+}
+
 void MainWindow::queryActionClicked(void)
 {
 	SqleditorDialog* dialog = new SqleditorDialog(database, userID == 0, this); dialog->show();
@@ -613,9 +627,9 @@ void MainWindow::dockOptionsChanged(void)
 		else if (auto b = dynamic_cast<QToolBar*>(w))
 		{
 			b->setFloatable(ui->actionAllowfloat->isChecked() &&
-						 !ui->actionLockdocks->isChecked());
+			                !ui->actionLockdocks->isChecked());
 			b->setMovable(ui->actionAllowmove->isChecked() &&
-					    !ui->actionLockdocks->isChecked());
+			              !ui->actionLockdocks->isChecked());
 		}
 	}
 }
@@ -708,6 +722,32 @@ void MainWindow::performImport(const QString& path, const QString& logs, const Q
 	emit onImportRequest(path, logs, map, header, userID);
 }
 
+void MainWindow::performScan(const QString& path, const QStringList& filter)
+{
+	ThreadWorker* worker = new ThreadWorker(database);
+	worker->moveToThread(wthread);
+
+	QProgressBar* progress = new QProgressBar();
+	progress->setRange(0, 0);
+
+	ui->statusbar->addPermanentWidget(progress);
+	this->setEnabled(false);
+
+	connect(worker, &ThreadWorker::onFinish, this, &MainWindow::finishScan);
+
+	connect(worker, &ThreadWorker::onFinish, items, &ItemsDock::refreshList);
+
+	connect(worker, &ThreadWorker::onFinish, worker, &ThreadWorker::deleteLater);
+
+	connect(worker, &ThreadWorker::onFinish, progress, &QProgressBar::deleteLater);
+	connect(worker, &ThreadWorker::onSetup, progress, &QProgressBar::setRange);
+	connect(worker, &ThreadWorker::onProgress, progress, &QProgressBar::setValue);
+
+	connect(this, &MainWindow::onScanRequest, worker, &ThreadWorker::scanData);
+
+	emit onScanRequest(path, imgPath, filter);
+}
+
 void MainWindow::finishExport(const QString& msg, int code)
 {
 	switch (code)
@@ -726,6 +766,23 @@ void MainWindow::finishExport(const QString& msg, int code)
 }
 
 void MainWindow::finishImport(const QString& msg, int code)
+{
+	switch (code)
+	{
+		case 1:
+			showErrorMessage(msg, tr("Import error"));
+		break;
+		case 2:
+			showWarningMessage(msg, tr("Import finished"));
+		break;
+		default:
+			showInfoMessage(msg, tr("Import finished"));
+	}
+
+	setEnabled(true);
+}
+
+void MainWindow::finishScan(const QString& msg, int code)
 {
 	switch (code)
 	{

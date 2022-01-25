@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
- *  K-Indexer : index documents in SQL database                            *
- *  Copyright (C) 2020  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
+ *  {description}                                                          *
+ *  Copyright (C) 2022  Łukasz "Kuszki" Dróżdż  lukasz.kuszki@gmail.com    *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -18,53 +18,52 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef THREADWORKER_HPP
-#define THREADWORKER_HPP
+#include "scandialog.hpp"
+#include "ui_scandialog.h"
 
-#include <QtCore>
-#include <QtSql>
-
-class ThreadWorker : public QObject
+ScanDialog::ScanDialog(QWidget *parent)
+     : QDialog(parent)
+     , ui(new Ui::ScanDialog)
 {
+	ui->setupUi(this);
 
-		Q_OBJECT
+	ui->buttonBox->button(QDialogButtonBox::Open)->setEnabled(false);
 
-	private:
+	connect(ui->pathButton, &QToolButton::clicked,
+	        this, &ScanDialog::openClicked);
+}
 
-		QSqlDatabase& database;
+ScanDialog::~ScanDialog(void)
+{
+	delete ui;
+}
 
-	public:
+QStringList ScanDialog::getFilter(void) const
+{
+	return ui->filterEdit->toPlainText().split(
+	               QRegExp("[,;\\s]+"),
+	               Qt::SkipEmptyParts);
+}
 
-		explicit ThreadWorker(QSqlDatabase& db, QObject *parent = nullptr);
-		virtual ~ThreadWorker(void) override;
+void ScanDialog::accept(void)
+{
+	QDialog::accept();
 
-	public slots:
+	emit onAccepted(ui->pathEdit->text(),
+	                getFilter());
+}
 
-		void exportData(const QString& path,
-		                const QVariantList& users,
-		                int status,
-		                int validation,
-		                int lock,
-		                const QDateTime& from,
-		                const QDateTime& to);
+void ScanDialog::setFilter(const QStringList& filter)
+{
+	ui->filterEdit->setPlainText(filter.join('\n'));
+}
 
-		void importData(const QString& path,
-		                const QString& logs,
-		                QVariantMap map,
-		                bool header,
-		                int user = 0);
+void ScanDialog::openClicked(void)
+{
+	const QString path = QFileDialog::getExistingDirectory(this,
+	          tr("Select export file"), QString());
 
-		void scanData(const QString& path,
-		              const QString& prefix,
-		              const QStringList& filter);
+	if (!path.isEmpty()) ui->pathEdit->setText(path);
 
-	signals:
-
-		void onSetup(int, int);
-		void onProgress(int);
-
-		void onFinish(const QString&, int = 0);
-
-};
-
-#endif // THREADWORKER_HPP
+	ui->buttonBox->button(QDialogButtonBox::Open)->setEnabled(!path.isEmpty());
+}

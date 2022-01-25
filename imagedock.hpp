@@ -21,8 +21,13 @@
 #ifndef IMAGEDOCK_H
 #define IMAGEDOCK_H
 
+#include <QtConcurrent>
 #include <QtWidgets>
 #include <QtCore>
+
+#if HAVE_ImageMagick
+#include <Magick++.h>
+#endif
 
 QT_BEGIN_NAMESPACE
 namespace Ui {	class ImageWidget; }
@@ -40,6 +45,8 @@ class ImageDock : public QDockWidget
 		QStandardItemModel* model;
 		QList<QPixmap> list;
 
+		QPoint lastMousePos;
+
 		QString prefix;
 		QString current;
 
@@ -54,9 +61,14 @@ class ImageDock : public QDockWidget
 		explicit ImageDock(QWidget *parent = nullptr);
 		virtual ~ImageDock(void) override;
 
+		static QList<QPixmap> loadImages(const QString& path);
+		static QList<QPixmap> loadPreviews(const QList<QPixmap>& list);
+
 	protected:
 
 		virtual void wheelEvent(QWheelEvent* event) override;
+		virtual void mousePressEvent(QMouseEvent* event) override;
+		virtual void mouseMoveEvent(QMouseEvent* event) override;
 
 	public slots:
 
@@ -86,7 +98,7 @@ class ImageDock : public QDockWidget
 		void imageIndexChanged(const QModelIndex& index);
 
 		void selectionRangeChanged(const QItemSelection& s,
-							  const QItemSelection& d);
+		                           const QItemSelection& d);
 
 };
 
