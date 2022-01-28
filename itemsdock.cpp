@@ -249,9 +249,9 @@ void ItemsDock::applyColors(void)
 	const auto invalid = getInvalid() - locked;
 	const auto done = getDone() - locked - invalid;
 
-	model->setColor(Qt::yellow, locked);
-	model->setColor(Qt::red, invalid);
-	model->setColor(Qt::green, done);
+    model->setColor(Qt::darkBlue, locked);
+    model->setColor(Qt::darkRed, invalid);
+    model->setColor(Qt::darkGreen, done);
 }
 
 void ItemsDock::removeColors(void)
