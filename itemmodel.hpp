@@ -18,52 +18,52 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "scandialog.hpp"
-#include "ui_scandialog.h"
+#ifndef ITEMMODEL_HPP
+#define ITEMMODEL_HPP
 
-ScanDialog::ScanDialog(QWidget *parent)
-     : QDialog(parent)
-     , ui(new Ui::ScanDialog)
+#include <QtWidgets>
+#include <QtCore>
+#include <QtSql>
+#include <QtGui>
+
+class ItemModel : public QSqlTableModel
 {
-	ui->setupUi(this);
 
-	ui->buttonBox->button(QDialogButtonBox::Open)->setEnabled(false);
+		Q_OBJECT
 
-	connect(ui->pathButton, &QToolButton::clicked,
-	        this, &ScanDialog::openClicked);
-}
+	protected:
 
-ScanDialog::~ScanDialog(void)
-{
-	delete ui;
-}
+		QHash<Qt::GlobalColor, QSet<int>> colors;
+		QHash<Qt::GlobalColor, QBrush> brushes;
 
-QStringList ScanDialog::getFilter(void) const
-{
-	return ui->filterEdit->toPlainText().split(
-	               QRegExp("[,;\\s]+"),
-	               Qt::SkipEmptyParts);
-}
+		QBrush defBrush;
+		int idIndex = 0;
 
-void ScanDialog::accept(void)
-{
-	QDialog::accept();
+	public:
 
-	emit onAccepted(ui->pathEdit->text(),
-	                getFilter());
-}
+		explicit ItemModel(QObject *parent = nullptr,
+		                   QSqlDatabase db = QSqlDatabase());
+		virtual ~ItemModel(void) override;
 
-void ScanDialog::setFilter(const QStringList& filter)
-{
-	ui->filterEdit->setPlainText(filter.join('\n'));
-}
+		virtual void setTable(const QString& tableName) override;
 
-void ScanDialog::openClicked(void)
-{
-	const QString path = QFileDialog::getExistingDirectory(this,
-	          tr("Select scan folder"), QString());
+		virtual QVariant data(const QModelIndex &idx,
+		                      int role = Qt::DisplayRole) const override;
 
-	if (!path.isEmpty()) ui->pathEdit->setText(path);
+		void setColor(Qt::GlobalColor color, const QSet<int> items);
 
-	ui->buttonBox->button(QDialogButtonBox::Open)->setEnabled(!path.isEmpty());
-}
+		void setTable(const QString& tableName,
+		              const QString& idField);
+
+		void clearColors(void);
+
+		QBrush getColor(const QModelIndex& item) const;
+		QBrush getColor(int id) const;
+
+	protected:
+
+		void updateItemsColors(const QSet<int>& updates);
+
+};
+
+#endif // ITEMMODEL_HPP

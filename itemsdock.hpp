@@ -25,6 +25,8 @@
 #include <QtCore>
 #include <QtSql>
 
+#include "itemmodel.hpp"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class ItemsDock; }
 QT_END_NAMESPACE
@@ -38,7 +40,7 @@ class ItemsDock : public QDockWidget
 
 		Ui::ItemsDock *ui;
 
-		QSqlTableModel* model = nullptr;
+		ItemModel* model = nullptr;
 		QSqlDatabase& database;
 
 		QString limiter;
@@ -48,6 +50,8 @@ class ItemsDock : public QDockWidget
 
 		int userID = 0;
 		int sheetID = 0;
+
+		bool doColor = true;
 
 	public:
 
@@ -63,6 +67,8 @@ class ItemsDock : public QDockWidget
 
 		void clearFilter(void);
 
+		bool isColors(void) const;
+
 	private slots:
 
 		void selectionChanged(const QModelIndex& item);
@@ -74,11 +80,14 @@ class ItemsDock : public QDockWidget
 
 		void refreshList(void);
 		void applyColors(void);
+		void removeColors(void);
 
 		void selectItem(int id);
 
 		void selectNext(void);
 		void selectPrevious(void);
+
+		void setColors(bool enable);
 
 	signals:
 

@@ -112,7 +112,7 @@ QSet<int> ItemsDock::getInvalid(void)
 	QSet<int> values;
 
 	query.setForwardOnly(true);
-	query.prepare("SELECT if FROM invalid WHERE user IS NOT NULL AND (user = :usr OR :usr = 0)");
+	query.prepare("SELECT id FROM invalid WHERE user IS NOT NULL AND (user = :usr OR :usr = 0)");
 	query.bindValue(":usr", userID);
 
 	if (query.exec()) while (query.next())
@@ -126,6 +126,11 @@ QSet<int> ItemsDock::getInvalid(void)
 void ItemsDock::clearFilter(void)
 {
 	setFilter(QString());
+}
+
+bool ItemsDock::isColors(void) const
+{
+	return doColor;
 }
 
 void ItemsDock::selectionChanged(const QModelIndex& item)
@@ -152,11 +157,11 @@ void ItemsDock::setupDatabase(int user)
 	ui->typesCombo->setCurrentIndex(0);
 	ui->searchEdit->clear();
 
-	model = new QSqlTableModel(this, database);
+	model = new ItemModel(this, database);
 	model->setTable("main");
 	model->select();
 
-	const QSqlRecord rec = database.record("main");
+	const QSqlRecord rec = model->record();
 	uidIndex = rec.indexOf("id");
 	imgIndex = rec.indexOf("path");
 
@@ -186,8 +191,6 @@ void ItemsDock::clearDatabase(void)
 	ui->clearButton->setEnabled(false);
 	ui->searchButton->setEnabled(false);
 
-	limiter.clear();
-
 	if (model)
 	{
 		ui->listView->clearSelection();
@@ -198,6 +201,7 @@ void ItemsDock::clearDatabase(void)
 	}
 
 	userID = sheetID = -1;
+	limiter.clear();
 }
 
 void ItemsDock::refreshList(void)
@@ -231,36 +235,28 @@ void ItemsDock::refreshList(void)
 	model->setFilter(filter.join(" AND "));
 	model->select();
 
-	selectItem(sheetID);
-	applyColors();
+	if (sheetID) selectItem(sheetID);
+	if (doColor) applyColors();
 
 	setUpdatesEnabled(true);
 }
 
 void ItemsDock::applyColors(void)
 {
-	setUpdatesEnabled(false);
+	if (!model) return;
 
-	QSet<int> setDone = getDone();
-	QSet<int> setInvalid = getInvalid();
-	QSet<int> setLocked = getLocked();
+	const auto locked = getLocked();
+	const auto invalid = getInvalid() - locked;
+	const auto done = getDone() - locked - invalid;
 
-	for (int i = 0; i < model->rowCount(); ++i)
-	{
-		const auto iID = model->index(i, uidIndex);
-		const auto iDT = model->index(i, imgIndex);
+	model->setColor(Qt::yellow, locked);
+	model->setColor(Qt::red, invalid);
+	model->setColor(Qt::green, done);
+}
 
-		const int ID = model->data(iID).toInt();
-
-		if (setInvalid.contains(ID))
-			model->setData(iDT, QBrush(Qt::red), Qt::BackgroundRole);
-		else if (setLocked.contains(ID))
-			model->setData(iDT, QBrush(Qt::blue), Qt::ForegroundRole);
-		else if (setDone.contains(ID))
-			model->setData(iDT, QBrush(Qt::green), Qt::BackgroundRole);
-	}
-
-	setUpdatesEnabled(true);
+void ItemsDock::removeColors(void)
+{
+	if (model) model->clearColors();
 }
 
 void ItemsDock::selectItem(int id)
@@ -337,4 +333,13 @@ void ItemsDock::selectPrevious(void)
 
 	emit onItemSelected(model->data(indexI).toInt());
 	emit onImageSelected(model->data(indexP).toString());
+}
+
+void ItemsDock::setColors(bool enable)
+{
+	if (doColor == enable) return;
+	else doColor = enable;
+
+	if (doColor) applyColors();
+	else removeColors();
 }

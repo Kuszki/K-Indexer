@@ -82,6 +82,8 @@
     <addaction name="actionUndochange"/>
     <addaction name="separator"/>
     <addaction name="actionFind"/>
+    <addaction name="separator"/>
+    <addaction name="actionColorlist"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -587,10 +589,22 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="system-lock-screen"/>
+    <iconset theme="system-lock-screen">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Fit automatically</string>
+   </property>
+  </action>
+  <action name="actionColorlist">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="applications-graphics"/>
+   </property>
+   <property name="text">
+    <string>Color list</string>
    </property>
   </action>
  </widget>

@@ -81,10 +81,12 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->actionMessages->setChecked(Settings.value("messages", true).toBool());
 	ui->actionShowpreview->setChecked(Settings.value("preview", true).toBool());
 	ui->actionAutofit->setChecked(Settings.value("autofit", true).toBool());
+	ui->actionColorlist->setChecked(Settings.value("colors", true).toBool());
 	Settings.endGroup();
 
 	image->setPreview(ui->actionShowpreview->isChecked());
 	image->setAutofit(ui->actionAutofit->isChecked());
+	items->setColors(ui->actionColorlist->isChecked());
 
 	if (isMaximized()) setGeometry(QApplication::desktop()->availableGeometry(this));
 
@@ -184,6 +186,9 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->actionAutofit, &QAction::toggled,
 	        image, &ImageDock::setAutofit);
 
+	connect(ui->actionColorlist, &QAction::toggled,
+	        items, &ItemsDock::setColors);
+
 	connect(this, &MainWindow::onDatabaseLogout,
 	        filter, &FilterDialog::close);
 
@@ -273,6 +278,7 @@ MainWindow::~MainWindow(void)
 	Settings.setValue("messages", ui->actionMessages->isChecked());
 	Settings.setValue("preview", ui->actionShowpreview->isChecked());
 	Settings.setValue("autofit", ui->actionAutofit->isChecked());
+	Settings.setValue("colors", ui->actionColorlist->isChecked());
 	Settings.endGroup();
 
 	wthread->exit();

@@ -287,12 +287,12 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
 <context>
     <name>ImageDock</name>
     <message>
-        <location filename="imagedock.cpp" line="118"/>
+        <location filename="imagedock.cpp" line="266"/>
         <source>Unable to load image</source>
         <translation>Nie udało się wczytać obrazu</translation>
     </message>
     <message>
-        <location filename="imagedock.cpp" line="232"/>
+        <location filename="imagedock.cpp" line="388"/>
         <source>Select document</source>
         <translation>Wybierz dokument</translation>
     </message>
@@ -300,22 +300,22 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
 <context>
     <name>ImageWidget</name>
     <message>
-        <location filename="imagedock.ui" line="17"/>
+        <location filename="imagedock.ui" line="18"/>
         <source>Preview</source>
         <translation>Podgląd</translation>
     </message>
     <message>
-        <location filename="imagedock.ui" line="30"/>
+        <location filename="imagedock.ui" line="31"/>
         <source>&lt;-</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="imagedock.ui" line="91"/>
+        <location filename="imagedock.ui" line="92"/>
         <source>Select document</source>
         <translation>Wybierz dokument</translation>
     </message>
     <message>
-        <location filename="imagedock.ui" line="114"/>
+        <location filename="imagedock.ui" line="115"/>
         <source>-&gt;</source>
         <translation></translation>
     </message>
@@ -429,6 +429,11 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
     </message>
     <message>
         <location filename="itemsdock.ui" line="120"/>
+        <source>Users</source>
+        <translation>Przypisane</translation>
+    </message>
+    <message>
+        <location filename="itemsdock.ui" line="125"/>
         <source>Unassigned</source>
         <translation>Nieprzypisane</translation>
     </message>
@@ -458,398 +463,421 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
     </message>
     <message>
         <location filename="mainwindow.ui" line="55"/>
-        <location filename="mainwindow.ui" line="129"/>
+        <location filename="mainwindow.ui" line="135"/>
         <source>Database</source>
         <translation>Baza danych</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="70"/>
-        <location filename="mainwindow.ui" line="142"/>
+        <location filename="mainwindow.ui" line="71"/>
+        <location filename="mainwindow.ui" line="148"/>
         <source>Document</source>
         <translation>Dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="87"/>
-        <location filename="mainwindow.ui" line="165"/>
+        <location filename="mainwindow.ui" line="90"/>
+        <location filename="mainwindow.ui" line="171"/>
         <source>Image</source>
         <translation>Obraz</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="105"/>
-        <location filename="mainwindow.ui" line="189"/>
+        <location filename="mainwindow.ui" line="111"/>
+        <location filename="mainwindow.ui" line="195"/>
         <source>Help</source>
         <translation>Pomoc</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="112"/>
+        <location filename="mainwindow.ui" line="118"/>
         <source>Docks</source>
         <translation>Doki</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="206"/>
+        <location filename="mainwindow.ui" line="212"/>
         <source>Exit</source>
         <translation>Zakończ</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="218"/>
+        <location filename="mainwindow.ui" line="224"/>
         <source>About</source>
         <translation>O programie</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="221"/>
+        <location filename="mainwindow.ui" line="227"/>
         <source>F1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="230"/>
+        <location filename="mainwindow.ui" line="236"/>
         <source>Zoom in</source>
         <translation>Powiększ</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="233"/>
+        <location filename="mainwindow.ui" line="239"/>
         <source>+</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="242"/>
+        <location filename="mainwindow.ui" line="248"/>
         <source>Zoom out</source>
         <translation>Zmniejsz</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="245"/>
+        <location filename="mainwindow.ui" line="251"/>
         <source>-</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="254"/>
+        <location filename="mainwindow.ui" line="260"/>
         <source>Fit to screen</source>
         <translation>Dopasuj do okna</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="257"/>
+        <location filename="mainwindow.ui" line="263"/>
         <source>F5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="266"/>
+        <location filename="mainwindow.ui" line="272"/>
         <source>Original size</source>
         <translation>Rozmiar oryginalny</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="269"/>
+        <location filename="mainwindow.ui" line="275"/>
         <source>F6</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="278"/>
+        <location filename="mainwindow.ui" line="284"/>
         <source>Next document</source>
         <translation>Następny dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="281"/>
+        <location filename="mainwindow.ui" line="287"/>
         <source>Ctrl+Right</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="290"/>
+        <location filename="mainwindow.ui" line="296"/>
         <source>Previous document</source>
         <translation>Poprzedni dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="293"/>
+        <location filename="mainwindow.ui" line="299"/>
         <source>Ctrl+Left</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="302"/>
+        <location filename="mainwindow.ui" line="308"/>
         <source>Lock</source>
         <translation>Zablokuj</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="305"/>
+        <location filename="mainwindow.ui" line="311"/>
         <source>Ctrl+E</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="314"/>
+        <location filename="mainwindow.ui" line="320"/>
         <source>Save</source>
         <translation>Zapisz</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="317"/>
+        <location filename="mainwindow.ui" line="323"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="326"/>
+        <location filename="mainwindow.ui" line="332"/>
         <source>Rotate left</source>
         <translation>Obróć w lewo</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="329"/>
+        <location filename="mainwindow.ui" line="335"/>
         <source>Ctrl+Shift+Left</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="338"/>
+        <location filename="mainwindow.ui" line="344"/>
         <source>Rotate right</source>
         <translation>Obróć w prawo</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="341"/>
+        <location filename="mainwindow.ui" line="347"/>
         <source>Ctrl+Shift+Right</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="350"/>
+        <location filename="mainwindow.ui" line="356"/>
         <source>Undo change</source>
         <translation>Wycofaj zmiany</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="353"/>
+        <location filename="mainwindow.ui" line="359"/>
         <source>Ctrl+Z</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="362"/>
+        <location filename="mainwindow.ui" line="368"/>
         <source>Lock next job</source>
         <translation>Zablokuj kolejne zadanie</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="365"/>
+        <location filename="mainwindow.ui" line="371"/>
         <source>Ctrl+Return</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="374"/>
+        <location filename="mainwindow.ui" line="380"/>
         <source>Unlock</source>
         <translation>Odblokuj</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="377"/>
+        <location filename="mainwindow.ui" line="383"/>
         <source>Ctrl+L</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="386"/>
+        <location filename="mainwindow.ui" line="392"/>
         <source>Connect</source>
         <translation>Połącz</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="389"/>
+        <location filename="mainwindow.ui" line="395"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="398"/>
+        <location filename="mainwindow.ui" line="404"/>
         <source>Disconnect</source>
         <translation>Rozłącz</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="503"/>
+        <location filename="mainwindow.ui" line="509"/>
         <source>Query dialog</source>
         <translation>Wykonaj zapytanie</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="512"/>
+        <location filename="mainwindow.ui" line="518"/>
         <source>Export data</source>
         <translation>Eksportuj dane</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="524"/>
+        <location filename="mainwindow.ui" line="530"/>
         <source>Messages</source>
         <translation>Komunikaty</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="527"/>
+        <location filename="mainwindow.ui" line="533"/>
         <source>Ctrl+M</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="536"/>
+        <location filename="mainwindow.ui" line="542"/>
         <source>Commit</source>
         <translation>Zatwierdź</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="539"/>
+        <location filename="mainwindow.ui" line="545"/>
         <source>Alt+Return</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="548"/>
+        <location filename="mainwindow.ui" line="554"/>
         <source>Open file</source>
         <translation>Otwórz plik</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="557"/>
+        <location filename="mainwindow.ui" line="563"/>
         <source>Open folder</source>
         <translation>Otwórz folder</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="209"/>
+        <location filename="mainwindow.ui" line="572"/>
+        <source>Scan folder</source>
+        <translation>Skanuj folder</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="584"/>
+        <source>Show preview</source>
+        <translation>Pokazuj miniatury</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="596"/>
+        <source>Fit automatically</source>
+        <translation>Dopasuj automatycznie</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="607"/>
+        <source>Color list</source>
+        <translation>Koloruj listę</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="215"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="401"/>
+        <location filename="mainwindow.ui" line="407"/>
         <source>Ctrl+R</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="410"/>
+        <location filename="mainwindow.ui" line="416"/>
         <source>Find</source>
         <translation>Wyszukaj</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="413"/>
+        <location filename="mainwindow.ui" line="419"/>
         <source>Ctrl+F</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="422"/>
+        <location filename="mainwindow.ui" line="428"/>
         <source>Import data</source>
         <translation>Importuj dane</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="431"/>
+        <location filename="mainwindow.ui" line="437"/>
         <source>Next page</source>
         <translation>Następna strona</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="434"/>
+        <location filename="mainwindow.ui" line="440"/>
         <source>Ctrl+Down</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="443"/>
+        <location filename="mainwindow.ui" line="449"/>
         <source>Previous page</source>
         <translation>Poprzednia strona</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="446"/>
+        <location filename="mainwindow.ui" line="452"/>
         <source>Ctrl+Up</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="458"/>
+        <location filename="mainwindow.ui" line="464"/>
         <source>Allow close</source>
         <translation>Zezwalaj na zamykanie</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="470"/>
+        <location filename="mainwindow.ui" line="476"/>
         <source>Lock docks</source>
         <translation>Zablokuj doki</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="482"/>
+        <location filename="mainwindow.ui" line="488"/>
         <source>Allow float</source>
         <translation>Zezwalaj na odczepianie</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="494"/>
+        <location filename="mainwindow.ui" line="500"/>
         <source>Allow move</source>
         <translation>Zezwalaj na przemieszczanie</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="299"/>
+        <location filename="mainwindow.cpp" line="322"/>
         <source>User authentication error</source>
         <translation>Błąd autoryzacji użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="362"/>
+        <location filename="mainwindow.cpp" line="387"/>
         <source>Unable to lock document</source>
         <translation>Nie udało się zablokować dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="384"/>
+        <location filename="mainwindow.cpp" line="409"/>
         <source>Document is already locked</source>
         <translation>Dokument jest już zablokowany</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="387"/>
-        <location filename="mainwindow.cpp" line="458"/>
+        <location filename="mainwindow.cpp" line="412"/>
+        <location filename="mainwindow.cpp" line="483"/>
         <source>Document is locked by another user</source>
         <translation>Dokument jest zablokowany przez innego użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="390"/>
-        <location filename="mainwindow.cpp" line="414"/>
-        <location filename="mainwindow.cpp" line="428"/>
-        <location filename="mainwindow.cpp" line="464"/>
-        <location filename="mainwindow.cpp" line="477"/>
+        <location filename="mainwindow.cpp" line="415"/>
+        <location filename="mainwindow.cpp" line="439"/>
+        <location filename="mainwindow.cpp" line="453"/>
+        <location filename="mainwindow.cpp" line="489"/>
+        <location filename="mainwindow.cpp" line="502"/>
         <source>Unable to execute query</source>
         <translation>Brak możliwości wykonania zapytania do bazy danych</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="411"/>
+        <location filename="mainwindow.cpp" line="436"/>
         <source>Document is assigned to another user</source>
         <translation>Dokument jest przypisany do innego użytkownika</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="424"/>
-        <location filename="mainwindow.cpp" line="525"/>
+        <location filename="mainwindow.cpp" line="449"/>
+        <location filename="mainwindow.cpp" line="550"/>
         <source>Document locked</source>
         <translation>Zablokowano dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="433"/>
+        <location filename="mainwindow.cpp" line="458"/>
         <source>Unable to unlock document</source>
         <translation>Nie udało się odblokować dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="461"/>
+        <location filename="mainwindow.cpp" line="486"/>
         <source>Document is not locked</source>
         <translation>Dokument nie jest zablokowany</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="473"/>
+        <location filename="mainwindow.cpp" line="498"/>
         <source>Document unlocked</source>
         <translation>Odblokowano dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="527"/>
+        <location filename="mainwindow.cpp" line="552"/>
         <source>Unable to lock next document</source>
         <translation>Nie udało się zablokować kolejnego dokumentu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="527"/>
+        <location filename="mainwindow.cpp" line="552"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="636"/>
+        <location filename="mainwindow.cpp" line="669"/>
         <source>No changes to save</source>
         <translation>Brak zmian do zapisu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="637"/>
+        <location filename="mainwindow.cpp" line="670"/>
         <source>Data saved</source>
         <translation>Zapisano dane</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="638"/>
+        <location filename="mainwindow.cpp" line="671"/>
         <source>Unable to save data</source>
         <translation>Nie udało się zapisać danych</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="716"/>
+        <location filename="mainwindow.cpp" line="775"/>
         <source>Export error</source>
         <translation>Błąd eksportu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="719"/>
-        <location filename="mainwindow.cpp" line="722"/>
+        <location filename="mainwindow.cpp" line="778"/>
+        <location filename="mainwindow.cpp" line="781"/>
         <source>Export finished</source>
         <translation>Eksport zakończony</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="733"/>
+        <location filename="mainwindow.cpp" line="792"/>
+        <location filename="mainwindow.cpp" line="809"/>
         <source>Import error</source>
         <translation>Błąd importu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="736"/>
-        <location filename="mainwindow.cpp" line="739"/>
+        <location filename="mainwindow.cpp" line="795"/>
+        <location filename="mainwindow.cpp" line="798"/>
+        <location filename="mainwindow.cpp" line="812"/>
+        <location filename="mainwindow.cpp" line="815"/>
         <source>Import finished</source>
         <translation>Import zakończony</translation>
     </message>
@@ -868,6 +896,40 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
         <location filename="metadock.ui" line="18"/>
         <source>Metadata</source>
         <translation>Metadane</translation>
+    </message>
+</context>
+<context>
+    <name>ScanDialog</name>
+    <message>
+        <location filename="scandialog.ui" line="14"/>
+        <source>Scan folder</source>
+        <translation>Skanuj folder</translation>
+    </message>
+    <message>
+        <location filename="scandialog.ui" line="36"/>
+        <source>Path</source>
+        <translation>Ścieżka</translation>
+    </message>
+    <message>
+        <location filename="scandialog.ui" line="51"/>
+        <source>Select input directory</source>
+        <translation>Wskaż ścieżkę skanów</translation>
+    </message>
+    <message>
+        <location filename="scandialog.ui" line="64"/>
+        <source>Open</source>
+        <translation>Otwórz</translation>
+    </message>
+    <message>
+        <location filename="scandialog.ui" line="77"/>
+        <source>Filter</source>
+        <translation>Filtr</translation>
+    </message>
+    <message>
+        <location filename="scandialog.cpp" line="64"/>
+        <source>Select scan folder</source>
+        <oldsource>Select Scan folder</oldsource>
+        <translation>Wybierz folder skanów</translation>
     </message>
 </context>
 <context>
@@ -1073,6 +1135,15 @@ Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny �
             <numerusform>Importowano %n wiersz</numerusform>
             <numerusform>Importowano %n wiersze</numerusform>
             <numerusform>Importowano %n wierszy</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="threadworker.cpp" line="286"/>
+        <source>Imported %n file(s)</source>
+        <translation>
+            <numerusform>Importowano %n plik</numerusform>
+            <numerusform>Importowano %n pliki</numerusform>
+            <numerusform>Importowano %n plików</numerusform>
         </translation>
     </message>
 </context>

@@ -9,6 +9,7 @@ SOURCES += \
     filterwidget.cpp \
     imagedock.cpp \
     importdialog.cpp \
+    itemmodel.cpp \
     itemsdock.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     filterwidget.hpp \
     imagedock.hpp \
     importdialog.hpp \
+    itemmodel.hpp \
     itemsdock.hpp \
     mainwindow.hpp \
     metadock.hpp \
