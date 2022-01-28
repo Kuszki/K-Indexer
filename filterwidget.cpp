@@ -46,15 +46,15 @@ FilterWidget::~FilterWidget(void)
 
 QPair<QString, QVariant> FilterWidget::getBinding(void) const
 {
-	const bool IS = ui->Operator->currentText() == "IS NULL" || ui->Operator->currentText() == "IS NOT NULL";
-	const bool IN = ui->Operator->currentText() == "IN" || ui->Operator->currentText() == "NOT IN";
-	const bool BT = ui->Operator->currentText() == "BETWEEN";
+    const bool _IS = ui->Operator->currentText() == "IS NULL" || ui->Operator->currentText() == "IS NOT NULL";
+    const bool _IN = ui->Operator->currentText() == "IN" || ui->Operator->currentText() == "NOT IN";
+    const bool _BT = ui->Operator->currentText() == "BETWEEN";
 
-	if (IS)
+    if (_IS)
 	{
 		return qMakePair(QString("%1 %2").arg(objectName()).arg(ui->Operator->currentText()), QVariant());
 	}
-	else if (IN)
+    else if (_IN)
 	{
 		const auto Value = getValue().toList();
 
@@ -66,7 +66,7 @@ QPair<QString, QVariant> FilterWidget::getBinding(void) const
 
 		return qMakePair(Key.append(")"), Value);
 	}
-	else if (BT)
+    else if (_BT)
 	{
 		return qMakePair(QString("%1 BETWEEN ? AND ?").arg(objectName()), getValue());
 	}
@@ -78,24 +78,24 @@ QPair<QString, QVariant> FilterWidget::getBinding(void) const
 
 QString FilterWidget::getCondition(void) const
 {
-	const bool IS = ui->Operator->currentText() == "IS NULL" || ui->Operator->currentText() == "IS NOT NULL";
-	const bool IN = ui->Operator->currentText() == "IN" || ui->Operator->currentText() == "NOT IN";
-	const bool BT = ui->Operator->currentText() == "BETWEEN";
+    const bool _IS = ui->Operator->currentText() == "IS NULL" || ui->Operator->currentText() == "IS NOT NULL";
+    const bool _IN = ui->Operator->currentText() == "IN" || ui->Operator->currentText() == "NOT IN";
+    const bool _BT = ui->Operator->currentText() == "BETWEEN";
 
-	if (IS)
+    if (_IS)
 	{
 		return QString("%1 %2")
 				.arg(objectName())
 				.arg(ui->Operator->currentText());
 	}
-	else if (IN)
+    else if (_IN)
 	{
 		return QString("%1 %2 ('%3')")
 				.arg(objectName())
 				.arg(ui->Operator->currentText())
 				.arg(getValue().toStringList().join("', '"));
 	}
-	else if (BT)
+    else if (_BT)
 	{
 		return QString("%1 BETWEEN '%2' AND '%3'")
 				.arg(objectName())
@@ -221,12 +221,12 @@ QString FilterWidget::getLabel(void) const
 
 void FilterWidget::operatorChanged(const QString& Name)
 {
-	const bool IS = Name == "IS NULL" || Name == "IS NOT NULL";
-	const bool IN = Name == "IN" || Name == "NOT IN";
-	const bool BT = Name == "BETWEEN";
+    const bool _IS = Name == "IS NULL" || Name == "IS NOT NULL";
+    const bool _IN = Name == "IN" || Name == "NOT IN";
+    const bool _BT = Name == "BETWEEN";
 
-	if (Widget) Widget->setVisible(BT || (!IS && (!IN || !Simple)));
-	if (Simple) Simple->setVisible(BT || (!IS && IN));
+    if (Widget) Widget->setVisible(_BT || (!_IS && (!_IN || !Simple)));
+    if (Simple) Simple->setVisible(_BT || (!_IS && _IN));
 }
 
 void FilterWidget::editFinished(void)
